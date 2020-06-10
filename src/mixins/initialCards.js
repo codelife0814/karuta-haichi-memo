@@ -4,7 +4,9 @@ export default {
       const players = ["player1", "player2", "other"];
       const positions = [
         "leftTop",
+        "centerLeftTop",
         "centerTop",
+        "centerRightTop",
         "rightTop",
         "leftMiddle",
         "rightMiddle",
@@ -23,7 +25,10 @@ export default {
             continue;
           }
           object[player][position] = {};
-          object[player][position].isSpread = position === "centerTop";
+          object[player][position].isSpread =
+            position === "centerLeftTop" ||
+            position === "centerTop" ||
+            position === "centerRightTop";
           object[player][position].items = [];
         }
       }

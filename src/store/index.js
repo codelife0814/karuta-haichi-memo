@@ -12,7 +12,9 @@ const initialPlayers = {
 const players = ["player1", "player2", "other"];
 const positions = [
   "leftTop",
+  "centerLeftTop",
   "centerTop",
+  "centerRightTop",
   "rightTop",
   "leftMiddle",
   "rightMiddle",
@@ -31,7 +33,10 @@ for (const player of players) {
       continue;
     }
     initialPlacementCards[player][position] = {};
-    initialPlacementCards[player][position].isSpread = position === "centerTop";
+    initialPlacementCards[player][position].isSpread =
+      position === "centerLeftTop" ||
+      position === "centerTop" ||
+      position === "centerRightTop";
     initialPlacementCards[player][position].items = [];
   }
 }

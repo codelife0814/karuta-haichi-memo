@@ -110,14 +110,34 @@
                 </div>
                 <div
                   class="o-column isFloat"
+                  :class="{ isSpread: cards.player1.centerLeftTop.isSpread }"
+                >
+                  <ItemCount
+                    name="浮左"
+                    player="player1"
+                    position="centerLeftTop"
+                    :length="cards.player1.centerLeftTop.items.length"
+                    @spread="spreadCards"
+                  />
+                  <ItemListDraggable
+                    v-model="cards.player1.centerLeftTop.items"
+                    :items="cards.player1.centerLeftTop.items"
+                    :isOldNotation="isOldNotation"
+                    player="player1"
+                    position="centerLeftTop"
+                    @update="updateCards"
+                  />
+                </div>
+                <div
+                  class="o-column isFloat"
                   :class="{ isSpread: cards.player1.centerTop.isSpread }"
                 >
                   <ItemCount
-                    name="浮札"
+                    name="浮中"
                     player="player1"
                     position="centerTop"
                     :length="cards.player1.centerTop.items.length"
-                    id="counter-leftCenter"
+                    id="counter-centerTop"
                     @spread="spreadCards"
                   />
                   <ItemListDraggable
@@ -126,6 +146,26 @@
                     :isOldNotation="isOldNotation"
                     player="player1"
                     position="centerTop"
+                    @update="updateCards"
+                  />
+                </div>
+                <div
+                  class="o-column isFloat"
+                  :class="{ isSpread: cards.player1.centerRightTop.isSpread }"
+                >
+                  <ItemCount
+                    name="浮右"
+                    player="player1"
+                    position="centerRightTop"
+                    :length="cards.player1.centerRightTop.items.length"
+                    @spread="spreadCards"
+                  />
+                  <ItemListDraggable
+                    v-model="cards.player1.centerRightTop.items"
+                    :items="cards.player1.centerRightTop.items"
+                    :isOldNotation="isOldNotation"
+                    player="player1"
+                    position="centerRightTop"
                     @update="updateCards"
                   />
                 </div>
@@ -277,10 +317,30 @@
                 </div>
                 <div
                   class="o-column isFloat"
+                  :class="{ isSpread: cards.player2.centerLeftTop.isSpread }"
+                >
+                  <ItemCount
+                    name="浮左"
+                    player="player2"
+                    position="centerLeftTop"
+                    :length="cards.player2.centerLeftTop.items.length"
+                    @spread="spreadCards"
+                  />
+                  <ItemListDraggable
+                    v-model="cards.player2.centerLeftTop.items"
+                    :items="cards.player2.centerLeftTop.items"
+                    :isOldNotation="isOldNotation"
+                    player="player2"
+                    position="centerLeftTop"
+                    @update="updateCards"
+                  />
+                </div>
+                <div
+                  class="o-column isFloat"
                   :class="{ isSpread: cards.player2.centerTop.isSpread }"
                 >
                   <ItemCount
-                    name="浮札"
+                    name="浮中"
                     player="player2"
                     position="centerTop"
                     :length="cards.player2.centerTop.items.length"
@@ -292,6 +352,26 @@
                     :isOldNotation="isOldNotation"
                     player="player2"
                     position="centerTop"
+                    @update="updateCards"
+                  />
+                </div>
+                <div
+                  class="o-column isFloat"
+                  :class="{ isSpread: cards.player2.centerRightTop.isSpread }"
+                >
+                  <ItemCount
+                    name="浮右"
+                    player="player2"
+                    position="centerRightTop"
+                    :length="cards.player2.centerRightTop.items.length"
+                    @spread="spreadCards"
+                  />
+                  <ItemListDraggable
+                    v-model="cards.player2.centerRightTop.items"
+                    :items="cards.player2.centerRightTop.items"
+                    :isOldNotation="isOldNotation"
+                    player="player2"
+                    position="centerRightTop"
                     @update="updateCards"
                   />
                 </div>
@@ -557,7 +637,7 @@ export default {
       });
 
       tour.addStep({
-        attachTo: { element: "#counter-leftCenter", on: "bottom" },
+        attachTo: { element: "#counter-centerTop", on: "bottom" },
         title: "表示間隔の変更",
         text:
           "各段の個数表示箇所をタップすると、表示間隔を変更できます。<br />通常、決まり字同士の間は詰まって表示されますが、タップすると色が濃くなり、札間隔を広げることができます。<br />もう一度、タップすることで元に戻ります。<br />浮札のみデフォルトで間隔が広がるように設定されています。",

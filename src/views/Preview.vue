@@ -95,10 +95,28 @@
               </div>
               <div
                 class="o-column isFloat"
+                :class="{isSpread: placementCards.player2.centerRightTop.isSpread}"
+              >
+                <ItemList
+                  :items="placementCards.player2.centerRightTop.items"
+                  :isOldNotation="oldNotation"
+                />
+              </div>
+              <div
+                class="o-column isFloat"
                 :class="{isSpread: placementCards.player2.centerTop.isSpread}"
               >
                 <ItemList
                   :items="placementCards.player2.centerTop.items"
+                  :isOldNotation="oldNotation"
+                />
+              </div>
+              <div
+                class="o-column isFloat"
+                :class="{isSpread: placementCards.player2.centerLeftTop.isSpread}"
+              >
+                <ItemList
+                  :items="placementCards.player2.centerLeftTop.items"
                   :isOldNotation="oldNotation"
                 />
               </div>
@@ -129,10 +147,28 @@
               </div>
               <div
                 class="o-column isFloat"
+                :class="{isSpread: placementCards.player1.centerLeftTop.isSpread}"
+              >
+                <ItemList
+                  :items="placementCards.player1.centerLeftTop.items"
+                  :isOldNotation="oldNotation"
+                />
+              </div>
+              <div
+                class="o-column isFloat"
                 :class="{isSpread: placementCards.player1.centerTop.isSpread}"
               >
                 <ItemList
                   :items="placementCards.player1.centerTop.items"
+                  :isOldNotation="oldNotation"
+                />
+              </div>
+              <div
+                class="o-column isFloat"
+                :class="{isSpread: placementCards.player1.centerRightTop.isSpread}"
+              >
+                <ItemList
+                  :items="placementCards.player1.centerRightTop.items"
                   :isOldNotation="oldNotation"
                 />
               </div>
@@ -258,7 +294,13 @@ export default {
     ]),
     getPlacementMinWidth: function() {
       const positions = {
-        top: ["leftTop", "centerTop", "rightTop"],
+        top: [
+          "leftTop",
+          "centerLeftTop",
+          "centerTop",
+          "centerRightTop",
+          "rightTop"
+        ],
         middle: ["leftMiddle", "rightMiddle"],
         bottom: ["leftBottom", "rightBottom"]
       };
@@ -271,9 +313,19 @@ export default {
         const player1TopWidth =
           cards.player1.leftTop.items.length *
             this.displayItemWidth(cards.player1.leftTop.isSpread, this.format) +
+          cards.player1.centerLeftTop.items.length *
+            this.displayItemWidth(
+              cards.player1.centerLeftTop.isSpread,
+              this.format
+            ) +
           cards.player1.centerTop.items.length *
             this.displayItemWidth(
               cards.player1.centerTop.isSpread,
+              this.format
+            ) +
+          cards.player1.centerRightTop.items.length *
+            this.displayItemWidth(
+              cards.player1.centerRightTop.isSpread,
               this.format
             ) +
           cards.player1.rightTop.items.length *
@@ -281,7 +333,7 @@ export default {
               cards.player1.rightTop.isSpread,
               this.format
             ) +
-          spaceWidth * 2;
+          spaceWidth * 4;
 
         const player1MiddleWidth =
           cards.player1.leftMiddle.items.length *
@@ -323,8 +375,12 @@ export default {
         const player1TopWidth =
           cards.player1.leftTop.items.length *
             this.displayItemWidth(cards.player1.leftTop.isSpread) +
+          cards.player1.centerLeftTop.items.length *
+            this.displayItemWidth(cards.player1.centerLeftTop.isSpread) +
           cards.player1.centerTop.items.length *
             this.displayItemWidth(cards.player1.centerTop.isSpread) +
+          cards.player1.centerRightTop.items.length *
+            this.displayItemWidth(cards.player1.centerRightTop.isSpread) +
           cards.player1.rightTop.items.length *
             this.displayItemWidth(cards.player1.rightTop.isSpread) +
           spaceWidth * 2;
@@ -343,8 +399,12 @@ export default {
         const player2TopWidth =
           cards.player2.leftTop.items.length *
             this.displayItemWidth(cards.player2.leftTop.isSpread) +
+          cards.player2.centerRightTop.items.length *
+            this.displayItemWidth(cards.player2.centerRightTop.isSpread) +
           cards.player2.centerTop.items.length *
             this.displayItemWidth(cards.player2.centerTop.isSpread) +
+          cards.player2.centerLeftTop.items.length *
+            this.displayItemWidth(cards.player2.centerLeftTop.isSpread) +
           cards.player2.rightTop.items.length *
             this.displayItemWidth(cards.player2.rightTop.isSpread) +
           spaceWidth * 2;
@@ -416,7 +476,9 @@ export default {
       const players = ["player1", "player2", "other"];
       const positions = [
         "leftTop",
+        "centerLeftTop",
         "centerTop",
+        "centerRightTop",
         "rightTop",
         "leftMiddle",
         "rightMiddle",

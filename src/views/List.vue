@@ -444,7 +444,9 @@ export default {
       const players = ["player1", "player2", "other"];
       const positions = [
         "leftTop",
+        "centerLeftTop",
         "centerTop",
+        "centerRightTop",
         "rightTop",
         "leftMiddle",
         "rightMiddle",
@@ -463,11 +465,18 @@ export default {
           ) {
             continue;
           }
+          // 既存データにプロパティが存在しない場合の対応
+          if (!placement[player][position]) {
+            placement[player][position] = {};
+          }
           placementCards[player][position] = {};
           placementCards[player][position].isSpread =
-            placement[player][position].isSpread;
+            placement[player][position].isSpread ||
+            position === "centerLeftTop" ||
+            position === "centerTop" ||
+            position === "centerRightTop";
           placementCards[player][position].items = _this.matchCards(
-            placement[player][position].items
+            placement[player][position].items || []
           );
         }
       }
