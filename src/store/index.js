@@ -9,74 +9,32 @@ const initialPlayers = {
   name2: "",
 };
 
-const initialPlacementCards = {
-  player1: {
-    centerTop: {
-      isSpread: true,
-      items: [],
-    },
-    leftTop: {
-      isSpread: false,
-      items: [],
-    },
-    leftMiddle: {
-      isSpread: false,
-      items: [],
-    },
-    leftBottom: {
-      isSpread: false,
-      items: [],
-    },
-    rightTop: {
-      isSpread: false,
-      items: [],
-    },
-    rightMiddle: {
-      isSpread: false,
-      items: [],
-    },
-    rightBottom: {
-      isSpread: false,
-      items: [],
-    },
-  },
-  player2: {
-    centerTop: {
-      isSpread: true,
-      items: [],
-    },
-    leftTop: {
-      isSpread: false,
-      items: [],
-    },
-    leftMiddle: {
-      isSpread: false,
-      items: [],
-    },
-    leftBottom: {
-      isSpread: false,
-      items: [],
-    },
-    rightTop: {
-      isSpread: false,
-      items: [],
-    },
-    rightMiddle: {
-      isSpread: false,
-      items: [],
-    },
-    rightBottom: {
-      isSpread: false,
-      items: [],
-    },
-  },
-  other: {
-    remaining: {
-      isSpread: false,
-      items: [],
-    },
-  },
-};
+const players = ["player1", "player2", "other"];
+const positions = [
+  "leftTop",
+  "centerTop",
+  "rightTop",
+  "leftMiddle",
+  "rightMiddle",
+  "leftBottom",
+  "rightBottom",
+  "remaining",
+];
+let initialPlacementCards = {};
+for (const player of players) {
+  initialPlacementCards[player] = {};
+  for (const position of positions) {
+    if (
+      (player === "other" && position !== "remaining") ||
+      (player !== "other" && position === "remaining")
+    ) {
+      continue;
+    }
+    initialPlacementCards[player][position] = {};
+    initialPlacementCards[player][position].isSpread = position === "centerTop";
+    initialPlacementCards[player][position].items = [];
+  }
+}
 
 export default new Vuex.Store({
   state: {

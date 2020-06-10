@@ -2,9 +2,7 @@
   <div id="edit">
     <v-dialog v-model="screenDialog" max-width="290">
       <v-card>
-        <v-card-title class="title"
-          >画面を横向けにして使うことをおすすめします</v-card-title
-        >
+        <v-card-title class="title">画面を横向けにして使うことをおすすめします</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="teal darken-1" text @click="screenAction">はい</v-btn>
@@ -26,9 +24,7 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="teal darken-1" text @click="backDialog = false"
-              >いいえ</v-btn
-            >
+            <v-btn color="teal darken-1" text @click="backDialog = false">いいえ</v-btn>
             <v-btn color="teal darken-1" text @click="backAction">はい</v-btn>
           </v-card-actions>
         </v-card>
@@ -61,21 +57,17 @@
 
     <v-content>
       <v-container>
-        <v-tabs
-          v-if="format === 1"
-          color="white"
-          fixed-tabs
-          v-model="playerTab"
-        >
+        <v-tabs v-if="format === 1" color="white" fixed-tabs v-model="playerTab">
           <v-tab
             style="text-transform: none"
             class="o-playerTab isPlayer1"
             id="playerTabPlayer1"
-            >{{ player1Name || "選手1" }}</v-tab
-          >
-          <v-tab style="text-transform: none" class="o-playerTab isPlayer2">{{
+          >{{ player1Name || "選手1" }}</v-tab>
+          <v-tab style="text-transform: none" class="o-playerTab isPlayer2">
+            {{
             player2Name || "選手2"
-          }}</v-tab>
+            }}
+          </v-tab>
         </v-tabs>
         <div id="placement" :class="{ isGame: format === 1 }">
           <v-tabs-items v-model="playerTab" :touchless="true">
@@ -98,10 +90,7 @@
 
               <!-- 上段 -->
               <div class="o-row">
-                <div
-                  class="o-column isLeft"
-                  :class="{ isSpread: cards.player1.leftTop.isSpread }"
-                >
+                <div class="o-column isLeft" :class="{ isSpread: cards.player1.leftTop.isSpread }">
                   <ItemCount
                     name="左上"
                     player="player1"
@@ -269,10 +258,7 @@
 
               <!-- 上段 -->
               <div class="o-row">
-                <div
-                  class="o-column isLeft"
-                  :class="{ isSpread: cards.player2.leftTop.isSpread }"
-                >
+                <div class="o-column isLeft" :class="{ isSpread: cards.player2.leftTop.isSpread }">
                   <ItemCount
                     name="左上"
                     player="player2"
@@ -454,8 +440,7 @@
           :class="{ isFixedScroll }"
           id="fixedScrollButton"
           @click="fixedScroll"
-          >{{ fixedScrollText }}</v-btn
-        >
+        >{{ fixedScrollText }}</v-btn>
 
         <!-- <v-btn fab fixed right bottom dark color="teal" @click.stop="bottomMenu = !bottomMenu">
           <v-icon dark>mdi-menu</v-icon>
@@ -477,6 +462,7 @@
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
+import initialCards from "./../mixins/initialCards";
 import ItemCount from "./../components/ItemCount";
 import ItemListDraggable from "./../components/ItemListDraggable";
 
@@ -484,87 +470,20 @@ export default {
   name: "Edit",
   components: {
     ItemCount,
-    ItemListDraggable,
+    ItemListDraggable
   },
   data() {
     return {
       screenDialog: false,
       backDialog: false,
-      cards: {
-        player1: {
-          centerTop: {
-            isSpread: true,
-            items: [],
-          },
-          leftTop: {
-            isSpread: false,
-            items: [],
-          },
-          leftMiddle: {
-            isSpread: false,
-            items: [],
-          },
-          leftBottom: {
-            isSpread: false,
-            items: [],
-          },
-          rightTop: {
-            isSpread: false,
-            items: [],
-          },
-          rightMiddle: {
-            isSpread: false,
-            items: [],
-          },
-          rightBottom: {
-            isSpread: false,
-            items: [],
-          },
-        },
-        player2: {
-          centerTop: {
-            isSpread: true,
-            items: [],
-          },
-          leftTop: {
-            isSpread: false,
-            items: [],
-          },
-          leftMiddle: {
-            isSpread: false,
-            items: [],
-          },
-          leftBottom: {
-            isSpread: false,
-            items: [],
-          },
-          rightTop: {
-            isSpread: false,
-            items: [],
-          },
-          rightMiddle: {
-            isSpread: false,
-            items: [],
-          },
-          rightBottom: {
-            isSpread: false,
-            items: [],
-          },
-        },
-        other: {
-          remaining: {
-            isSpread: false,
-            items: [],
-          },
-        },
-      },
+      cards: {},
       playerTab: 0,
       player1Name: "",
       player2Name: "",
       searchText: "",
       bottomMenu: false,
       isFixedScroll: false,
-      fixedScrollText: "スクロール固定",
+      fixedScrollText: "スクロール固定"
     };
   },
   created() {
@@ -573,14 +492,18 @@ export default {
     this.player2Name = this.players.name2 || "";
     this.isOldNotation = this.oldNotation || false;
 
-    if (JSON.stringify(_this.cards) === JSON.stringify(_this.placementCards)) {
+    if (
+      JSON.stringify(this.initialCards) === JSON.stringify(this.placementCards)
+    ) {
       let cardList = JSON.parse(JSON.stringify(_this.cardList));
       cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
+      _this.cards = _this.initialCards;
       _this.cards.other.remaining.items = cardList;
     } else {
       _this.cards = _this.placementCards;
     }
 
+    // 定位置の場合は横画面で表示してもらうように案内ダイアログ表示
     if (
       this.format === 0 &&
       navigator.userAgent.match(/iPhone|Android.+Mobile/) &&
@@ -591,9 +514,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
+    ...mapState(["format", "id", "players", "placementCards", "oldNotation"])
   },
-  mixins: [Cards],
+  mixins: [Cards, initialCards],
   methods: {
     ...mapMutations([
       "setFormat",
@@ -603,7 +526,7 @@ export default {
       "setPlayers",
       "deletePlayers",
       "setPlacementCards",
-      "deletePlacementCards",
+      "deletePlacementCards"
     ]),
     screenAction: function() {
       window.sessionStorage.setItem(["orientation"], [true]);
@@ -613,11 +536,11 @@ export default {
       const tour = this.$shepherd({
         defaultStepOptions: {
           cancelIcon: {
-            enabled: true,
+            enabled: true
           },
-          classes: "o-tourStep",
+          classes: "o-tourStep"
         },
-        useModalOverlay: true,
+        useModalOverlay: true
       });
 
       tour.addStep({
@@ -628,9 +551,9 @@ export default {
         buttons: [
           {
             text: "次へ",
-            action: tour.next,
-          },
-        ],
+            action: tour.next
+          }
+        ]
       });
 
       tour.addStep({
@@ -641,9 +564,9 @@ export default {
         buttons: [
           {
             text: "次へ",
-            action: tour.next,
-          },
-        ],
+            action: tour.next
+          }
+        ]
       });
 
       tour.addStep({
@@ -654,9 +577,9 @@ export default {
         buttons: [
           {
             text: "次へ",
-            action: tour.next,
-          },
-        ],
+            action: tour.next
+          }
+        ]
       });
 
       if (this.format === 1) {
@@ -668,9 +591,9 @@ export default {
           buttons: [
             {
               text: "次へ",
-              action: tour.next,
-            },
-          ],
+              action: tour.next
+            }
+          ]
         });
 
         tour.addStep({
@@ -680,9 +603,9 @@ export default {
           buttons: [
             {
               text: "次へ",
-              action: tour.next,
-            },
-          ],
+              action: tour.next
+            }
+          ]
         });
       }
 
@@ -694,9 +617,9 @@ export default {
         buttons: [
           {
             text: "次へ",
-            action: tour.next,
-          },
-        ],
+            action: tour.next
+          }
+        ]
       });
 
       tour.addStep({
@@ -707,9 +630,9 @@ export default {
         buttons: [
           {
             text: "終了",
-            action: tour.complete,
-          },
-        ],
+            action: tour.complete
+          }
+        ]
       });
 
       tour.start();
@@ -734,7 +657,7 @@ export default {
       this.setPlacementCards(this.cards);
       const players = {
         name1: _this.player1Name || "選手1",
-        name2: _this.player2Name || "選手2",
+        name2: _this.player2Name || "選手2"
       };
       this.setPlayers(players);
       this.$router.push("/preview");
@@ -751,7 +674,7 @@ export default {
         .split(/[\x20\u3000]/)
         .filter(Boolean);
       // 各要素の先頭に＾を付け、| で区切って文字列化
-      const patternText = array.map((item) => "^" + item).join("|");
+      const patternText = array.map(item => "^" + item).join("|");
 
       const pattern = new RegExp(patternText, "i");
 
@@ -800,7 +723,7 @@ export default {
         html.style.overflow = "";
         body.style.overflow = "";
         document.removeEventListener("touchmove", _this.scrollOff, {
-          passive: false,
+          passive: false
         });
       } else {
         _this.fixedScrollText = "固定解除";
@@ -808,10 +731,10 @@ export default {
         html.style.overflow = "hidden";
         body.style.overflow = "hidden";
         document.addEventListener("touchmove", _this.scrollOff, {
-          passive: false,
+          passive: false
         });
       }
-    },
+    }
     // watch: {
     //   isFixedScroll: function(isFixed) {
     //     const _this = this;
@@ -832,7 +755,7 @@ export default {
     //       });
     //     }
     //   }
-  },
+  }
 };
 </script>
 

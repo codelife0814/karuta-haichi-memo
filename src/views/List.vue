@@ -56,15 +56,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="teal darken-1" text @click="cancelCodeAction"
-                  >キャンセル</v-btn
-                >
-                <v-btn
-                  color="teal darken-1"
-                  text
-                  @click="createFromCodeAction(inputCode)"
-                  >作成</v-btn
-                >
+                <v-btn color="teal darken-1" text @click="cancelCodeAction">キャンセル</v-btn>
+                <v-btn color="teal darken-1" text @click="createFromCodeAction(inputCode)">作成</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -78,9 +71,7 @@
           <img src="./../assets/logo.png" alt="配置めも" />
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title class="o-drawer__title"
-            >競技かるた配置めも</v-list-item-title
-          >
+          <v-list-item-title class="o-drawer__title">競技かるた配置めも</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -96,11 +87,7 @@
         <v-list-item dense>
           <v-list-item-content>
             <v-list-item-title>
-              <v-checkbox
-                color="teal"
-                label="旧仮名遣い表記"
-                v-model="isOldNotation"
-              ></v-checkbox>
+              <v-checkbox color="teal" label="旧仮名遣い表記" v-model="isOldNotation"></v-checkbox>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -131,9 +118,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="teal darken-1" text @click="signOutDialog = false"
-              >いいえ</v-btn
-            >
+            <v-btn color="teal darken-1" text @click="signOutDialog = false">いいえ</v-btn>
             <v-btn color="teal darken-1" text @click="signOut">はい</v-btn>
           </v-card-actions>
         </v-card>
@@ -142,12 +127,14 @@
 
     <v-content>
       <v-container>
-        <v-alert v-model="copySuccess" type="success" text dense dismissible
-          >コードをコピーしました：{{ copyText }}</v-alert
-        >
-        <v-alert v-model="copyError" type="error" text dense dismissible
-          >コピーに失敗しました</v-alert
-        >
+        <v-alert
+          v-model="copySuccess"
+          type="success"
+          text
+          dense
+          dismissible
+        >コードをコピーしました：{{ copyText }}</v-alert>
+        <v-alert v-model="copyError" type="error" text dense dismissible>コピーに失敗しました</v-alert>
         <v-tabs-items v-model="format">
           <v-tab-item>
             <v-text-field
@@ -168,20 +155,14 @@
                 v-if="!dataListGetflag && filteredTeiichiList.length === 0"
                 class="mt-12 text-center"
               >
-                <v-progress-circular
-                  indeterminate
-                  color="teal"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="teal"></v-progress-circular>
               </div>
               <v-list-item
                 v-else-if="dataListGetflag && filteredTeiichiList.length === 0"
-                >定位置のデータはありません</v-list-item
-              >
+              >定位置のデータはありません</v-list-item>
               <template v-else v-for="(item, index) in filteredTeiichiList">
                 <v-list-item :key="'list' + index">
-                  <v-list-item-content
-                    @click="editAction(item.id, 'teiichiList')"
-                  >
+                  <v-list-item-content @click="editAction(item.id, 'teiichiList')">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                     <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
                   </v-list-item-content>
@@ -194,17 +175,13 @@
                       </template>
 
                       <v-list>
-                        <v-list-item
-                          @click="copyAction(item.id, 'teiichiList')"
-                        >
+                        <v-list-item @click="copyAction(item.id, 'teiichiList')">
                           <v-list-item-icon>
                             <v-icon>mdi-content-copy</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>複製</v-list-item-content>
                         </v-list-item>
-                        <v-list-item
-                          @click="deleteAction(item.id, 'teiichiList')"
-                        >
+                        <v-list-item @click="deleteAction(item.id, 'teiichiList')">
                           <v-list-item-icon>
                             <v-icon>mdi-delete</v-icon>
                           </v-list-item-icon>
@@ -216,13 +193,9 @@
                           v-clipboard:error="onCopyError"
                         >
                           <v-list-item-icon>
-                            <v-icon
-                              >mdi-numeric-9-plus-box-multiple-outline</v-icon
-                            >
+                            <v-icon>mdi-numeric-9-plus-box-multiple-outline</v-icon>
                           </v-list-item-icon>
-                          <v-list-item-content
-                            >コードをコピー</v-list-item-content
-                          >
+                          <v-list-item-content>コードをコピー</v-list-item-content>
                         </v-list-item>
                       </v-list>
                     </v-menu>
@@ -251,15 +224,9 @@
                 v-if="!dataListGetflag && filteredGameList.length === 0"
                 class="mt-12 text-center"
               >
-                <v-progress-circular
-                  indeterminate
-                  color="teal"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="teal"></v-progress-circular>
               </div>
-              <v-list-item
-                v-else-if="dataListGetflag && filteredGameList.length === 0"
-                >試合のデータはありません</v-list-item
-              >
+              <v-list-item v-else-if="dataListGetflag && filteredGameList.length === 0">試合のデータはありません</v-list-item>
               <template v-else v-for="(item, index) in filteredGameList">
                 <v-list-item :key="'list' + index">
                   <v-list-item-content @click="editAction(item.id, 'gameList')">
@@ -297,13 +264,9 @@
                           v-clipboard:error="onCopyError"
                         >
                           <v-list-item-icon>
-                            <v-icon
-                              >mdi-numeric-9-plus-box-multiple-outline</v-icon
-                            >
+                            <v-icon>mdi-numeric-9-plus-box-multiple-outline</v-icon>
                           </v-list-item-icon>
-                          <v-list-item-content
-                            >コードをコピー</v-list-item-content
-                          >
+                          <v-list-item-content>コードをコピー</v-list-item-content>
                         </v-list-item>
                       </v-list>
                     </v-menu>
@@ -344,7 +307,7 @@ export default {
       copyText: "",
       copySuccess: false,
       copyError: false,
-      isOldNotation: false,
+      isOldNotation: false
     };
   },
   created() {
@@ -360,19 +323,7 @@ export default {
     },
     filteredGameList: function() {
       return this.sortList(this.filterList("game"));
-    },
-    activeFab() {
-      switch (this.tabs) {
-        case "one":
-          return { class: "purple", icon: "account_circle" };
-        case "two":
-          return { class: "red", icon: "edit" };
-        case "three":
-          return { class: "green", icon: "keyboard_arrow_up" };
-        default:
-          return {};
-      }
-    },
+    }
   },
   mixins: [Cards],
   methods: {
@@ -384,7 +335,7 @@ export default {
       "setTitle",
       "setPlayers",
       "setPlacementCards",
-      "setOldNotation",
+      "setOldNotation"
     ]),
     signOut: function() {
       const _this = this;
@@ -426,149 +377,107 @@ export default {
       this.setFormat(format);
       this.$router.push("/edit");
     },
-    createFromCodeAction: function(code) {
+    createFromCodeAction: async function(code) {
       const codeArray = code.split("_");
       const id = codeArray[0];
       const formatList = codeArray[1] === "0" ? "teiichiList" : "gameList";
       const _this = this;
-      this.db
-        .collection(formatList)
-        .doc(id)
-        .get()
-        .then((doc) => {
-          _this.inputCode = "";
-          _this.setFormat(_this.format);
-          _this.setTitle(doc.data().title + " のコピー");
-          _this.setPlayers(doc.data().players);
-          _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
-          _this.$router.push("/edit");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("入力内容をご確認ください");
-        });
+      try {
+        const doc = await this.db
+          .collection(formatList)
+          .doc(id)
+          .get();
+        _this.inputCode = "";
+        _this.setFormat(_this.format);
+        _this.setTitle(doc.data().title + " のコピー");
+        _this.setPlayers(doc.data().players);
+        _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
+        _this.$router.push("/edit");
+      } catch (err) {
+        alert("一致するデータがありません");
+      }
     },
     cancelCodeAction: function() {
       this.inputCode = "";
       this.inputCodeDialog = false;
     },
-    copyAction: function(id, formatList) {
+    copyAction: async function(id, formatList) {
       const _this = this;
-      this.db
-        .collection("users")
-        .doc(_this.userId)
-        .collection(formatList)
-        .doc(id)
-        .get()
-        .then((doc) => {
-          _this.setFormat(_this.format);
-          _this.setTitle(doc.data().title + " のコピー");
-          _this.setPlayers(doc.data().players);
-          _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
-          _this.$router.push("/edit");
-        })
-        .catch(() => {
-          alert("ネットワーク状況をご確認ください");
-        });
+      try {
+        const doc = await _this.db
+          .collection("users")
+          .doc(_this.userId)
+          .collection(formatList)
+          .doc(id)
+          .get();
+        _this.setFormat(_this.format);
+        _this.setTitle(doc.data().title + " のコピー");
+        _this.setPlayers(doc.data().players);
+        _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
+        _this.$router.push("/edit");
+      } catch (err) {
+        alert("複製データ取得に失敗しました");
+      }
     },
-    editAction: function(id, formatList) {
+    editAction: async function(id, formatList) {
       const _this = this;
-      this.db
-        .collection("users")
-        .doc(_this.userId)
-        .collection(formatList)
-        .doc(id)
-        .get()
-        .then((doc) => {
-          _this.setFormat(_this.format);
-          _this.setId(doc.id);
-          _this.setTitle(doc.data().title);
-          _this.setPlayers(doc.data().players);
-          _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
-          _this.$router.push("/edit");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("ネットワーク状況をご確認ください");
-        });
+      try {
+        const doc = await _this.db
+          .collection("users")
+          .doc(_this.userId)
+          .collection(formatList)
+          .doc(id)
+          .get();
+        _this.setFormat(_this.format);
+        _this.setId(doc.id);
+        _this.setTitle(doc.data().title);
+        _this.setPlayers(doc.data().players);
+        _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
+        _this.$router.push("/edit");
+      } catch (err) {
+        alert("編集データ取得に失敗しました");
+      }
     },
     convertPlacement: function(placement) {
       // placementをthis.cardListの内容に変換
       const _this = this;
-      const placementCards = {
-        player1: {
-          centerTop: {
-            isSpread: placement.player1.centerTop.isSpread,
-            items: _this.matchCards(placement.player1.centerTop.items),
-          },
-          leftTop: {
-            isSpread: placement.player1.leftTop.isSpread,
-            items: _this.matchCards(placement.player1.leftTop.items),
-          },
-          leftMiddle: {
-            isSpread: placement.player1.leftMiddle.isSpread,
-            items: _this.matchCards(placement.player1.leftMiddle.items),
-          },
-          leftBottom: {
-            isSpread: placement.player1.leftBottom.isSpread,
-            items: _this.matchCards(placement.player1.leftBottom.items),
-          },
-          rightTop: {
-            isSpread: placement.player1.rightTop.isSpread,
-            items: _this.matchCards(placement.player1.rightTop.items),
-          },
-          rightMiddle: {
-            isSpread: placement.player1.rightMiddle.isSpread,
-            items: _this.matchCards(placement.player1.rightMiddle.items),
-          },
-          rightBottom: {
-            isSpread: placement.player1.rightBottom.isSpread,
-            items: _this.matchCards(placement.player1.rightBottom.items),
-          },
-        },
-        player2: {
-          centerTop: {
-            isSpread: placement.player2.centerTop.isSpread,
-            items: _this.matchCards(placement.player2.centerTop.items),
-          },
-          leftTop: {
-            isSpread: placement.player2.leftTop.isSpread,
-            items: _this.matchCards(placement.player2.leftTop.items),
-          },
-          leftMiddle: {
-            isSpread: placement.player2.leftMiddle.isSpread,
-            items: _this.matchCards(placement.player2.leftMiddle.items),
-          },
-          leftBottom: {
-            isSpread: placement.player2.leftBottom.isSpread,
-            items: _this.matchCards(placement.player2.leftBottom.items),
-          },
-          rightTop: {
-            isSpread: placement.player2.rightTop.isSpread,
-            items: _this.matchCards(placement.player2.rightTop.items),
-          },
-          rightMiddle: {
-            isSpread: placement.player2.rightMiddle.isSpread,
-            items: _this.matchCards(placement.player2.rightMiddle.items),
-          },
-          rightBottom: {
-            isSpread: placement.player2.rightBottom.isSpread,
-            items: _this.matchCards(placement.player2.rightBottom.items),
-          },
-        },
-        other: {
-          remaining: {
-            isSpread: placement.other.remaining.isSpread,
-            items: _this.matchCards(placement.other.remaining.items),
-          },
-        },
-      };
+      const players = ["player1", "player2", "other"];
+      const positions = [
+        "leftTop",
+        "centerTop",
+        "rightTop",
+        "leftMiddle",
+        "rightMiddle",
+        "leftBottom",
+        "rightBottom",
+        "remaining"
+      ];
+
+      let placementCards = {};
+      for (const player of players) {
+        placementCards[player] = {};
+        for (const position of positions) {
+          if (
+            (player === "other" && position !== "remaining") ||
+            (player !== "other" && position === "remaining")
+          ) {
+            continue;
+          }
+          placementCards[player][position] = {};
+          placementCards[player][position].isSpread =
+            placement[player][position].isSpread;
+          placementCards[player][position].items = _this.matchCards(
+            placement[player][position].items
+          );
+        }
+      }
       return placementCards;
     },
     matchCards: function(items) {
+      const _this = this;
       const array = [];
       for (const item of items) {
-        for (const card of this.cardList) {
+        for (const card of _this.cardList) {
           if (item.no === card.no) {
             let object = JSON.parse(JSON.stringify(card));
             object.isMarking = item.isMarking;
@@ -579,62 +488,60 @@ export default {
       }
       return array;
     },
-    deleteAction: function(id, formatList) {
+    deleteAction: async function(id, formatList) {
       const _this = this;
-      this.db
-        .collection("users")
-        .doc(_this.userId)
-        .collection(formatList)
-        .doc(id)
-        .delete()
-        .then(() => {
-          this.db
-            .collection(formatList)
-            .doc(id)
-            .delete()
-            .then(() => {
-              _this[formatList] = [];
-              _this.getAction(formatList);
-            })
-            .catch(() => {
-              alert("ネットワーク状況をご確認ください");
-            });
-        })
-        .catch(() => {
-          alert("ネットワーク状況をご確認ください");
-        });
+      try {
+        await _this.db
+          .collection("users")
+          .doc(_this.userId)
+          .collection(formatList)
+          .doc(id)
+          .delete();
+        await _this.db
+          .collection(formatList)
+          .doc(id)
+          .delete();
+        _this[formatList] = [];
+        _this.getAction(formatList);
+      } catch (err) {
+        alert("削除に失敗しました");
+      }
     },
-    getAction: function(formatList) {
+    getAction: async function(formatList) {
       const _this = this;
       this.dataListGetflag = false;
-      this.db
-        .collection("users")
-        .doc(_this.userId)
-        .collection(formatList)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            const data = {
-              id: doc.id,
-              date: doc.data().date,
-              title: doc.data().title,
-              players: doc.data().players,
-              placement: doc.data().placement,
-            };
-            _this[formatList].push(data);
-          });
-          _this.dataListGetflag = true;
+      try {
+        const querySnapshot = await this.db
+          .collection("users")
+          .doc(_this.userId)
+          .collection(formatList)
+          .get();
+        querySnapshot.forEach(doc => {
+          const data = {
+            id: doc.id,
+            date: doc.data().date,
+            title: doc.data().title,
+            players: doc.data().players,
+            placement: doc.data().placement
+          };
+          _this[formatList].push(data);
         });
+      } catch (err) {
+        alert("データ取得に失敗しました");
+      } finally {
+        _this.dataListGetflag = true;
+      }
     },
-    getOldNotation: function() {
-      const _this = this;
-      this.db
-        .collection("users")
-        .doc(_this.userId)
-        .get()
-        .then((doc) => {
-          _this.isOldNotation = doc.data() ? doc.data().oldNotation : false;
-        });
+    getOldNotation: async function() {
+      try {
+        const doc = await this.db
+          .collection("users")
+          .doc(this.userId)
+          .get();
+        this.isOldNotation = doc.data() ? doc.data().oldNotation : false;
+      } catch (err) {
+        alert("データ取得に失敗しました");
+      }
     },
     onCopySuccess: function(e) {
       this.copySuccess = true;
@@ -644,22 +551,24 @@ export default {
     onCopyError: function() {
       this.copyError = true;
       this.copySuccess = false;
-    },
+    }
   },
   watch: {
-    drawer: function() {
+    drawer: async function() {
       const _this = this;
       if (!this.drawer) {
-        _this.db
-          .collection("users")
-          .doc(_this.userId)
-          .set({ oldNotation: _this.isOldNotation })
-          .then(() => {
-            _this.setOldNotation(_this.isOldNotation);
-          });
+        try {
+          await _this.db
+            .collection("users")
+            .doc(_this.userId)
+            .set({ oldNotation: _this.isOldNotation });
+          _this.setOldNotation(_this.isOldNotation);
+        } catch (err) {
+          alert("設定の保存に失敗しました");
+        }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

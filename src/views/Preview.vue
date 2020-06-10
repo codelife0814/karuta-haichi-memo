@@ -257,20 +257,17 @@ export default {
       "deletePlacementCards"
     ]),
     getPlacementMinWidth: function() {
-      const _this = this;
+      const positions = {
+        top: ["leftTop", "centerTop", "rightTop"],
+        middle: ["leftMiddle", "rightMiddle"],
+        bottom: ["leftBottom", "rightBottom"]
+      };
       if (this.format === 0) {
         const spaceWidth = 14;
-        const cards = {
-          player1: {
-            leftTop: _this.placementCards.player1.leftTop,
-            centerTop: _this.placementCards.player1.centerTop,
-            rightTop: _this.placementCards.player1.rightTop,
-            leftMiddle: _this.placementCards.player1.leftMiddle,
-            rightMiddle: _this.placementCards.player1.rightMiddle,
-            leftBottom: _this.placementCards.player1.leftBottom,
-            rightBottom: _this.placementCards.player1.rightBottom
-          }
-        };
+        const players = ["player1"];
+
+        const cards = this.getCards(players, positions);
+
         const player1TopWidth =
           cards.player1.leftTop.items.length *
             this.displayItemWidth(cards.player1.leftTop.isSpread, this.format) +
@@ -285,6 +282,7 @@ export default {
               this.format
             ) +
           spaceWidth * 2;
+
         const player1MiddleWidth =
           cards.player1.leftMiddle.items.length *
             this.displayItemWidth(
@@ -318,26 +316,10 @@ export default {
         return placementMinWidth;
       } else {
         const spaceWidth = 24;
-        const cards = {
-          player1: {
-            leftTop: _this.placementCards.player1.leftTop,
-            centerTop: _this.placementCards.player1.centerTop,
-            rightTop: _this.placementCards.player1.rightTop,
-            leftMiddle: _this.placementCards.player1.leftMiddle,
-            rightMiddle: _this.placementCards.player1.rightMiddle,
-            leftBottom: _this.placementCards.player1.leftBottom,
-            rightBottom: _this.placementCards.player1.rightBottom
-          },
-          player2: {
-            leftTop: _this.placementCards.player2.leftTop,
-            centerTop: _this.placementCards.player2.centerTop,
-            rightTop: _this.placementCards.player2.rightTop,
-            leftMiddle: _this.placementCards.player2.leftMiddle,
-            rightMiddle: _this.placementCards.player2.rightMiddle,
-            leftBottom: _this.placementCards.player2.leftBottom,
-            rightBottom: _this.placementCards.player2.rightBottom
-          }
-        };
+        const players = ["player1", "player2"];
+
+        const cards = this.getCards(players, positions);
+
         const player1TopWidth =
           cards.player1.leftTop.items.length *
             this.displayItemWidth(cards.player1.leftTop.isSpread) +
@@ -390,215 +372,126 @@ export default {
         return placementMinWidth;
       }
     },
+    getCards: function(players, positions) {
+      const _this = this;
+      let cards = {};
+      for (const player of players) {
+        cards[player] = {};
+        const positionValues = Object.values(positions);
+        for (const positionItems of positionValues) {
+          for (const position of positionItems) {
+            cards[player][position] = _this.placementCards[player][position];
+          }
+        }
+      }
+      return cards;
+    },
     displayItemWidth: function(isSpread, format) {
       const itemWidth = format === 0 ? 14 : 24;
       const itemSpreadWidth = format === 0 ? 22 : 32;
       return isSpread ? itemSpreadWidth : itemWidth;
     },
-    imageDownload: function() {
+    imageDownload: async function() {
       const _this = this;
       const placement = document.querySelector("#placement");
       const canvasElement = document.querySelector("#canvasImage");
       const linkElement = document.querySelector("#canvasLink");
 
-      html2canvas(placement).then(canvas => {
-        canvasElement.src = canvas.toDataURL();
-        linkElement.href = canvas.toDataURL("image/png");
-        linkElement.download = (this.placementTitle || "タイトルなし") + ".png";
-        linkElement.click();
-        _this.isDownload = true;
-        _this.canvasText =
-          "ダウンロードが失敗する場合は、下記を画像として保存できます。";
-      });
+      const canvas = await html2canvas(placement);
+      canvasElement.src = canvas.toDataURL();
+      linkElement.href = canvas.toDataURL("image/png");
+      linkElement.download = (this.placementTitle || "タイトルなし") + ".png";
+      linkElement.click();
+      _this.isDownload = true;
+      _this.canvasText =
+        "ダウンロードが失敗する場合は、下記を画像として保存できます。";
     },
     backAction: function() {
       this.setTitle(this.placementTitle);
       this.$router.push("/edit");
     },
-    saveAction: function() {
+    saveAction: async function() {
       const _this = this;
-      const placement = {
-        player1: {
-          centerTop: {
-            isSpread: _this.placementCards.player1.centerTop.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.centerTop.items
-            )
-          },
-          leftTop: {
-            isSpread: _this.placementCards.player1.leftTop.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.leftTop.items
-            )
-          },
-          leftMiddle: {
-            isSpread: _this.placementCards.player1.leftMiddle.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.leftMiddle.items
-            )
-          },
-          leftBottom: {
-            isSpread: _this.placementCards.player1.leftBottom.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.leftBottom.items
-            )
-          },
-          rightTop: {
-            isSpread: _this.placementCards.player1.rightTop.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.rightTop.items
-            )
-          },
-          rightMiddle: {
-            isSpread: _this.placementCards.player1.rightMiddle.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.rightMiddle.items
-            )
-          },
-          rightBottom: {
-            isSpread: _this.placementCards.player1.rightBottom.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player1.rightBottom.items
-            )
+      const listName = this.format === 0 ? "teiichiList" : "gameList";
+      const players = ["player1", "player2", "other"];
+      const positions = [
+        "leftTop",
+        "centerTop",
+        "rightTop",
+        "leftMiddle",
+        "rightMiddle",
+        "leftBottom",
+        "rightBottom",
+        "remaining"
+      ];
+
+      let placement = {};
+      for (const player of players) {
+        placement[player] = {};
+        for (const position of positions) {
+          if (
+            (player === "other" && position !== "remaining") ||
+            (player !== "other" && position === "remaining")
+          ) {
+            continue;
           }
-        },
-        player2: {
-          centerTop: {
-            isSpread: _this.placementCards.player2.centerTop.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.centerTop.items
-            )
-          },
-          leftTop: {
-            isSpread: _this.placementCards.player2.leftTop.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.leftTop.items
-            )
-          },
-          leftMiddle: {
-            isSpread: _this.placementCards.player2.leftMiddle.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.leftMiddle.items
-            )
-          },
-          leftBottom: {
-            isSpread: _this.placementCards.player2.leftBottom.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.leftBottom.items
-            )
-          },
-          rightTop: {
-            isSpread: _this.placementCards.player2.rightTop.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.rightTop.items
-            )
-          },
-          rightMiddle: {
-            isSpread: _this.placementCards.player2.rightMiddle.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.rightMiddle.items
-            )
-          },
-          rightBottom: {
-            isSpread: _this.placementCards.player2.rightBottom.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.player2.rightBottom.items
-            )
-          }
-        },
-        other: {
-          remaining: {
-            isSpread: _this.placementCards.other.remaining.isSpread,
-            items: _this.convertPlacement(
-              _this.placementCards.other.remaining.items
-            )
-          }
+          placement[player][position] = {};
+          placement[player][position].isSpread =
+            _this.placementCards[player][position].isSpread;
+          placement[player][position].items = _this.convertPlacement(
+            _this.placementCards[player][position].items
+          );
         }
+      }
+
+      const param = {
+        date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+        title: _this.placementTitle || "タイトルなし",
+        players: {
+          name1: _this.player1Name,
+          name2: _this.player2Name
+        },
+        placement
       };
 
-      const listName = this.format === 0 ? "teiichiList" : "gameList";
-
       if (this.id) {
-        _this.db
+        await _this.db
           .collection("users")
           .doc(_this.userId)
           .collection(listName)
           .doc(_this.id)
-          .set({
-            date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-            title: _this.placementTitle || "タイトルなし",
-            players: {
-              name1: _this.player1Name,
-              name2: _this.player2Name
-            },
-            placement
-          })
-          .then(() => {
-            _this.db
-              .collection(listName)
-              .doc(_this.id)
-              .set({
-                date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-                title: _this.placementTitle || "タイトルなし",
-                players: {
-                  name1: _this.player1Name,
-                  name2: _this.player2Name
-                },
-                placement
-              })
-              .then(() => {
-                _this.deleteId();
-                _this.deleteTitle();
-                _this.deletePlayers();
-                _this.deletePlacementCards();
-                _this.$router.push("/list");
-              });
-          });
+          .set(param);
+        await _this.db
+          .collection(listName)
+          .doc(_this.id)
+          .set(param);
       } else {
-        _this.db
+        const ref = await _this.db
           .collection("users")
           .doc(_this.userId)
           .collection(listName)
-          .add({
-            date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-            title: _this.placementTitle || "タイトルなし",
-            players: {
-              name1: _this.player1Name,
-              name2: _this.player2Name
-            },
-            placement
-          })
-          .then(ref => {
-            _this.db
-              .collection(listName)
-              .doc(ref.id)
-              .set({
-                date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-                title: _this.placementTitle || "タイトルなし",
-                players: {
-                  name1: _this.player1Name,
-                  name2: _this.player2Name
-                },
-                placement
-              })
-              .then(() => {
-                _this.deleteId();
-                _this.deleteTitle();
-                _this.deletePlayers();
-                _this.deletePlacementCards();
-                _this.$router.push("/list");
-              });
-          });
+          .add(param);
+        await _this.db
+          .collection(listName)
+          .doc(ref.id)
+          .set(param);
       }
+      this.deleteId();
+      this.deleteTitle();
+      this.deletePlayers();
+      this.deletePlacementCards();
+      this.$router.push("/list");
     },
     convertPlacement: function(placementCards) {
       let array = [];
-      for (const item of placementCards) {
-        let object = {
-          no: item.no,
-          isMarking: item.isMarking
-        };
-        array.push(object);
+      if (placementCards.length !== 0) {
+        for (const item of placementCards) {
+          let object = {
+            no: item.no,
+            isMarking: item.isMarking
+          };
+          array.push(object);
+        }
       }
       return array;
     }
