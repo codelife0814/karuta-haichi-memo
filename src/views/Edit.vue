@@ -61,9 +61,9 @@
           <v-tab
             style="text-transform: none"
             class="o-playerTab isPlayer1"
-            id="playerTabPlayer1"
+            id="player1Tab"
           >{{ player1Name || "選手1" }}</v-tab>
-          <v-tab style="text-transform: none" class="o-playerTab isPlayer2">
+          <v-tab style="text-transform: none" class="o-playerTab isPlayer2" id="player2Tab">
             {{
             player2Name || "選手2"
             }}
@@ -95,8 +95,8 @@
                     name="左上"
                     player="player1"
                     position="leftTop"
+                    id="player1-counter-leftTop"
                     :length="cards.player1.leftTop.items.length"
-                    id="counter-leftTop"
                     @spread="spreadCards"
                   />
                   <ItemListDraggable
@@ -137,7 +137,7 @@
                     player="player1"
                     position="centerTop"
                     :length="cards.player1.centerTop.items.length"
-                    id="counter-centerTop"
+                    id="player1-counter-centerTop"
                     @spread="spreadCards"
                   />
                   <ItemListDraggable
@@ -293,6 +293,7 @@
                 clearable
                 hide-details="auto"
                 prepend-inner-icon="mdi-account"
+                id="player2Name"
                 v-model="player2Name"
               ></v-text-field>
 
@@ -303,6 +304,7 @@
                     name="左上"
                     player="player2"
                     position="leftTop"
+                    id="player2-counter-leftTop"
                     :length="cards.player2.leftTop.items.length"
                     @spread="spreadCards"
                   />
@@ -343,6 +345,7 @@
                     name="浮中"
                     player="player2"
                     position="centerTop"
+                    id="player2-counter-centerTop"
                     :length="cards.player2.centerTop.items.length"
                     @spread="spreadCards"
                   />
@@ -613,6 +616,12 @@ export default {
       this.screenDialog = false;
     },
     helpAction() {
+      const playerNumber = this.playerTab === 0 ? "1" : "2";
+      const counterLeftTop = `#player${playerNumber}-counter-leftTop`;
+      const counterCenterTop = `#player${playerNumber}-counter-centerTop`;
+      const playerTab = `#player${playerNumber}Tab`;
+      const playerName = `#player${playerNumber}Name`;
+
       const tour = this.$shepherd({
         defaultStepOptions: {
           cancelIcon: {
@@ -624,7 +633,7 @@ export default {
       });
 
       tour.addStep({
-        attachTo: { element: "#counter-leftTop", on: "bottom" },
+        attachTo: { element: counterLeftTop, on: "bottom" },
         title: "配置移動",
         text:
           "決まり字を移動させたい段の端に<br>くっつけるようにドラッグします。",
@@ -637,7 +646,7 @@ export default {
       });
 
       tour.addStep({
-        attachTo: { element: "#counter-centerTop", on: "bottom" },
+        attachTo: { element: counterCenterTop, on: "bottom" },
         title: "表示間隔の変更",
         text:
           "各段の個数表示箇所をタップすると、表示間隔を変更できます。<br />通常、決まり字同士の間は詰まって表示されますが、タップすると色が濃くなり、札間隔を広げることができます。<br />もう一度、タップすることで元に戻ります。<br />浮札（浮左、浮中、浮右）のみデフォルトで間隔が広がるように設定されています。",
@@ -649,22 +658,24 @@ export default {
         ]
       });
 
-      tour.addStep({
-        attachTo: { element: ".o-item", on: "bottom" },
-        title: "決まり字の色付け",
-        text:
-          "決まり字をタップすると、<br>色付け（文字が赤色に変化）できます。",
-        buttons: [
-          {
-            text: "次へ",
-            action: tour.next
-          }
-        ]
-      });
+      if (this.playerTab === 0) {
+        tour.addStep({
+          attachTo: { element: ".o-item", on: "bottom" },
+          title: "決まり字の色付け",
+          text:
+            "決まり字をタップすると、<br>色付け（文字が赤色に変化）できます。",
+          buttons: [
+            {
+              text: "次へ",
+              action: tour.next
+            }
+          ]
+        });
+      }
 
       if (this.format === 1) {
         tour.addStep({
-          attachTo: { element: "#playerTabPlayer1", on: "bottom" },
+          attachTo: { element: playerTab, on: "bottom" },
           title: "入力選手切り替え",
           text:
             "選手名のタブを切り替えると、入力する選手を切り替えることができます。",
@@ -677,7 +688,7 @@ export default {
         });
 
         tour.addStep({
-          attachTo: { element: "#player1Name", on: "bottom" },
+          attachTo: { element: playerName, on: "bottom" },
           title: "選手名入力",
           text: "選手名を入力できます。",
           buttons: [
