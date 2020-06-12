@@ -40,6 +40,10 @@ $tealDarken4: #004d40;
   flex-wrap: wrap;
   align-content: flex-start;
   min-height: 60px;
+
+  .o-playerWrap.isPlayer2 & {
+    flex-direction: row-reverse;
+  }
 }
 
 .o-item {

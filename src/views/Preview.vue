@@ -36,7 +36,7 @@
           :style="{ minWidth: placementMinWidth }"
         >
           <!-- player2 -->
-          <template v-if="format === 1">
+          <div v-if="format === 1" class="o-playerWrap isPlayer2">
             <div class="o-playerName isPlayer2">{{ player2Name }}</div>
             <!-- 下段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
@@ -130,10 +130,10 @@
                 />
               </div>
             </div>
-          </template>
+          </div>
 
           <!-- player1 -->
-          <template>
+          <div class="o-playerWrap isPlayer1">
             <!-- 上段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
               <div
@@ -227,7 +227,7 @@
               </div>
             </div>
             <div v-if="format === 1" class="o-playerName isPlayer1">{{ player1Name }}</div>
-          </template>
+          </div>
         </div>
 
         <div class="o-canvas">
@@ -576,6 +576,12 @@ $lightBlueDarken1: #039be5;
   overflow: auto;
 }
 
+.o-playerWrap {
+  & + .o-playerWrap {
+    margin-top: 24px;
+  }
+}
+
 .o-row {
   display: flex;
   justify-content: space-between;
@@ -603,8 +609,8 @@ $lightBlueDarken1: #039be5;
     margin-top: 8px;
     border-top: none;
 
-    &:nth-child(5) {
-      margin-top: 24px;
+    &:last-child {
+      border-bottom: none;
     }
   }
   .o-playerName {
