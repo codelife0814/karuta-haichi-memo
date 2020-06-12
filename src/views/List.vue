@@ -232,7 +232,7 @@
                   <v-list-item-content @click="editAction(item.id, 'gameList')">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                     <v-list-item-subtitle>
-                      {{ item.players.name1 }} 対
+                      {{ item.players.name1 }} -
                       {{ item.players.name2 }}
                     </v-list-item-subtitle>
                     <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
