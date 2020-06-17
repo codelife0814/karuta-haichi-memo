@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "karuta-haichi-memo"
+    "development": "karuta-haichi-memo-dev",
+    "production": "karuta-haichi-memo"
   }
 }
