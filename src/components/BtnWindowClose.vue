@@ -10,7 +10,7 @@
 export default {
   name: "BtnWindowClose",
   methods: {
-    windowClose: function() {
+    windowClose() {
       window.close();
     }
   }

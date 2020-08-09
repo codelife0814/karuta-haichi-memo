@@ -55,10 +55,10 @@ export default {
     displayName(item) {
       return this.isOldNotation && item.nameOld ? item.nameOld : item.name;
     },
-    marking: function(item) {
+    marking(item) {
       item.isMarking = !item.isMarking;
     },
-    updateItemList: function() {
+    updateItemList() {
       this.$emit("child-event", this.items);
     }
   }

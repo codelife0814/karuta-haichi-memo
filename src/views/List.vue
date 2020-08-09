@@ -318,10 +318,10 @@ export default {
   },
   computed: {
     ...mapState(["userId", "oldNotation"]),
-    filteredTeiichiList: function() {
+    filteredTeiichiList() {
       return this.sortList(this.filterList("teiichi"));
     },
-    filteredGameList: function() {
+    filteredGameList() {
       return this.sortList(this.filterList("game"));
     }
   },
@@ -337,27 +337,25 @@ export default {
       "setPlacementCards",
       "setOldNotation"
     ]),
-    signOut: function() {
-      const _this = this;
+    signOut() {
       firebase
         .auth()
         .signOut()
         .then(() => {
-          _this.deleteUserId();
-          _this.$router.push("/");
+          this.deleteUserId();
+          this.$router.push("/");
         });
     },
-    filterList: function(format) {
-      const _this = this;
+    filterList(format) {
       let filtered = [];
       for (let item of this[format + "List"]) {
         if (
-          item.date.indexOf(_this[format + "Keyword"]) !== -1 ||
-          item.title.indexOf(_this[format + "Keyword"]) !== -1 ||
+          item.date.indexOf(this[format + "Keyword"]) !== -1 ||
+          item.title.indexOf(this[format + "Keyword"]) !== -1 ||
           (format == "game" &&
-            item.players.name1.indexOf(_this[format + "Keyword"]) !== -1) ||
+            item.players.name1.indexOf(this[format + "Keyword"]) !== -1) ||
           (format == "game" &&
-            item.players.name2.indexOf(_this[format + "Keyword"]) !== -1)
+            item.players.name2.indexOf(this[format + "Keyword"]) !== -1)
         ) {
           filtered.push(item);
         }
@@ -368,79 +366,75 @@ export default {
       }
       return filtered;
     },
-    sortList: function(list) {
+    sortList(list) {
       return list.sort((a, b) => {
         return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
       });
     },
-    createAction: function(format) {
+    createAction(format) {
       this.setFormat(format);
       this.$router.push("/edit");
     },
-    createFromCodeAction: async function(code) {
+    async createFromCodeAction(code) {
       const codeArray = code.split("_");
       const id = codeArray[0];
       const formatList = codeArray[1] === "0" ? "teiichiList" : "gameList";
-      const _this = this;
       try {
         const doc = await this.db
           .collection(formatList)
           .doc(id)
           .get();
-        _this.inputCode = "";
-        _this.setFormat(_this.format);
-        _this.setTitle(doc.data().title + " のコピー");
-        _this.setPlayers(doc.data().players);
-        _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
-        _this.$router.push("/edit");
+        this.inputCode = "";
+        this.setFormat(this.format);
+        this.setTitle(doc.data().title + " のコピー");
+        this.setPlayers(doc.data().players);
+        this.setPlacementCards(this.convertPlacement(doc.data().placement));
+        this.$router.push("/edit");
       } catch (err) {
         alert("一致するデータがありません");
       }
     },
-    cancelCodeAction: function() {
+    cancelCodeAction() {
       this.inputCode = "";
       this.inputCodeDialog = false;
     },
-    copyAction: async function(id, formatList) {
-      const _this = this;
+    async copyAction(id, formatList) {
       try {
-        const doc = await _this.db
+        const doc = await this.db
           .collection("users")
-          .doc(_this.userId)
+          .doc(this.userId)
           .collection(formatList)
           .doc(id)
           .get();
-        _this.setFormat(_this.format);
-        _this.setTitle(doc.data().title + " のコピー");
-        _this.setPlayers(doc.data().players);
-        _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
-        _this.$router.push("/edit");
+        this.setFormat(this.format);
+        this.setTitle(doc.data().title + " のコピー");
+        this.setPlayers(doc.data().players);
+        this.setPlacementCards(this.convertPlacement(doc.data().placement));
+        this.$router.push("/edit");
       } catch (err) {
         alert("複製データ取得に失敗しました");
       }
     },
-    editAction: async function(id, formatList) {
-      const _this = this;
+    async editAction(id, formatList) {
       try {
-        const doc = await _this.db
+        const doc = await this.db
           .collection("users")
-          .doc(_this.userId)
+          .doc(this.userId)
           .collection(formatList)
           .doc(id)
           .get();
-        _this.setFormat(_this.format);
-        _this.setId(doc.id);
-        _this.setTitle(doc.data().title);
-        _this.setPlayers(doc.data().players);
-        _this.setPlacementCards(_this.convertPlacement(doc.data().placement));
-        _this.$router.push("/edit");
+        this.setFormat(this.format);
+        this.setId(doc.id);
+        this.setTitle(doc.data().title);
+        this.setPlayers(doc.data().players);
+        this.setPlacementCards(this.convertPlacement(doc.data().placement));
+        this.$router.push("/edit");
       } catch (err) {
         alert("編集データ取得に失敗しました");
       }
     },
-    convertPlacement: function(placement) {
+    convertPlacement(placement) {
       // placementをthis.cardListの内容に変換
-      const _this = this;
       const players = ["player1", "player2", "other"];
       const positions = [
         "leftTop",
@@ -475,18 +469,17 @@ export default {
             position === "centerLeftTop" ||
             position === "centerTop" ||
             position === "centerRightTop";
-          placementCards[player][position].items = _this.matchCards(
+          placementCards[player][position].items = this.matchCards(
             placement[player][position].items || []
           );
         }
       }
       return placementCards;
     },
-    matchCards: function(items) {
-      const _this = this;
+    matchCards(items) {
       const array = [];
       for (const item of items) {
-        for (const card of _this.cardList) {
+        for (const card of this.cardList) {
           if (item.no === card.no) {
             let object = JSON.parse(JSON.stringify(card));
             object.isMarking = item.isMarking;
@@ -497,32 +490,30 @@ export default {
       }
       return array;
     },
-    deleteAction: async function(id, formatList) {
-      const _this = this;
+    async deleteAction(id, formatList) {
       try {
-        await _this.db
+        await this.db
           .collection("users")
-          .doc(_this.userId)
+          .doc(this.userId)
           .collection(formatList)
           .doc(id)
           .delete();
-        await _this.db
+        await this.db
           .collection(formatList)
           .doc(id)
           .delete();
-        _this[formatList] = [];
-        _this.getAction(formatList);
+        this[formatList] = [];
+        this.getAction(formatList);
       } catch (err) {
         alert("削除に失敗しました");
       }
     },
-    getAction: async function(formatList) {
-      const _this = this;
+    async getAction(formatList) {
       this.dataListGetflag = false;
       try {
         const querySnapshot = await this.db
           .collection("users")
-          .doc(_this.userId)
+          .doc(this.userId)
           .collection(formatList)
           .get();
         querySnapshot.forEach(doc => {
@@ -533,15 +524,15 @@ export default {
             players: doc.data().players,
             placement: doc.data().placement
           };
-          _this[formatList].push(data);
+          this[formatList].push(data);
         });
       } catch (err) {
         alert("データ取得に失敗しました");
       } finally {
-        _this.dataListGetflag = true;
+        this.dataListGetflag = true;
       }
     },
-    getOldNotation: async function() {
+    async getOldNotation() {
       try {
         const doc = await this.db
           .collection("users")
@@ -552,26 +543,25 @@ export default {
         alert("データ取得に失敗しました");
       }
     },
-    onCopySuccess: function(e) {
+    onCopySuccess(e) {
       this.copySuccess = true;
       this.copyError = false;
       this.copyText = e.text;
     },
-    onCopyError: function() {
+    onCopyError() {
       this.copyError = true;
       this.copySuccess = false;
     }
   },
   watch: {
-    drawer: async function() {
-      const _this = this;
+    async drawer() {
       if (!this.drawer) {
         try {
-          await _this.db
+          await this.db
             .collection("users")
-            .doc(_this.userId)
-            .set({ oldNotation: _this.isOldNotation });
-          _this.setOldNotation(_this.isOldNotation);
+            .doc(this.userId)
+            .set({ oldNotation: this.isOldNotation });
+          this.setOldNotation(this.isOldNotation);
         } catch (err) {
           alert("設定の保存に失敗しました");
         }

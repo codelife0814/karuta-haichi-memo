@@ -1,6 +1,6 @@
 export default {
   computed: {
-    initialCards: function() {
+    initialCards() {
       const players = ["player1", "player2", "other"];
       const positions = [
         "leftTop",

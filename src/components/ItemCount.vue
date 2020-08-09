@@ -22,7 +22,7 @@ export default {
     }
   },
   methods: {
-    spreadItem: function(value) {
+    spreadItem(value) {
       this.$emit("spread", value, this.player, this.position);
     }
   }

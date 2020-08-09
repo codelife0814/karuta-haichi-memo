@@ -89,17 +89,17 @@ export default {
     };
   },
   mounted() {
-    const _this = this;
-    var ui =
+    const root = this;
+    const ui =
       firebaseui.auth.AuthUI.getInstance() ||
       new firebaseui.auth.AuthUI(firebase.auth());
-    var uiConfig = {
+    const uiConfig = {
       callbacks: {
-        signInSuccessWithAuthResult: function(authResult) {
-          _this.setUserId(authResult.user.uid);
-          _this.$router.push("/list");
+        signInSuccessWithAuthResult: authResult => {
+          root.setUserId(authResult.user.uid);
+          root.$router.push("/list");
         },
-        uiShown: function() {
+        uiShown: () => {
           // The widget is rendered.
           // Hide the loader.
           document.getElementById("loader").style.display = "none";

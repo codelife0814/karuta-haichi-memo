@@ -570,7 +570,6 @@ export default {
     };
   },
   created() {
-    const _this = this;
     this.player1Name = this.players.name1 || "";
     this.player2Name = this.players.name2 || "";
     this.isOldNotation = this.oldNotation || false;
@@ -578,12 +577,12 @@ export default {
     if (
       JSON.stringify(this.initialCards) === JSON.stringify(this.placementCards)
     ) {
-      let cardList = JSON.parse(JSON.stringify(_this.cardList));
+      let cardList = JSON.parse(JSON.stringify(this.cardList));
       cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
-      _this.cards = _this.initialCards;
-      _this.cards.other.remaining.items = cardList;
+      this.cards = this.initialCards;
+      this.cards.other.remaining.items = cardList;
     } else {
-      _this.cards = _this.placementCards;
+      this.cards = this.placementCards;
     }
 
     // 定位置の場合は横画面で表示してもらうように案内ダイアログ表示
@@ -593,7 +592,7 @@ export default {
       !(window.orientation === -90 || window.orientation === 90) &&
       !window.sessionStorage.getItem(["orientation"])
     ) {
-      _this.screenDialog = true;
+      this.screenDialog = true;
     }
   },
   computed: {
@@ -611,7 +610,7 @@ export default {
       "setPlacementCards",
       "deletePlacementCards"
     ]),
-    screenAction: function() {
+    screenAction() {
       window.sessionStorage.setItem(["orientation"], [true]);
       this.screenDialog = false;
     },
@@ -728,11 +727,8 @@ export default {
 
       tour.start();
     },
-    backAction: function() {
-      const _this = this;
-      if (this.isFixedScroll) {
-        _this.fixedScroll();
-      }
+    backAction() {
+      if (this.isFixedScroll) this.fixedScroll();
       this.deleteFormat();
       this.deleteId();
       this.deleteTitle();
@@ -740,25 +736,20 @@ export default {
       this.deletePlacementCards();
       this.$router.push("/list");
     },
-    previewAction: function() {
-      const _this = this;
-      if (this.isFixedScroll) {
-        _this.fixedScroll();
-      }
+    previewAction() {
+      if (this.isFixedScroll) this.fixedScroll();
       this.setPlacementCards(this.cards);
       const players = {
-        name1: _this.player1Name || "選手1",
-        name2: _this.player2Name || "選手2"
+        name1: this.player1Name || "選手1",
+        name2: this.player2Name || "選手2"
       };
       this.setPlayers(players);
       this.$router.push("/preview");
     },
-    scrollOff: function(e) {
+    scrollOff(e) {
       e.preventDefault();
     },
-    search: function(text) {
-      const _this = this;
-
+    search(text) {
       // 空白で区切って配列化
       const array = text
         .trim()
@@ -776,13 +767,13 @@ export default {
         for (const cardGroup of cardGroups) {
           for (const card of cardGroup.items) {
             card.isActive =
-              ((_this.isOldNotation &&
+              ((this.isOldNotation &&
                 card.nameOld &&
                 card.nameOld.match(pattern)) ||
-                (_this.isOldNotation &&
+                (this.isOldNotation &&
                   !card.nameOld &&
                   card.name.match(pattern)) ||
-                (!_this.isOldNotation && card.name.match(pattern)) ||
+                (!this.isOldNotation && card.name.match(pattern)) ||
                 card.yomi.match(pattern) ||
                 card.yomiRoman1.match(pattern) ||
                 (card.yomiRoman2 && card.yomiRoman2.match(pattern)) ||
@@ -792,56 +783,54 @@ export default {
         }
       }
     },
-    searchReset: function() {
+    searchReset() {
       this.searchText = "";
       this.search("");
     },
-    updateCards: function(value, player, position) {
+    updateCards(value, player, position) {
       this.cards[player][position].items = value;
     },
-    spreadCards: function(value, player, position) {
+    spreadCards(value, player, position) {
       this.cards[player][position].isSpread = !this.cards[player][position]
         .isSpread;
     },
-    fixedScroll: function() {
-      const _this = this;
+    fixedScroll() {
       const html = document.querySelector("html");
       const body = document.querySelector("body");
 
       if (this.isFixedScroll) {
-        _this.fixedScrollText = "スクロール固定";
-        _this.isFixedScroll = false;
+        this.fixedScrollText = "スクロール固定";
+        this.isFixedScroll = false;
         html.style.overflow = "";
         body.style.overflow = "";
-        document.removeEventListener("touchmove", _this.scrollOff, {
+        document.removeEventListener("touchmove", this.scrollOff, {
           passive: false
         });
       } else {
-        _this.fixedScrollText = "固定解除";
-        _this.isFixedScroll = true;
+        this.fixedScrollText = "固定解除";
+        this.isFixedScroll = true;
         html.style.overflow = "hidden";
         body.style.overflow = "hidden";
-        document.addEventListener("touchmove", _this.scrollOff, {
+        document.addEventListener("touchmove", this.scrollOff, {
           passive: false
         });
       }
     }
     // watch: {
-    //   isFixedScroll: function(isFixed) {
-    //     const _this = this;
+    //   isFixedScroll(isFixed) {
     //     const html = document.querySelector("html");
     //     const body = document.querySelector("body");
 
     //     if (isFixed) {
     //       html.style.overflow = "hidden";
     //       body.style.overflow = "hidden";
-    //       document.addEventListener("touchmove", _this.scrollOff, {
+    //       document.addEventListener("touchmove", this.scrollOff, {
     //         passive: false
     //       });
     //     } else {
     //       html.style.overflow = "";
     //       body.style.overflow = "";
-    //       document.removeEventListener("touchmove", _this.scrollOff, {
+    //       document.removeEventListener("touchmove", this.scrollOff, {
     //         passive: false
     //       });
     //     }

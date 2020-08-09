@@ -266,7 +266,7 @@ export default {
       canvasText: ""
     };
   },
-  created: function() {
+  created() {
     this.db = firebase.firestore();
     this.placementTitle = this.title;
     this.player1Name = this.players.name1;
@@ -292,7 +292,7 @@ export default {
       "deletePlayers",
       "deletePlacementCards"
     ]),
-    getPlacementMinWidth: function() {
+    getPlacementMinWidth() {
       const positions = {
         top: [
           "leftTop",
@@ -432,27 +432,25 @@ export default {
         return placementMinWidth;
       }
     },
-    getCards: function(players, positions) {
-      const _this = this;
+    getCards(players, positions) {
       let cards = {};
       for (const player of players) {
         cards[player] = {};
         const positionValues = Object.values(positions);
         for (const positionItems of positionValues) {
           for (const position of positionItems) {
-            cards[player][position] = _this.placementCards[player][position];
+            cards[player][position] = this.placementCards[player][position];
           }
         }
       }
       return cards;
     },
-    displayItemWidth: function(isSpread, format) {
+    displayItemWidth(isSpread, format) {
       const itemWidth = format === 0 ? 14 : 24;
       const itemSpreadWidth = format === 0 ? 22 : 32;
       return isSpread ? itemSpreadWidth : itemWidth;
     },
-    imageDownload: async function() {
-      const _this = this;
+    async imageDownload() {
       const placement = document.querySelector("#placement");
       const canvasElement = document.querySelector("#canvasImage");
       const linkElement = document.querySelector("#canvasLink");
@@ -462,16 +460,15 @@ export default {
       linkElement.href = canvas.toDataURL("image/png");
       linkElement.download = (this.placementTitle || "タイトルなし") + ".png";
       linkElement.click();
-      _this.isDownload = true;
-      _this.canvasText =
+      this.isDownload = true;
+      this.canvasText =
         "ダウンロードが失敗する場合は、下記を画像として保存できます。";
     },
-    backAction: function() {
+    backAction() {
       this.setTitle(this.placementTitle);
       this.$router.push("/edit");
     },
-    saveAction: async function() {
-      const _this = this;
+    async saveAction() {
       const listName = this.format === 0 ? "teiichiList" : "gameList";
       const players = ["player1", "player2", "other"];
       const positions = [
@@ -498,42 +495,43 @@ export default {
             continue;
           }
           placement[player][position] = {};
-          placement[player][position].isSpread =
-            _this.placementCards[player][position].isSpread;
-          placement[player][position].items = _this.convertPlacement(
-            _this.placementCards[player][position].items
+          placement[player][position].isSpread = this.placementCards[player][
+            position
+          ].isSpread;
+          placement[player][position].items = this.convertPlacement(
+            this.placementCards[player][position].items
           );
         }
       }
 
       const param = {
         date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-        title: _this.placementTitle || "タイトルなし",
+        title: this.placementTitle || "タイトルなし",
         players: {
-          name1: _this.player1Name,
-          name2: _this.player2Name
+          name1: this.player1Name,
+          name2: this.player2Name
         },
         placement
       };
 
       if (this.id) {
-        await _this.db
+        await this.db
           .collection("users")
-          .doc(_this.userId)
+          .doc(this.userId)
           .collection(listName)
-          .doc(_this.id)
+          .doc(this.id)
           .set(param);
-        await _this.db
+        await this.db
           .collection(listName)
-          .doc(_this.id)
+          .doc(this.id)
           .set(param);
       } else {
-        const ref = await _this.db
+        const ref = await this.db
           .collection("users")
-          .doc(_this.userId)
+          .doc(this.userId)
           .collection(listName)
           .add(param);
-        await _this.db
+        await this.db
           .collection(listName)
           .doc(ref.id)
           .set(param);
@@ -544,7 +542,7 @@ export default {
       this.deletePlacementCards();
       this.$router.push("/list");
     },
-    convertPlacement: function(placementCards) {
+    convertPlacement(placementCards) {
       let array = [];
       if (placementCards.length !== 0) {
         for (const item of placementCards) {
