@@ -22,8 +22,8 @@ export default {
     }
   },
   methods: {
-    spreadItem(value) {
-      this.$emit("spread", value, this.player, this.position);
+    spreadItem() {
+      this.$emit("child-event");
     }
   }
 };
@@ -47,10 +47,6 @@ $tealDarken4: #004d40;
   writing-mode: vertical-lr;
   transition: background-color 0.25s;
 
-  &.isRemaining {
-    background-color: lightgray;
-    color: inherit;
-  }
   .o-column.isLeft & {
     margin-right: 4px;
   }
@@ -60,6 +56,10 @@ $tealDarken4: #004d40;
   .o-column.isFloat & {
     margin-right: 4px;
     margin-left: 4px;
+  }
+  .o-column.isRemaining & {
+    background-color: lightgray;
+    color: inherit;
   }
   .o-column.isSpread & {
     background-color: $tealDarken4;

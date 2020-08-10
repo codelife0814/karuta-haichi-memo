@@ -90,193 +90,101 @@
 
               <!-- 上段 -->
               <div class="o-row">
-                <div class="o-column isLeft" :class="{ isSpread: cards.player1.leftTop.isSpread }">
-                  <ItemCount
-                    name="左上"
-                    player="player1"
-                    position="leftTop"
-                    id="player1-counter-leftTop"
-                    :length="cards.player1.leftTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.leftTop.items"
-                    :items="cards.player1.leftTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="leftTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isFloat"
-                  :class="{ isSpread: cards.player1.centerLeftTop.isSpread }"
-                >
-                  <ItemCount
-                    name="浮左"
-                    player="player1"
-                    position="centerLeftTop"
-                    :length="cards.player1.centerLeftTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.centerLeftTop.items"
-                    :items="cards.player1.centerLeftTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="centerLeftTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isFloat"
-                  :class="{ isSpread: cards.player1.centerTop.isSpread }"
-                >
-                  <ItemCount
-                    name="浮中"
-                    player="player1"
-                    position="centerTop"
-                    :length="cards.player1.centerTop.items.length"
-                    id="player1-counter-centerTop"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.centerTop.items"
-                    :items="cards.player1.centerTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="centerTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isFloat"
-                  :class="{ isSpread: cards.player1.centerRightTop.isSpread }"
-                >
-                  <ItemCount
-                    name="浮右"
-                    player="player1"
-                    position="centerRightTop"
-                    :length="cards.player1.centerRightTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.centerRightTop.items"
-                    :items="cards.player1.centerRightTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="centerRightTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isRight"
-                  :class="{ isSpread: cards.player1.rightTop.isSpread }"
-                >
-                  <ItemCount
-                    name="右上"
-                    player="player1"
-                    position="rightTop"
-                    :length="cards.player1.rightTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.rightTop.items"
-                    :items="cards.player1.rightTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="rightTop"
-                    @update="updateCards"
-                  />
-                </div>
+                <ItemCountWithItemListDraggable
+                  name="左上"
+                  player="player1"
+                  position="leftTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="浮左"
+                  player="player1"
+                  position="centerLeftTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="浮中"
+                  player="player1"
+                  position="centerTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="浮右"
+                  player="player1"
+                  position="centerRightTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="右上"
+                  player="player1"
+                  position="rightTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
               </div>
 
               <!-- 中段 -->
               <div class="o-row">
-                <div
-                  class="o-column isLeft"
-                  :class="{ isSpread: cards.player1.leftMiddle.isSpread }"
-                >
-                  <ItemCount
-                    name="左中"
-                    player="player1"
-                    position="leftMiddle"
-                    :length="cards.player1.leftMiddle.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.leftMiddle.items"
-                    :items="cards.player1.leftMiddle.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="leftMiddle"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isRight"
-                  :class="{ isSpread: cards.player1.rightMiddle.isSpread }"
-                >
-                  <ItemCount
-                    name="右中"
-                    player="player1"
-                    position="rightMiddle"
-                    :length="cards.player1.rightMiddle.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.rightMiddle.items"
-                    :items="cards.player1.rightMiddle.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="rightMiddle"
-                    @update="updateCards"
-                  />
-                </div>
+                <ItemCountWithItemListDraggable
+                  name="左中"
+                  player="player1"
+                  position="leftMiddle"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="右中"
+                  player="player1"
+                  position="rightMiddle"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
               </div>
 
               <!-- 下段 -->
               <div class="o-row">
-                <div
-                  class="o-column isLeft"
-                  :class="{ isSpread: cards.player1.leftBottom.isSpread }"
-                >
-                  <ItemCount
-                    name="左下"
-                    player="player1"
-                    position="leftBottom"
-                    :length="cards.player1.leftBottom.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.leftBottom.items"
-                    :items="cards.player1.leftBottom.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="leftBottom"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isRight"
-                  :class="{ isSpread: cards.player1.rightBottom.isSpread }"
-                >
-                  <ItemCount
-                    name="右下"
-                    player="player1"
-                    position="rightBottom"
-                    :length="cards.player1.rightBottom.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player1.rightBottom.items"
-                    :items="cards.player1.rightBottom.items"
-                    :isOldNotation="isOldNotation"
-                    player="player1"
-                    position="rightBottom"
-                    @update="updateCards"
-                  />
-                </div>
+                <ItemCountWithItemListDraggable
+                  name="左下"
+                  player="player1"
+                  position="leftBottom"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="右下"
+                  player="player1"
+                  position="rightBottom"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
               </div>
             </v-tab-item>
 
@@ -299,216 +207,116 @@
 
               <!-- 上段 -->
               <div class="o-row">
-                <div class="o-column isLeft" :class="{ isSpread: cards.player2.leftTop.isSpread }">
-                  <ItemCount
-                    name="左上"
-                    player="player2"
-                    position="leftTop"
-                    id="player2-counter-leftTop"
-                    :length="cards.player2.leftTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.leftTop.items"
-                    :items="cards.player2.leftTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="leftTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isFloat"
-                  :class="{ isSpread: cards.player2.centerLeftTop.isSpread }"
-                >
-                  <ItemCount
-                    name="浮左"
-                    player="player2"
-                    position="centerLeftTop"
-                    :length="cards.player2.centerLeftTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.centerLeftTop.items"
-                    :items="cards.player2.centerLeftTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="centerLeftTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isFloat"
-                  :class="{ isSpread: cards.player2.centerTop.isSpread }"
-                >
-                  <ItemCount
-                    name="浮中"
-                    player="player2"
-                    position="centerTop"
-                    id="player2-counter-centerTop"
-                    :length="cards.player2.centerTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.centerTop.items"
-                    :items="cards.player2.centerTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="centerTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isFloat"
-                  :class="{ isSpread: cards.player2.centerRightTop.isSpread }"
-                >
-                  <ItemCount
-                    name="浮右"
-                    player="player2"
-                    position="centerRightTop"
-                    :length="cards.player2.centerRightTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.centerRightTop.items"
-                    :items="cards.player2.centerRightTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="centerRightTop"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isRight"
-                  :class="{ isSpread: cards.player2.rightTop.isSpread }"
-                >
-                  <ItemCount
-                    name="右上"
-                    player="player2"
-                    position="rightTop"
-                    :length="cards.player2.rightTop.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.rightTop.items"
-                    :items="cards.player2.rightTop.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="rightTop"
-                    @update="updateCards"
-                  />
-                </div>
+                <ItemCountWithItemListDraggable
+                  name="左上"
+                  player="player2"
+                  position="leftTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="浮左"
+                  player="player2"
+                  position="centerLeftTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="浮中"
+                  player="player2"
+                  position="centerTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="浮右"
+                  player="player2"
+                  position="centerRightTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="右上"
+                  player="player2"
+                  position="rightTop"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
               </div>
 
               <!-- 中段 -->
               <div class="o-row">
-                <div
-                  class="o-column isLeft"
-                  :class="{ isSpread: cards.player2.leftMiddle.isSpread }"
-                >
-                  <ItemCount
-                    name="左中"
-                    player="player2"
-                    position="leftMiddle"
-                    :length="cards.player2.leftMiddle.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.leftMiddle.items"
-                    :items="cards.player2.leftMiddle.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="leftMiddle"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isRight"
-                  :class="{ isSpread: cards.player2.rightMiddle.isSpread }"
-                >
-                  <ItemCount
-                    name="右中"
-                    player="player2"
-                    position="rightMiddle"
-                    :length="cards.player2.rightMiddle.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.rightMiddle.items"
-                    :items="cards.player2.rightMiddle.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="rightMiddle"
-                    @update="updateCards"
-                  />
-                </div>
+                <ItemCountWithItemListDraggable
+                  name="左中"
+                  player="player2"
+                  position="leftMiddle"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="右中"
+                  player="player2"
+                  position="rightMiddle"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
               </div>
 
               <!-- 下段 -->
               <div class="o-row">
-                <div
-                  class="o-column isLeft"
-                  :class="{ isSpread: cards.player2.leftBottom.isSpread }"
-                >
-                  <ItemCount
-                    name="左下"
-                    player="player2"
-                    position="leftBottom"
-                    :length="cards.player2.leftBottom.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.leftBottom.items"
-                    :items="cards.player2.leftBottom.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="leftBottom"
-                    @update="updateCards"
-                  />
-                </div>
-                <div
-                  class="o-column isRight"
-                  :class="{ isSpread: cards.player2.rightBottom.isSpread }"
-                >
-                  <ItemCount
-                    name="右下"
-                    player="player2"
-                    position="rightBottom"
-                    :length="cards.player2.rightBottom.items.length"
-                    @spread="spreadCards"
-                  />
-                  <ItemListDraggable
-                    v-model="cards.player2.rightBottom.items"
-                    :items="cards.player2.rightBottom.items"
-                    :isOldNotation="isOldNotation"
-                    player="player2"
-                    position="rightBottom"
-                    @update="updateCards"
-                  />
-                </div>
+                <ItemCountWithItemListDraggable
+                  name="左下"
+                  player="player2"
+                  position="leftBottom"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
+
+                <ItemCountWithItemListDraggable
+                  name="右下"
+                  player="player2"
+                  position="rightBottom"
+                  :cards="cards"
+                  :isOldNotation="isOldNotation"
+                  @count-event="spreadCards"
+                  @list-event="updateCards"
+                />
               </div>
             </v-tab-item>
           </v-tabs-items>
 
           <!-- 余り -->
           <div class="o-row">
-            <div class="o-column isLeft">
-              <ItemCount
-                name="余り"
-                player="other"
-                position="remaining"
-                :length="cards.other.remaining.items.length"
-                class="isRemaining"
-              />
-              <ItemListDraggable
-                v-model="cards.other.remaining.items"
-                :items="cards.other.remaining.items"
-                :isOldNotation="isOldNotation"
-                player="other"
-                position="remaining"
-                @update="updateCards"
-              />
-            </div>
+            <ItemCountWithItemListDraggable
+              name="余り"
+              player="other"
+              position="remaining"
+              :cards="cards"
+              :isOldNotation="isOldNotation"
+              @count-event="spreadCards"
+              @list-event="updateCards"
+            />
           </div>
         </div>
 
@@ -546,14 +354,12 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
 import initialCards from "./../mixins/initialCards";
-import ItemCount from "./../components/ItemCount";
-import ItemListDraggable from "./../components/ItemListDraggable";
+import ItemCountWithItemListDraggable from "./../components/ItemCountWithItemListDraggable";
 
 export default {
   name: "Edit",
   components: {
-    ItemCount,
-    ItemListDraggable
+    ItemCountWithItemListDraggable
   },
   data() {
     return {

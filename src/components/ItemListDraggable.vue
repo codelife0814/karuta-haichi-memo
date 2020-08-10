@@ -1,11 +1,9 @@
 <template>
   <draggable
-    class="o-itemList"
-    :class="{isSpread}"
+    :class="['o-itemList', {isSpread}]"
     group="myGroup"
     animation="200"
     v-model="cards"
-    @update="updateItemList"
     @start="drag = true"
     @end="drag = false"
   >
@@ -26,10 +24,9 @@
 import draggable from "vuedraggable";
 
 export default {
-  name: "DraggableItemList",
-  model: {
-    prop: "items",
-    event: "update"
+  name: "ItemDraggableList",
+  components: {
+    draggable
   },
   props: {
     items: Array,
@@ -44,12 +41,9 @@ export default {
         return this.items;
       },
       set(value) {
-        this.$emit("update", value, this.player, this.position);
+        this.$emit("list-event", value);
       }
     }
-  },
-  components: {
-    draggable
   },
   methods: {
     displayName(item) {
@@ -57,9 +51,6 @@ export default {
     },
     marking(item) {
       item.isMarking = !item.isMarking;
-    },
-    updateItemList() {
-      this.$emit("child-event", this.items);
     }
   }
 };
