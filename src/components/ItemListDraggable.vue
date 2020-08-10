@@ -1,6 +1,6 @@
 <template>
   <draggable
-    :class="['o-itemList', {isSpread}]"
+    :class="['o-itemList']"
     group="myGroup"
     animation="200"
     v-model="cards"
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import draggable from "vuedraggable";
 
 export default {
@@ -29,13 +30,11 @@ export default {
     draggable
   },
   props: {
-    items: Array,
-    isSpread: Boolean,
-    isOldNotation: Boolean,
     player: String,
     position: String
   },
   computed: {
+    ...mapState(["placementCards", "oldNotation"]),
     cards: {
       get() {
         return this.items;
@@ -43,11 +42,14 @@ export default {
       set(value) {
         this.$emit("list-event", value);
       }
+    },
+    items() {
+      return this.placementCards[this.player][this.position].items;
     }
   },
   methods: {
     displayName(item) {
-      return this.isOldNotation && item.nameOld ? item.nameOld : item.name;
+      return this.oldNotation && item.nameOld ? item.nameOld : item.name;
     },
     marking(item) {
       item.isMarking = !item.isMarking;

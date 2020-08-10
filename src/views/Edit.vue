@@ -94,8 +94,6 @@
                   name="左上"
                   player="player1"
                   position="leftTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -104,8 +102,6 @@
                   name="浮左"
                   player="player1"
                   position="centerLeftTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -114,8 +110,6 @@
                   name="浮中"
                   player="player1"
                   position="centerTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -124,8 +118,6 @@
                   name="浮右"
                   player="player1"
                   position="centerRightTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -134,8 +126,6 @@
                   name="右上"
                   player="player1"
                   position="rightTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -147,8 +137,6 @@
                   name="左中"
                   player="player1"
                   position="leftMiddle"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -157,8 +145,6 @@
                   name="右中"
                   player="player1"
                   position="rightMiddle"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -170,8 +156,6 @@
                   name="左下"
                   player="player1"
                   position="leftBottom"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -180,8 +164,6 @@
                   name="右下"
                   player="player1"
                   position="rightBottom"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -211,8 +193,6 @@
                   name="左上"
                   player="player2"
                   position="leftTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -221,8 +201,6 @@
                   name="浮左"
                   player="player2"
                   position="centerLeftTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -231,8 +209,6 @@
                   name="浮中"
                   player="player2"
                   position="centerTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -241,8 +217,6 @@
                   name="浮右"
                   player="player2"
                   position="centerRightTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -251,8 +225,6 @@
                   name="右上"
                   player="player2"
                   position="rightTop"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -264,8 +236,6 @@
                   name="左中"
                   player="player2"
                   position="leftMiddle"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -274,8 +244,6 @@
                   name="右中"
                   player="player2"
                   position="rightMiddle"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -287,8 +255,6 @@
                   name="左下"
                   player="player2"
                   position="leftBottom"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -297,8 +263,6 @@
                   name="右下"
                   player="player2"
                   position="rightBottom"
-                  :cards="cards"
-                  :isOldNotation="isOldNotation"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -312,8 +276,6 @@
               name="余り"
               player="other"
               position="remaining"
-              :cards="cards"
-              :isOldNotation="isOldNotation"
               @count-event="spreadCards"
               @list-event="updateCards"
             />
@@ -661,14 +623,6 @@ $tealDarken4: #004d40;
   display: flex;
   justify-content: space-between;
   border-top: 1px solid lightgray;
-}
-
-.o-column {
-  display: flex;
-
-  &.isRight {
-    flex-direction: row-reverse;
-  }
 }
 
 .o-playerTab {

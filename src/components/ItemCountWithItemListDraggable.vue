@@ -1,25 +1,12 @@
 <template>
   <div :class="['o-column', className, { isSpread }]">
-    <ItemCount
-      :name="name"
-      :player="player"
-      :position="position"
-      :id="id"
-      :length="length"
-      @count-event="spreadItem"
-    />
-    <ItemListDraggable
-      v-model="items"
-      :items="items"
-      :player="player"
-      :position="position"
-      :isOldNotation="isOldNotation"
-      @list-event="updateCards"
-    />
+    <ItemCount :name="name" :player="player" :position="position" @count-event="spreadItem" />
+    <ItemListDraggable :player="player" :position="position" @list-event="updateCards" />
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import ItemCount from "./../components/ItemCount";
 import ItemListDraggable from "./../components/ItemListDraggable";
 
@@ -32,22 +19,12 @@ export default {
   props: {
     name: String,
     player: String,
-    position: String,
-    cards: Object,
-    isOldNotation: Boolean
+    position: String
   },
   computed: {
-    id() {
-      return `${this.player}-counter-${this.position}`;
-    },
-    items() {
-      return this.cards[this.player][this.position].items;
-    },
-    length() {
-      return this.items.length;
-    },
+    ...mapState(["placementCards"]),
     isSpread() {
-      return this.cards[this.player][this.position].isSpread;
+      return this.placementCards[this.player][this.position].isSpread;
     },
     className() {
       let className = "";
@@ -78,3 +55,13 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+.o-column {
+  display: flex;
+
+  &.isRight {
+    flex-direction: row-reverse;
+  }
+}
+</style>

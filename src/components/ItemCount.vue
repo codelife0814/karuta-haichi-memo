@@ -1,20 +1,28 @@
 <template>
-  <span class="o-itemCount" @click="spreadItem">
+  <span class="o-itemCount" :id="id" @click="spreadItem">
     {{ name }}
     <span class="o-itemCount__number">{{ itemCount }}</span>
   </span>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "ItemCount",
   props: {
     name: String,
-    length: Number,
     player: String,
     position: String
   },
   computed: {
+    ...mapState(["placementCards"]),
+    id() {
+      return `${this.player}-counter-${this.position}`;
+    },
+    length() {
+      return this.placementCards[this.player][this.position].items.length;
+    },
     itemCount: {
       get() {
         return this.length === 100 ? "百" : this.length;
@@ -23,7 +31,7 @@ export default {
   },
   methods: {
     spreadItem() {
-      this.$emit("child-event");
+      this.$emit("count-event");
     }
   }
 };
