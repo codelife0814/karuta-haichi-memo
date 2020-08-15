@@ -447,14 +447,6 @@ $lightBlueDarken1: #039be5;
   }
 }
 
-.o-column {
-  display: flex;
-
-  &.isRight {
-    flex-direction: row-reverse;
-  }
-}
-
 #placement.isGame {
   // max-width: 480px;
   // margin: 0 auto;
