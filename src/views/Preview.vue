@@ -162,59 +162,25 @@ export default {
       };
       if (this.format === 0) {
         const spaceWidth = 14;
-        const players = ["player1"];
 
-        const cards = this.getCards(players, positions);
+        const player1TopWidth = this.getCardsWidth(
+          "player1",
+          positions.top,
+          spaceWidth
+        );
 
-        const player1TopWidth =
-          cards.player1.leftTop.items.length *
-            this.displayItemWidth(cards.player1.leftTop.isSpread, this.format) +
-          cards.player1.centerLeftTop.items.length *
-            this.displayItemWidth(
-              cards.player1.centerLeftTop.isSpread,
-              this.format
-            ) +
-          cards.player1.centerTop.items.length *
-            this.displayItemWidth(
-              cards.player1.centerTop.isSpread,
-              this.format
-            ) +
-          cards.player1.centerRightTop.items.length *
-            this.displayItemWidth(
-              cards.player1.centerRightTop.isSpread,
-              this.format
-            ) +
-          cards.player1.rightTop.items.length *
-            this.displayItemWidth(
-              cards.player1.rightTop.isSpread,
-              this.format
-            ) +
-          spaceWidth * 4;
+        const player1MiddleWidth = this.getCardsWidth(
+          "player1",
+          positions.middle,
+          spaceWidth
+        );
 
-        const player1MiddleWidth =
-          cards.player1.leftMiddle.items.length *
-            this.displayItemWidth(
-              cards.player1.leftMiddle.isSpread,
-              this.format
-            ) +
-          cards.player1.rightMiddle.items.length *
-            this.displayItemWidth(
-              cards.player1.rightMiddle.isSpread,
-              this.format
-            ) +
-          spaceWidth;
-        const player1BottomWidth =
-          cards.player1.leftBottom.items.length *
-            this.displayItemWidth(
-              cards.player1.leftBottom.isSpread,
-              this.format
-            ) +
-          cards.player1.rightBottom.items.length *
-            this.displayItemWidth(
-              cards.player1.rightBottom.isSpread,
-              this.format
-            ) +
-          spaceWidth;
+        const player1BottomWidth = this.getCardsWidth(
+          "player1",
+          positions.bottom,
+          spaceWidth
+        );
+
         const maxWidth = Math.max(
           player1TopWidth,
           player1MiddleWidth,
@@ -224,58 +190,43 @@ export default {
         return placementMinWidth;
       } else {
         const spaceWidth = 24;
-        const players = ["player1", "player2"];
 
-        const cards = this.getCards(players, positions);
+        const player1TopWidth = this.getCardsWidth(
+          "player1",
+          positions.top,
+          spaceWidth
+        );
 
-        const player1TopWidth =
-          cards.player1.leftTop.items.length *
-            this.displayItemWidth(cards.player1.leftTop.isSpread) +
-          cards.player1.centerLeftTop.items.length *
-            this.displayItemWidth(cards.player1.centerLeftTop.isSpread) +
-          cards.player1.centerTop.items.length *
-            this.displayItemWidth(cards.player1.centerTop.isSpread) +
-          cards.player1.centerRightTop.items.length *
-            this.displayItemWidth(cards.player1.centerRightTop.isSpread) +
-          cards.player1.rightTop.items.length *
-            this.displayItemWidth(cards.player1.rightTop.isSpread) +
-          spaceWidth * 2;
-        const player1MiddleWidth =
-          cards.player1.leftMiddle.items.length *
-            this.displayItemWidth(cards.player1.leftMiddle.isSpread) +
-          cards.player1.rightMiddle.items.length *
-            this.displayItemWidth(cards.player1.rightMiddle.isSpread) +
-          spaceWidth;
-        const player1BottomWidth =
-          cards.player1.leftBottom.items.length *
-            this.displayItemWidth(cards.player1.leftBottom.isSpread) +
-          cards.player1.rightBottom.items.length *
-            this.displayItemWidth(cards.player1.rightBottom.isSpread) +
-          spaceWidth;
-        const player2TopWidth =
-          cards.player2.leftTop.items.length *
-            this.displayItemWidth(cards.player2.leftTop.isSpread) +
-          cards.player2.centerRightTop.items.length *
-            this.displayItemWidth(cards.player2.centerRightTop.isSpread) +
-          cards.player2.centerTop.items.length *
-            this.displayItemWidth(cards.player2.centerTop.isSpread) +
-          cards.player2.centerLeftTop.items.length *
-            this.displayItemWidth(cards.player2.centerLeftTop.isSpread) +
-          cards.player2.rightTop.items.length *
-            this.displayItemWidth(cards.player2.rightTop.isSpread) +
-          spaceWidth * 2;
-        const player2MiddleWidth =
-          cards.player2.leftMiddle.items.length *
-            this.displayItemWidth(cards.player2.leftMiddle.isSpread) +
-          cards.player2.rightMiddle.items.length *
-            this.displayItemWidth(cards.player2.rightMiddle.isSpread) +
-          spaceWidth;
-        const player2BottomWidth =
-          cards.player2.leftBottom.items.length *
-            this.displayItemWidth(cards.player2.leftBottom.isSpread) +
-          cards.player2.rightBottom.items.length *
-            this.displayItemWidth(cards.player2.rightBottom.isSpread) +
-          spaceWidth;
+        const player1MiddleWidth = this.getCardsWidth(
+          "player1",
+          positions.middle,
+          spaceWidth
+        );
+
+        const player1BottomWidth = this.getCardsWidth(
+          "player1",
+          positions.bottom,
+          spaceWidth
+        );
+
+        const player2TopWidth = this.getCardsWidth(
+          "player2",
+          positions.top,
+          spaceWidth
+        );
+
+        const player2MiddleWidth = this.getCardsWidth(
+          "player2",
+          positions.middle,
+          spaceWidth
+        );
+
+        const player2BottomWidth = this.getCardsWidth(
+          "player2",
+          positions.bottom,
+          spaceWidth
+        );
+
         const maxWidth = Math.max(
           player1TopWidth,
           player1MiddleWidth,
@@ -288,18 +239,18 @@ export default {
         return placementMinWidth;
       }
     },
-    getCards(players, positions) {
-      let cards = {};
-      for (const player of players) {
-        cards[player] = {};
-        const positionValues = Object.values(positions);
-        for (const positionItems of positionValues) {
-          for (const position of positionItems) {
-            cards[player][position] = this.placementCards[player][position];
-          }
-        }
+    getCardsWidth(player, positions, spaceWidth) {
+      let cardsWidth = 0;
+      for (const position of positions) {
+        cardsWidth +=
+          this.placementCards[player][position].items.length *
+          this.displayItemWidth(
+            this.placementCards[player][position].isSpread,
+            this.format
+          );
       }
-      return cards;
+      cardsWidth += spaceWidth * (positions.length - 1);
+      return cardsWidth;
     },
     displayItemWidth(isSpread, format) {
       const itemWidth = format === 0 ? 14 : 24;
