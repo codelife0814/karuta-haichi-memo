@@ -1,10 +1,7 @@
 <template>
   <div class="o-itemList" :class="{isSpread}">
     <div
-      class="o-item"
-      :class="{
-        isMarking: item.isMarking,
-      }"
+      :class="['o-item', {isMarking: item.isMarking}]"
       v-for="item in items"
       :key="item.id"
     >{{ displayName(item) }}</div>
@@ -12,6 +9,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "ItemList",
   model: {
@@ -19,12 +18,14 @@ export default {
   },
   props: {
     items: Array,
-    isSpread: Boolean,
-    isOldNotation: Boolean
+    isSpread: Boolean
+  },
+  computed: {
+    ...mapState(["oldNotation"])
   },
   methods: {
     displayName(item) {
-      return this.isOldNotation && item.yomiOld ? item.yomiOld : item.yomi;
+      return this.oldNotation && item.yomiOld ? item.yomiOld : item.yomi;
     }
   }
 };
