@@ -17,11 +17,17 @@ export default {
     prop: "items"
   },
   props: {
-    items: Array,
-    isSpread: Boolean
+    player: String,
+    position: String
   },
   computed: {
-    ...mapState(["oldNotation"])
+    ...mapState(["placementCards", "oldNotation"]),
+    items() {
+      return this.placementCards[this.player][this.position].items;
+    },
+    isSpread() {
+      return this.placementCards[this.player][this.position].isSpread;
+    }
   },
   methods: {
     displayName(item) {
@@ -61,16 +67,16 @@ $tealDarken4: #004d40;
     color: $red;
     font-weight: bold;
   }
-  .o-column.isFloat & {
+  .isFloat & {
     &:last-child {
       margin-right: 8px;
     }
   }
-  .o-column.isRight.isSpread & {
+  .isRight.isSpread & {
     margin-left: 8px;
   }
-  .o-column.isLeft.isSpread &,
-  .o-column.isFloat.isSpread & {
+  .isLeft.isSpread &,
+  .isFloat.isSpread & {
     margin-right: 8px;
   }
 }

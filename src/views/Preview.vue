@@ -40,59 +40,23 @@
             <div class="o-playerName isPlayer2">{{ player2Name }}</div>
             <!-- 下段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <div
-                :class="['o-column isLeft', {isSpread: placementCards.player2.rightBottom.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.rightBottom.items" />
-              </div>
-              <div
-                :class="['o-column isRight', {isSpread: placementCards.player2.leftBottom.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.leftBottom.items" />
-              </div>
+              <ItemList class="isLeft" player="player2" position="rightBottom" />
+              <ItemList class="isRight" player="player2" position="leftBottom" />
             </div>
 
             <!-- 中段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <div
-                :class="['o-column isLeft', {isSpread: placementCards.player2.rightMiddle.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.rightMiddle.items" />
-              </div>
-              <div
-                :class="['o-column isRight', {isSpread: placementCards.player2.leftMiddle.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.leftMiddle.items" />
-              </div>
+              <ItemList class="isLeft" player="player2" position="rightMiddle" />
+              <ItemList class="isRight" player="player2" position="leftMiddle" />
             </div>
 
             <!-- 上段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <div
-                :class="['o-column isLeft', {isSpread: placementCards.player2.rightTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.rightTop.items" />
-              </div>
-              <div
-                :class="['o-column isFloat', {isSpread: placementCards.player2.centerRightTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.centerRightTop.items" />
-              </div>
-              <div
-                :class="['o-column isFloat', {isSpread: placementCards.player2.centerTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.centerTop.items" />
-              </div>
-              <div
-                :class="['o-column isFloat', {isSpread: placementCards.player2.centerLeftTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.centerLeftTop.items" />
-              </div>
-              <div
-                :class="['o-column isRight', {isSpread: placementCards.player2.leftTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player2.leftTop.items" />
-              </div>
+              <ItemList class="isLeft" player="player2" position="rightTop" />
+              <ItemList class="isFloat" player="player2" position="centerRightTop" />
+              <ItemList class="isFloat" player="player2" position="centerTop" />
+              <ItemList class="isFloat" player="player2" position="centerLeftTop" />
+              <ItemList class="isRight" player="player2" position="leftTop" />
             </div>
           </div>
 
@@ -100,59 +64,23 @@
           <div class="o-playerWrap isPlayer1">
             <!-- 上段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <div
-                :class="['o-column isLeft', {isSpread: placementCards.player1.leftTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.leftTop.items" />
-              </div>
-              <div
-                :class="['o-column isFloat', {isSpread: placementCards.player1.centerLeftTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.centerLeftTop.items" />
-              </div>
-              <div
-                :class="['o-column isFloat', {isSpread: placementCards.player1.centerTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.centerTop.items" />
-              </div>
-              <div
-                :class="['o-column isFloat', {isSpread: placementCards.player1.centerRightTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.centerRightTop.items" />
-              </div>
-              <div
-                :class="['o-column isRight', {isSpread: placementCards.player1.rightTop.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.rightTop.items" />
-              </div>
+              <ItemList class="isLeft" player="player1" position="leftTop" />
+              <ItemList class="isFloat" player="player1" position="centerLeftTop" />
+              <ItemList class="isFloat" player="player1" position="centerTop" />
+              <ItemList class="isFloat" player="player1" position="centerRightTop" />
+              <ItemList class="isRight" player="player1" position="rightTop" />
             </div>
 
             <!-- 中段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <div
-                :class="['o-column isLeft', {isSpread: placementCards.player1.leftMiddle.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.leftMiddle.items" />
-              </div>
-              <div
-                :class="['o-column isRight', {isSpread: placementCards.player1.rightMiddle.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.rightMiddle.items" />
-              </div>
+              <ItemList class="isLeft" player="player1" position="leftMiddle" />
+              <ItemList class="isRight" player="player1" position="rightMiddle" />
             </div>
 
             <!-- 下段 -->
             <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <div
-                :class="['o-column isLeft', {isSpread: placementCards.player1.leftBottom.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.leftBottom.items" />
-              </div>
-              <div
-                :class="['o-column isRight', {isSpread: placementCards.player1.rightBottom.isSpread}]"
-              >
-                <ItemList :items="placementCards.player1.rightBottom.items" />
-              </div>
+              <ItemList class="isLeft" player="player1" position="leftBottom" />
+              <ItemList class="isRight" player="player1" position="rightBottom" />
             </div>
             <div v-if="format === 1" class="o-playerName isPlayer1">{{ player1Name }}</div>
           </div>
