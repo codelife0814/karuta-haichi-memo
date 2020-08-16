@@ -88,82 +88,13 @@
                 v-model="player1Name"
               ></v-text-field>
 
-              <!-- 上段 -->
-              <div class="o-row">
+              <div v-for="(row, rowIndex) in itemList" :key="rowIndex" class="o-row">
                 <ItemCountWithItemListDraggable
-                  name="左上"
+                  v-for="(item, itemIndex) in row"
                   player="player1"
-                  position="leftTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="浮左"
-                  player="player1"
-                  position="centerLeftTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="浮中"
-                  player="player1"
-                  position="centerTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="浮右"
-                  player="player1"
-                  position="centerRightTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="右上"
-                  player="player1"
-                  position="rightTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-              </div>
-
-              <!-- 中段 -->
-              <div class="o-row">
-                <ItemCountWithItemListDraggable
-                  name="左中"
-                  player="player1"
-                  position="leftMiddle"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="右中"
-                  player="player1"
-                  position="rightMiddle"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-              </div>
-
-              <!-- 下段 -->
-              <div class="o-row">
-                <ItemCountWithItemListDraggable
-                  name="左下"
-                  player="player1"
-                  position="leftBottom"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="右下"
-                  player="player1"
-                  position="rightBottom"
+                  :key="itemIndex"
+                  :name="item.name"
+                  :position="item.position"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -187,82 +118,13 @@
                 v-model="player2Name"
               ></v-text-field>
 
-              <!-- 上段 -->
-              <div class="o-row">
+              <div v-for="(row, rowIndex) in itemList" :key="rowIndex" class="o-row">
                 <ItemCountWithItemListDraggable
-                  name="左上"
+                  v-for="(item, itemIndex) in row"
                   player="player2"
-                  position="leftTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="浮左"
-                  player="player2"
-                  position="centerLeftTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="浮中"
-                  player="player2"
-                  position="centerTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="浮右"
-                  player="player2"
-                  position="centerRightTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="右上"
-                  player="player2"
-                  position="rightTop"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-              </div>
-
-              <!-- 中段 -->
-              <div class="o-row">
-                <ItemCountWithItemListDraggable
-                  name="左中"
-                  player="player2"
-                  position="leftMiddle"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="右中"
-                  player="player2"
-                  position="rightMiddle"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-              </div>
-
-              <!-- 下段 -->
-              <div class="o-row">
-                <ItemCountWithItemListDraggable
-                  name="左下"
-                  player="player2"
-                  position="leftBottom"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-
-                <ItemCountWithItemListDraggable
-                  name="右下"
-                  player="player2"
-                  position="rightBottom"
+                  :key="itemIndex"
+                  :name="item.name"
+                  :position="item.position"
                   @count-event="spreadCards"
                   @list-event="updateCards"
                 />
@@ -364,7 +226,26 @@ export default {
     }
   },
   computed: {
-    ...mapState(["format", "id", "players", "placementCards", "oldNotation"])
+    ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
+    itemList() {
+      return [
+        [
+          { name: "左上", position: "leftTop" },
+          { name: "浮左", position: "centerLeftTop" },
+          { name: "浮中", position: "centerTop" },
+          { name: "浮右", position: "centerRightTop" },
+          { name: "右上", position: "rightTop" }
+        ],
+        [
+          { name: "左中", position: "leftMiddle" },
+          { name: "右中", position: "rightMiddle" }
+        ],
+        [
+          { name: "左下", position: "leftBottom" },
+          { name: "右下", position: "rightBottom" }
+        ]
+      ];
+    }
   },
   mixins: [Cards, initialCards],
   methods: {

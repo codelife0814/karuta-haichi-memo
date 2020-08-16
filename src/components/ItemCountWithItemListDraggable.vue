@@ -1,6 +1,6 @@
 <template>
   <div :class="['o-column', className, { isSpread }]">
-    <ItemCount :name="name" :player="player" :position="position" @count-event="spreadItem" />
+    <ItemCount :player="player" :name="name" :position="position" @count-event="spreadItem" />
     <ItemListDraggable :player="player" :position="position" @list-event="updateCards" />
   </div>
 </template>
@@ -17,8 +17,8 @@ export default {
     ItemListDraggable
   },
   props: {
-    name: String,
     player: String,
+    name: String,
     position: String
   },
   computed: {
