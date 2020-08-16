@@ -80,15 +80,14 @@
           </v-tabs-items>
 
           <!-- 余り -->
-          <div class="o-row">
-            <ItemCountWithItemListDraggable
-              name="余り"
-              player="other"
-              position="remaining"
-              @count-event="spreadCards"
-              @list-event="updateCards"
-            />
-          </div>
+          <EditRow
+            v-for="(row, rowIndex) in remainingItemList"
+            :row="row"
+            :key="rowIndex"
+            player="other"
+            @count-event="spreadCards"
+            @list-event="updateCards"
+          />
         </div>
 
         <v-btn
@@ -126,13 +125,13 @@ import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
 import initialCards from "./../mixins/initialCards";
 import EditTabItem from "./../components/EditTabItem";
-import ItemCountWithItemListDraggable from "./../components/ItemCountWithItemListDraggable";
+import EditRow from "./../components/EditRow";
 
 export default {
   name: "Edit",
   components: {
     EditTabItem,
-    ItemCountWithItemListDraggable
+    EditRow
   },
   data() {
     return {
@@ -194,6 +193,9 @@ export default {
         tabsArray.push(object);
       }
       return tabsArray;
+    },
+    remainingItemList() {
+      return [[{ name: "余り", position: "remaining" }]];
     }
   },
   mixins: [Cards, initialCards],
@@ -467,12 +469,6 @@ $tealDarken4: #004d40;
 
 #placement {
   width: 100%;
-}
-
-.o-row {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid lightgray;
 }
 
 .o-playerTab {

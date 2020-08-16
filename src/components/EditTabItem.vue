@@ -16,28 +16,25 @@
       @input="$emit('input', $event)"
     ></v-text-field>
 
-    <div v-for="(row, rowIndex) in itemList" :key="rowIndex" class="o-row">
-      <ItemCountWithItemListDraggable
-        v-for="(item, itemIndex) in row"
-        :player="player"
-        :key="itemIndex"
-        :name="item.name"
-        :position="item.position"
-        @count-event="spreadCards"
-        @list-event="updateCards"
-      />
-    </div>
+    <EditRow
+      v-for="(row, rowIndex) in itemList"
+      :row="row"
+      :key="rowIndex"
+      :player="player"
+      @count-event="spreadCards"
+      @list-event="updateCards"
+    />
   </v-tab-item>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import ItemCountWithItemListDraggable from "./../components/ItemCountWithItemListDraggable";
+import EditRow from "./../components/EditRow";
 
 export default {
   name: "EditTabItem",
   components: {
-    ItemCountWithItemListDraggable
+    EditRow
   },
   props: {
     player: String,
@@ -95,17 +92,6 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-$redDarken1: #ef5350;
-$lightBlueDarken1: #039be5;
-
-.o-row {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid lightgray;
-}
-</style>
 
 <style lang="scss">
 $redDarken1: #ef5350;
