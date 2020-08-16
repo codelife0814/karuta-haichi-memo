@@ -79,11 +79,8 @@
             />
           </v-tabs-items>
 
-          <!-- 余り -->
           <EditRow
-            v-for="(row, rowIndex) in remainingItemList"
-            :row="row"
-            :key="rowIndex"
+            :row="remainingRow"
             player="other"
             @count-event="spreadCards"
             @list-event="updateCards"
@@ -194,8 +191,8 @@ export default {
       }
       return tabsArray;
     },
-    remainingItemList() {
-      return [[{ name: "余り", position: "remaining" }]];
+    remainingRow() {
+      return [{ name: "余り", position: "remaining" }];
     }
   },
   mixins: [Cards, initialCards],
