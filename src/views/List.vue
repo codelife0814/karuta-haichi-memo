@@ -136,146 +136,14 @@
         >コードをコピーしました：{{ copyText }}</v-alert>
         <v-alert v-model="copyError" type="error" text dense dismissible>コピーに失敗しました</v-alert>
         <v-tabs-items v-model="format">
-          <v-tab-item>
-            <v-text-field
-              placeholder="定位置を検索 / タイトル・日付"
-              dense
-              outlined
-              single-line
-              color="teal"
-              hide-details="auto"
-              prepend-inner-icon="mdi-magnify"
-              clearable
-              maxlength="20"
-              v-model="teiichiKeyword"
-            ></v-text-field>
-
-            <v-list two-line>
-              <div
-                v-if="!dataListGetflag && filteredTeiichiList.length === 0"
-                class="mt-12 text-center"
-              >
-                <v-progress-circular indeterminate color="teal"></v-progress-circular>
-              </div>
-              <v-list-item
-                v-else-if="dataListGetflag && filteredTeiichiList.length === 0"
-              >定位置のデータはありません</v-list-item>
-              <template v-else v-for="(item, index) in filteredTeiichiList">
-                <v-list-item :key="'list' + index">
-                  <v-list-item-content @click="editAction(item.id, 'teiichiList')">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <v-menu bottom offset-y>
-                      <template v-slot:activator="{ on }">
-                        <v-btn text icon small v-on="on">
-                          <v-icon dark>mdi-dots-horizontal</v-icon>
-                        </v-btn>
-                      </template>
-
-                      <v-list>
-                        <v-list-item @click="copyAction(item.id, 'teiichiList')">
-                          <v-list-item-icon>
-                            <v-icon>mdi-content-copy</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>複製</v-list-item-content>
-                        </v-list-item>
-                        <v-list-item @click="deleteAction(item.id, 'teiichiList')">
-                          <v-list-item-icon>
-                            <v-icon>mdi-delete</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>削除</v-list-item-content>
-                        </v-list-item>
-                        <v-list-item
-                          v-clipboard:copy="item.id + '_' + format"
-                          v-clipboard:success="onCopySuccess"
-                          v-clipboard:error="onCopyError"
-                        >
-                          <v-list-item-icon>
-                            <v-icon>mdi-numeric-9-plus-box-multiple-outline</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>コードをコピー</v-list-item-content>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </v-list-item-action>
-                </v-list-item>
-                <v-divider :key="'divider' + index"></v-divider>
-              </template>
-            </v-list>
-          </v-tab-item>
-
-          <v-tab-item>
-            <v-text-field
-              placeholder="試合を検索 / タイトル・選手名・日付"
-              dense
-              outlined
-              single-line
-              hide-details="auto"
-              prepend-inner-icon="mdi-magnify"
-              clearable
-              maxlength="20"
-              v-model="gameKeyword"
-            ></v-text-field>
-
-            <v-list two-line>
-              <div
-                v-if="!dataListGetflag && filteredGameList.length === 0"
-                class="mt-12 text-center"
-              >
-                <v-progress-circular indeterminate color="teal"></v-progress-circular>
-              </div>
-              <v-list-item v-else-if="dataListGetflag && filteredGameList.length === 0">試合のデータはありません</v-list-item>
-              <template v-else v-for="(item, index) in filteredGameList">
-                <v-list-item :key="'list' + index">
-                  <v-list-item-content @click="editAction(item.id, 'gameList')">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    <v-list-item-subtitle>
-                      {{ item.players.name1 }} -
-                      {{ item.players.name2 }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <v-menu bottom offset-y>
-                      <template v-slot:activator="{ on }">
-                        <v-btn text icon small v-on="on">
-                          <v-icon dark>mdi-dots-horizontal</v-icon>
-                        </v-btn>
-                      </template>
-
-                      <v-list>
-                        <v-list-item @click="copyAction(item.id, 'gameList')">
-                          <v-list-item-icon>
-                            <v-icon>mdi-content-copy</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>複製</v-list-item-content>
-                        </v-list-item>
-                        <v-list-item @click="deleteAction(item.id, 'gameList')">
-                          <v-list-item-icon>
-                            <v-icon>mdi-delete</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>削除</v-list-item-content>
-                        </v-list-item>
-                        <v-list-item
-                          v-clipboard:copy="item.id + '_' + format"
-                          v-clipboard:success="onCopySuccess"
-                          v-clipboard:error="onCopyError"
-                        >
-                          <v-list-item-icon>
-                            <v-icon>mdi-numeric-9-plus-box-multiple-outline</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>コードをコピー</v-list-item-content>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </v-list-item-action>
-                </v-list-item>
-                <v-divider :key="'divider' + index"></v-divider>
-              </template>
-            </v-list>
-          </v-tab-item>
+          <ListTabItem
+            v-for="(item, index) in tabList"
+            :format="format"
+            :formatName="item"
+            :key="index"
+            @copy-success-event="onCopySuccess"
+            @copy-error-event="onCopyError"
+          />
         </v-tabs-items>
       </v-container>
     </v-content>
@@ -289,21 +157,20 @@ import "firebase/firestore";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
+import ListTabItem from "./../components/ListTabItem";
 
 export default {
+  components: {
+    ListTabItem
+  },
   data() {
     return {
-      db: null,
       drawer: null,
       signOutDialog: false,
       inputCodeDialog: false,
       inputCode: "",
       format: 0,
-      teiichiList: [],
-      teiichiKeyword: "",
-      gameList: [],
-      gameKeyword: "",
-      dataListGetflag: false,
+      tabList: ["teiichi", "game"],
       copyText: "",
       copySuccess: false,
       copyError: false,
@@ -311,27 +178,19 @@ export default {
     };
   },
   created() {
-    this.db = firebase.firestore();
-    this.getAction("teiichiList");
-    this.getAction("gameList");
     this.getOldNotation();
   },
   computed: {
     ...mapState(["userId", "oldNotation"]),
-    filteredTeiichiList() {
-      return this.sortList(this.filterList("teiichi"));
-    },
-    filteredGameList() {
-      return this.sortList(this.filterList("game"));
+    db() {
+      return firebase.firestore();
     }
   },
   mixins: [Cards],
   methods: {
     ...mapMutations([
-      "setUserId",
       "deleteUserId",
       "setFormat",
-      "setId",
       "setTitle",
       "setPlayers",
       "setPlacementCards",
@@ -345,31 +204,6 @@ export default {
           this.deleteUserId();
           this.$router.push("/");
         });
-    },
-    filterList(format) {
-      let filtered = [];
-      for (let item of this[format + "List"]) {
-        if (
-          item.date.indexOf(this[format + "Keyword"]) !== -1 ||
-          item.title.indexOf(this[format + "Keyword"]) !== -1 ||
-          (format == "game" &&
-            item.players.name1.indexOf(this[format + "Keyword"]) !== -1) ||
-          (format == "game" &&
-            item.players.name2.indexOf(this[format + "Keyword"]) !== -1)
-        ) {
-          filtered.push(item);
-        }
-      }
-      // clearした際のnull問題を解消
-      if (this[format + "Keyword"] === null) {
-        filtered = this[format + "List"];
-      }
-      return filtered;
-    },
-    sortList(list) {
-      return list.sort((a, b) => {
-        return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
-      });
     },
     createAction(format) {
       this.setFormat(format);
@@ -397,41 +231,6 @@ export default {
     cancelCodeAction() {
       this.inputCode = "";
       this.inputCodeDialog = false;
-    },
-    async copyAction(id, formatList) {
-      try {
-        const doc = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .doc(id)
-          .get();
-        this.setFormat(this.format);
-        this.setTitle(doc.data().title + " のコピー");
-        this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertPlacement(doc.data().placement));
-        this.$router.push("/edit");
-      } catch (err) {
-        alert("複製データ取得に失敗しました");
-      }
-    },
-    async editAction(id, formatList) {
-      try {
-        const doc = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .doc(id)
-          .get();
-        this.setFormat(this.format);
-        this.setId(doc.id);
-        this.setTitle(doc.data().title);
-        this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertPlacement(doc.data().placement));
-        this.$router.push("/edit");
-      } catch (err) {
-        alert("編集データ取得に失敗しました");
-      }
     },
     convertPlacement(placement) {
       // placementをthis.cardListの内容に変換
@@ -490,48 +289,6 @@ export default {
       }
       return array;
     },
-    async deleteAction(id, formatList) {
-      try {
-        await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .doc(id)
-          .delete();
-        await this.db
-          .collection(formatList)
-          .doc(id)
-          .delete();
-        this[formatList] = [];
-        this.getAction(formatList);
-      } catch (err) {
-        alert("削除に失敗しました");
-      }
-    },
-    async getAction(formatList) {
-      this.dataListGetflag = false;
-      try {
-        const querySnapshot = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .get();
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id,
-            date: doc.data().date,
-            title: doc.data().title,
-            players: doc.data().players,
-            placement: doc.data().placement
-          };
-          this[formatList].push(data);
-        });
-      } catch (err) {
-        alert("データ取得に失敗しました");
-      } finally {
-        this.dataListGetflag = true;
-      }
-    },
     async getOldNotation() {
       try {
         const doc = await this.db
@@ -543,10 +300,10 @@ export default {
         alert("データ取得に失敗しました");
       }
     },
-    onCopySuccess(e) {
+    onCopySuccess(value) {
       this.copySuccess = true;
       this.copyError = false;
-      this.copyText = e.text;
+      this.copyText = value.text;
     },
     onCopyError() {
       this.copyError = true;
