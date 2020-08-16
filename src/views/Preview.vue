@@ -38,50 +38,40 @@
           <!-- player2 -->
           <div v-if="format === 1" class="o-playerWrap isPlayer2">
             <div class="o-playerName isPlayer2">{{ player2Name }}</div>
-            <!-- 下段 -->
-            <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <ItemList class="isLeft" player="player2" position="rightBottom" />
-              <ItemList class="isRight" player="player2" position="leftBottom" />
-            </div>
 
-            <!-- 中段 -->
-            <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <ItemList class="isLeft" player="player2" position="rightMiddle" />
-              <ItemList class="isRight" player="player2" position="leftMiddle" />
-            </div>
-
-            <!-- 上段 -->
-            <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <ItemList class="isLeft" player="player2" position="rightTop" />
-              <ItemList class="isFloat" player="player2" position="centerRightTop" />
-              <ItemList class="isFloat" player="player2" position="centerTop" />
-              <ItemList class="isFloat" player="player2" position="centerLeftTop" />
-              <ItemList class="isRight" player="player2" position="leftTop" />
+            <div
+              v-for="(row, rowIndex) in reverseItemList"
+              class="o-row"
+              :key="rowIndex"
+              :style="{ minWidth: placementMinWidth }"
+            >
+              <ItemList
+                v-for="(item, itemIndex) in row"
+                player="player2"
+                :key="itemIndex"
+                :class="item.className"
+                :position="item.position"
+              />
             </div>
           </div>
 
           <!-- player1 -->
           <div class="o-playerWrap isPlayer1">
-            <!-- 上段 -->
-            <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <ItemList class="isLeft" player="player1" position="leftTop" />
-              <ItemList class="isFloat" player="player1" position="centerLeftTop" />
-              <ItemList class="isFloat" player="player1" position="centerTop" />
-              <ItemList class="isFloat" player="player1" position="centerRightTop" />
-              <ItemList class="isRight" player="player1" position="rightTop" />
+            <div
+              v-for="(row, rowIndex) in itemList"
+              class="o-row"
+              :key="rowIndex"
+              :style="{ minWidth: placementMinWidth }"
+            >
+              <ItemList
+                v-for="(item, itemIndex) in row"
+                player="player1"
+                :key="itemIndex"
+                :class="item.className"
+                :position="item.position"
+              />
             </div>
 
-            <!-- 中段 -->
-            <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <ItemList class="isLeft" player="player1" position="leftMiddle" />
-              <ItemList class="isRight" player="player1" position="rightMiddle" />
-            </div>
-
-            <!-- 下段 -->
-            <div class="o-row" :style="{ minWidth: placementMinWidth }">
-              <ItemList class="isLeft" player="player1" position="leftBottom" />
-              <ItemList class="isRight" player="player1" position="rightBottom" />
-            </div>
             <div v-if="format === 1" class="o-playerName isPlayer1">{{ player1Name }}</div>
           </div>
         </div>
@@ -138,7 +128,32 @@ export default {
       "players",
       "placementCards",
       "oldNotation"
-    ])
+    ]),
+    itemList() {
+      return [
+        [
+          { className: "isRight", position: "leftTop" },
+          { className: "isFloat", position: "centerLeftTop" },
+          { className: "isFloat", position: "centerTop" },
+          { className: "isFloat", position: "centerRightTop" },
+          { className: "isLeft", position: "rightTop" }
+        ],
+        [
+          { className: "isRight", position: "leftMiddle" },
+          { className: "isLeft", position: "rightMiddle" }
+        ],
+        [
+          { className: "isRight", position: "leftBottom" },
+          { className: "isLeft", position: "rightBottom" }
+        ]
+      ];
+    },
+    reverseItemList() {
+      const reverseElementList = this.itemList.map(item =>
+        item.slice().reverse()
+      );
+      return reverseElementList.slice().reverse();
+    }
   },
   methods: {
     ...mapMutations([
