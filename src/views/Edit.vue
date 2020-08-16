@@ -399,99 +399,112 @@ export default {
         useModalOverlay: true
       });
 
-      tour.addStep({
-        attachTo: { element: counterLeftTop, on: "bottom" },
-        title: "配置移動",
-        text:
-          "決まり字を移動させたい段の端に<br>くっつけるようにドラッグします。",
-        buttons: [
-          {
-            text: "次へ",
-            action: tour.next
-          }
-        ]
-      });
-
-      tour.addStep({
-        attachTo: { element: counterCenterTop, on: "bottom" },
-        title: "表示間隔の変更",
-        text:
-          "各段の個数表示箇所をタップすると、表示間隔を変更できます。<br />通常、決まり字同士の間は詰まって表示されますが、タップすると色が濃くなり、札間隔を広げることができます。<br />もう一度、タップすることで元に戻ります。<br />浮札（浮左、浮中、浮右）のみデフォルトで間隔が広がるように設定されています。",
-        buttons: [
-          {
-            text: "次へ",
-            action: tour.next
-          }
-        ]
-      });
-
-      if (this.playerTab === 0) {
-        tour.addStep({
-          attachTo: { element: ".o-item", on: "bottom" },
+      const stepList = [
+        {
+          playerTab: null,
+          format: null,
+          element: counterLeftTop,
+          on: "bottom",
+          title: "配置移動",
+          text:
+            "決まり字を移動させたい段の端に<br>くっつけるようにドラッグします。",
+          buttonsText: "次へ",
+          action: tour.next
+        },
+        {
+          playerTab: null,
+          format: null,
+          element: counterCenterTop,
+          on: "bottom",
+          title: "表示間隔の変更",
+          text:
+            "各段の個数表示箇所をタップすると、表示間隔を変更できます。<br>通常、決まり字同士の間は詰まって表示されますが、タップすると色が濃くなり、札間隔を広げることができます。<br>もう一度、タップすることで元に戻ります。<br>浮札（浮左、浮中、浮右）のみデフォルトで間隔が広がるように設定されています。",
+          buttonsText: "次へ",
+          action: tour.next
+        },
+        {
+          playerTab: 0,
+          format: null,
+          element: ".o-item",
+          on: "bottom",
           title: "決まり字の色付け",
           text:
             "決まり字をタップすると、<br>色付け（文字が赤色に変化）できます。",
-          buttons: [
-            {
-              text: "次へ",
-              action: tour.next
-            }
-          ]
-        });
-      }
-
-      if (this.format === 1) {
-        tour.addStep({
-          attachTo: { element: playerTab, on: "bottom" },
+          buttonsText: "次へ",
+          action: tour.next
+        },
+        {
+          playerTab: null,
+          format: 1,
+          element: playerTab,
+          on: "bottom",
           title: "入力選手切り替え",
           text:
             "選手名のタブを切り替えると、入力する選手を切り替えることができます。",
-          buttons: [
-            {
-              text: "次へ",
-              action: tour.next
-            }
-          ]
-        });
-
-        tour.addStep({
-          attachTo: { element: playerName, on: "bottom" },
+          buttonsText: "次へ",
+          action: tour.next
+        },
+        {
+          playerTab: null,
+          format: 1,
+          element: playerName,
+          on: "bottom",
           title: "選手名入力",
           text: "選手名を入力できます。",
+          buttonsText: "次へ",
+          action: tour.next
+        },
+        {
+          playerTab: null,
+          format: null,
+          element: "#toolbar",
+          on: "bottom",
+          title: "検索",
+          text:
+            "決まり字を入力すると、決まり字が黄色く表示されます。<br>検索方法は3通りあり、「ひらがな」「ローマ字（訓令式・ヘボン式）」「数字」が使用できます。<br>検索ワードの間に全角・半角スペースを挟むことで、一度に複数検索できます。",
+          buttonsText: "次へ",
+          action: tour.next
+        },
+        {
+          playerTab: null,
+          format: null,
+          element: "#fixedScrollButton",
+          on: "top",
+          title: "スクロール固定",
+          text:
+            "タップすると、スクロールが固定されます。<br>もう一度タップすると元に戻ります。<br>決まり字を動かす時にスクロールを防止できます。",
+          buttonsText: "終了",
+          action: tour.complete
+        }
+      ];
+
+      for (const step of stepList) {
+        const {
+          playerTab,
+          format,
+          element,
+          on,
+          title,
+          text,
+          buttonsText,
+          action
+        } = step;
+
+        if (playerTab !== null && this.playerTab !== playerTab) continue;
+        if (format !== null && this.format !== format) continue;
+
+        tour.addStep({
+          attachTo: { element, on },
+          title,
+          text,
           buttons: [
             {
-              text: "次へ",
-              action: tour.next
+              text: buttonsText,
+              action
             }
           ]
         });
       }
-
-      tour.addStep({
-        attachTo: { element: "#toolbar", on: "bottom" },
-        title: "検索",
-        text:
-          "決まり字を入力すると、決まり字が黄色く表示されます。<br />検索方法は3通りあり、「ひらがな」「ローマ字（訓令式・ヘボン式）」「数字」が使用できます。<br />検索ワードの間に全角・半角スペースを挟むことで、一度に複数検索できます。",
-        buttons: [
-          {
-            text: "次へ",
-            action: tour.next
-          }
-        ]
-      });
-
-      tour.addStep({
-        attachTo: { element: "#fixedScrollButton", on: "top" },
-        title: "スクロール固定",
-        text:
-          "タップすると、スクロールが固定されます。<br>もう一度タップすると元に戻ります。<br>決まり字を動かす時にスクロールを防止できます。",
-        buttons: [
-          {
-            text: "終了",
-            action: tour.complete
-          }
-        ]
-      });
 
       tour.start();
     },
