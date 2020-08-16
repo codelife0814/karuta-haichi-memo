@@ -59,15 +59,12 @@
       <v-container>
         <v-tabs v-if="format === 1" color="white" fixed-tabs v-model="playerTab">
           <v-tab
+            v-for="(tab, index) in tabs"
+            :key="index"
+            :id="tab.id"
+            :class="['o-playerTab', tab.className]"
             style="text-transform: none"
-            class="o-playerTab isPlayer1"
-            id="player1Tab"
-          >{{ player1Name || "選手1" }}</v-tab>
-          <v-tab style="text-transform: none" class="o-playerTab isPlayer2" id="player2Tab">
-            {{
-            player2Name || "選手2"
-            }}
-          </v-tab>
+          >{{ tab.playerName || tab.defaultName }}</v-tab>
         </v-tabs>
         <div id="placement" :class="{ isGame: format === 1 }">
           <v-tabs-items v-model="playerTab" :touchless="true">
@@ -183,7 +180,21 @@ export default {
     }
   },
   computed: {
-    ...mapState(["format", "id", "players", "placementCards", "oldNotation"])
+    ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
+    tabs() {
+      const tabsLength = 2;
+      let tabsArray = [];
+      for (let i = 1; i <= tabsLength; i++) {
+        const object = {
+          id: `player${i}Tab`,
+          className: `isPlayer${i}`,
+          playerName: this[`player${i}Name`],
+          defaultName: `選手${i}`
+        };
+        tabsArray.push(object);
+      }
+      return tabsArray;
+    }
   },
   mixins: [Cards, initialCards],
   methods: {
