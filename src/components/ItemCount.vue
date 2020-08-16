@@ -65,7 +65,8 @@ $tealDarken4: #004d40;
     margin-right: 4px;
     margin-left: 4px;
   }
-  .o-column.isRemaining & {
+  .o-column.isRemaining &,
+  .o-column.isRemaining.isSpread & {
     background-color: lightgray;
     color: inherit;
   }
