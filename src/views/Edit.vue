@@ -71,65 +71,15 @@
         </v-tabs>
         <div id="placement" :class="{ isGame: format === 1 }">
           <v-tabs-items v-model="playerTab" :touchless="true">
-            <!-- player1 -->
-            <v-tab-item class="o-playerTabItem isPlayer1">
-              <v-text-field
-                v-if="format === 1"
-                placeholder="選手1の名前を入力"
-                dense
-                filled
-                single-line
-                color="red darken-3"
-                maxlength="15"
-                clearable
-                hide-details="auto"
-                prepend-inner-icon="mdi-account"
-                id="player1Name"
-                v-model="player1Name"
-              ></v-text-field>
-
-              <div v-for="(row, rowIndex) in itemList" :key="rowIndex" class="o-row">
-                <ItemCountWithItemListDraggable
-                  v-for="(item, itemIndex) in row"
-                  player="player1"
-                  :key="itemIndex"
-                  :name="item.name"
-                  :position="item.position"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-              </div>
-            </v-tab-item>
-
-            <!-- player2 -->
-            <v-tab-item class="o-playerTabItem isPlayer2">
-              <v-text-field
-                v-if="format === 1"
-                placeholder="選手2の名前を入力"
-                dense
-                filled
-                single-line
-                color="light-blue darken-4"
-                maxlength="15"
-                clearable
-                hide-details="auto"
-                prepend-inner-icon="mdi-account"
-                id="player2Name"
-                v-model="player2Name"
-              ></v-text-field>
-
-              <div v-for="(row, rowIndex) in itemList" :key="rowIndex" class="o-row">
-                <ItemCountWithItemListDraggable
-                  v-for="(item, itemIndex) in row"
-                  player="player2"
-                  :key="itemIndex"
-                  :name="item.name"
-                  :position="item.position"
-                  @count-event="spreadCards"
-                  @list-event="updateCards"
-                />
-              </div>
-            </v-tab-item>
+            <EditTabItem
+              v-for="(item, index) in tabItems"
+              :player="item.player"
+              :playerName="item.playerName"
+              :key="index"
+              @input-event="updateName"
+              @count-event="spreadCards"
+              @list-event="updateCards"
+            />
           </v-tabs-items>
 
           <!-- 余り -->
@@ -178,11 +128,13 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
 import initialCards from "./../mixins/initialCards";
+import EditTabItem from "./../components/EditTabItem";
 import ItemCountWithItemListDraggable from "./../components/ItemCountWithItemListDraggable";
 
 export default {
   name: "Edit",
   components: {
+    EditTabItem,
     ItemCountWithItemListDraggable
   },
   data() {
@@ -193,6 +145,7 @@ export default {
       playerTab: 0,
       player1Name: "",
       player2Name: "",
+      tabItems: [],
       searchText: "",
       bottomMenu: false,
       isFixedScroll: false,
@@ -202,6 +155,10 @@ export default {
   created() {
     this.player1Name = this.players.name1 || "";
     this.player2Name = this.players.name2 || "";
+    this.tabItems = [
+      { player: "player1", playerName: this.player1Name },
+      { player: "player2", playerName: this.player2Name }
+    ];
     this.isOldNotation = this.oldNotation || false;
 
     if (
@@ -226,26 +183,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
-    itemList() {
-      return [
-        [
-          { name: "左上", position: "leftTop" },
-          { name: "浮左", position: "centerLeftTop" },
-          { name: "浮中", position: "centerTop" },
-          { name: "浮右", position: "centerRightTop" },
-          { name: "右上", position: "rightTop" }
-        ],
-        [
-          { name: "左中", position: "leftMiddle" },
-          { name: "右中", position: "rightMiddle" }
-        ],
-        [
-          { name: "左下", position: "leftBottom" },
-          { name: "右下", position: "rightBottom" }
-        ]
-      ];
-    }
+    ...mapState(["format", "id", "players", "placementCards", "oldNotation"])
   },
   mixins: [Cards, initialCards],
   methods: {
@@ -449,6 +387,9 @@ export default {
       this.searchText = "";
       this.search("");
     },
+    updateName(value, player) {
+      this[player + "Name"] = value;
+    },
     updateCards(value, player, position) {
       this.cards[player][position].items = value;
     },
@@ -527,15 +468,6 @@ $tealDarken4: #004d40;
   background-color: lightgray;
   line-height: 1.2;
   text-transform: none;
-
-  &.v-tab--active {
-    &.isPlayer1 {
-      background-color: $redDarken1;
-    }
-    &.isPlayer2 {
-      background-color: $lightBlueDarken1;
-    }
-  }
 }
 
 .o-fixedButton {
