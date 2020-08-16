@@ -576,26 +576,30 @@ export default {
         .isSpread;
     },
     fixedScroll() {
-      const html = document.querySelector("html");
-      const body = document.querySelector("body");
+      const actions = {
+        fix: {
+          text: "スクロール固定",
+          isFixedScroll: false,
+          overflow: "",
+          eventLister: "removeEventListener"
+        },
+        clear: {
+          text: "固定解除",
+          isFixedScroll: true,
+          overflow: "hidden",
+          eventLister: "addEventListener"
+        }
+      };
+      const action = this.isFixedScroll ? actions.fix : actions.clear;
+      const { text, isFixedScroll, overflow, eventLister } = action;
 
-      if (this.isFixedScroll) {
-        this.fixedScrollText = "スクロール固定";
-        this.isFixedScroll = false;
-        html.style.overflow = "";
-        body.style.overflow = "";
-        document.removeEventListener("touchmove", this.scrollOff, {
-          passive: false
-        });
-      } else {
-        this.fixedScrollText = "固定解除";
-        this.isFixedScroll = true;
-        html.style.overflow = "hidden";
-        body.style.overflow = "hidden";
-        document.addEventListener("touchmove", this.scrollOff, {
-          passive: false
-        });
-      }
+      this.fixedScrollText = text;
+      this.isFixedScroll = isFixedScroll;
+      document.querySelector("html").style.overflow = overflow;
+      document.querySelector("body").style.overflow = overflow;
+      document[eventLister]("touchmove", this.scrollOff, {
+        passive: false
+      });
     }
     // watch: {
     //   isFixedScroll(isFixed) {
