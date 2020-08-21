@@ -1,14 +1,14 @@
 <template>
-  <Agreement class="terms" :textData="textData" />
+  <SubBase class="terms" :textData="textData" />
 </template>
 
 <script>
-import Agreement from "./../components/Agreement";
+import SubBase from "./../components/SubBase";
 
 export default {
   name: "Terms",
   components: {
-    Agreement
+    SubBase
   },
   data() {
     return {
