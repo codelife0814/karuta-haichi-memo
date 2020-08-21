@@ -161,6 +161,7 @@ export default {
       cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
       this.cards = this.initialCards;
       this.cards.other.remaining.items = cardList;
+      this.setPlacementCards(this.cards);
     } else {
       this.cards = this.placementCards;
     }
