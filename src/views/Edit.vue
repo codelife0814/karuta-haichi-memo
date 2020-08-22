@@ -1,14 +1,6 @@
 <template>
   <div id="edit">
-    <v-dialog v-model="screenDialog" max-width="290">
-      <v-card>
-        <v-card-title class="title">画面を横向けにして使うことをおすすめします</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="teal darken-1" text @click="screenAction">はい</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <EditDialog />
 
     <v-toolbar flat dense color="teal" id="toolbar">
       <v-dialog v-model="backDialog" max-width="290">
@@ -121,18 +113,19 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
 import initialCards from "./../mixins/initialCards";
+import EditDialog from "./../components/EditDialog";
 import EditTabItem from "./../components/EditTabItem";
 import EditRow from "./../components/EditRow";
 
 export default {
   name: "Edit",
   components: {
+    EditDialog,
     EditTabItem,
     EditRow
   },
   data() {
     return {
-      screenDialog: false,
       backDialog: false,
       cards: {},
       playerTab: 0,
@@ -164,16 +157,6 @@ export default {
       this.setPlacementCards(this.cards);
     } else {
       this.cards = this.placementCards;
-    }
-
-    // 定位置の場合は横画面で表示してもらうように案内ダイアログ表示
-    if (
-      this.format === 0 &&
-      navigator.userAgent.match(/iPhone|Android.+Mobile/) &&
-      !(window.orientation === -90 || window.orientation === 90) &&
-      !window.sessionStorage.getItem(["orientation"])
-    ) {
-      this.screenDialog = true;
     }
   },
   computed: {
@@ -208,10 +191,6 @@ export default {
       "setPlacementCards",
       "deletePlacementCards"
     ]),
-    screenAction() {
-      window.sessionStorage.setItem(["orientation"], [true]);
-      this.screenDialog = false;
-    },
     helpAction() {
       const playerNumber = this.playerTab === 0 ? "1" : "2";
       const counterLeftTop = `#player${playerNumber}-counter-leftTop`;
