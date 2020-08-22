@@ -6,53 +6,27 @@
       @change-drawer="changeDrawer"
       @change-format="changeFormat"
     />
-
     <ListDrawer :drawer="drawer" @change-drawer="changeDrawer" />
-
-    <v-content>
-      <v-container>
-        <v-alert
-          v-model="copySuccess"
-          type="success"
-          text
-          dense
-          dismissible
-        >コードをコピーしました：{{ copyText }}</v-alert>
-        <v-alert v-model="copyError" type="error" text dense dismissible>コピーに失敗しました</v-alert>
-        <v-tabs-items v-model="format">
-          <ListTabItem
-            v-for="(item, index) in tabList"
-            :format="format"
-            :formatName="item"
-            :key="index"
-            @copy-success-event="onCopySuccess"
-            @copy-error-event="onCopyError"
-          />
-        </v-tabs-items>
-      </v-container>
-    </v-content>
+    <ListContent :format="format" @change-format="changeFormat" />
   </div>
 </template>
 
 <script>
 import ListHeader from "./../components/ListHeader";
 import ListDrawer from "./../components/ListDrawer";
-import ListTabItem from "./../components/ListTabItem";
+import ListContent from "./../components/ListContent";
 
 export default {
+  name: "List",
   components: {
     ListHeader,
     ListDrawer,
-    ListTabItem
+    ListContent
   },
   data() {
     return {
       drawer: null,
-      format: 0,
-      tabList: ["teiichi", "game"],
-      copyText: "",
-      copySuccess: false,
-      copyError: false
+      format: 0
     };
   },
   methods: {
@@ -61,15 +35,6 @@ export default {
     },
     changeFormat(value) {
       this.format = value;
-    },
-    onCopySuccess(value) {
-      this.copySuccess = true;
-      this.copyError = false;
-      this.copyText = value.text;
-    },
-    onCopyError() {
-      this.copyError = true;
-      this.copySuccess = false;
     }
   }
 };
