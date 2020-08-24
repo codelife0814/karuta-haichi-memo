@@ -1,32 +1,6 @@
 <template>
   <div id="preview">
-    <v-toolbar flat dense color="teal">
-      <v-btn text icon small dark @click="backAction">
-        <v-icon dark>mdi-chevron-left</v-icon>
-      </v-btn>
-
-      <v-text-field
-        class="ma-2"
-        placeholder="タイトルを入力"
-        dense
-        filled
-        rounded
-        dark
-        single-line
-        color="teal"
-        hide-details="auto"
-        maxlength="20"
-        clearable
-        prepend-inner-icon="mdi-format-text"
-        v-model="placementTitle"
-      ></v-text-field>
-
-      <v-btn class="ma-2" text icon small dark depressed @click="imageDownload()">
-        <v-icon>mdi-arrow-down-bold-circle-outline</v-icon>
-      </v-btn>
-
-      <v-btn small depressed @click="saveAction">保存</v-btn>
-    </v-toolbar>
+    <PreviewHeader :isDownload="isDownload" @change-isDownload="changeIsDownload" />
 
     <v-content>
       <v-container class="o-placementWrap">
@@ -76,9 +50,9 @@
           </div>
         </div>
 
-        <div class="o-canvas">
-          <p class="o-canvas__text">{{ canvasText }}</p>
-          <div class="o-canvas__img" :class="{ isDownload }">
+        <div v-show="isDownload" class="o-canvas">
+          <p class="o-canvas__text">ダウンロードが失敗する場合は、下記を画像として保存できます。</p>
+          <div class="o-canvas__img">
             <img id="canvasImage" />
           </div>
           <a id="canvasLink"></a>
@@ -93,13 +67,12 @@ import firebase from "firebase/app";
 import "firebase/app";
 import "firebase/firestore";
 import { mapState } from "vuex";
-import { mapMutations } from "vuex";
+import PreviewHeader from "./../components/PreviewHeader";
 import ItemList from "./../components/ItemList";
-import html2canvas from "html2canvas";
-import moment from "moment";
 
 export default {
   components: {
+    PreviewHeader,
     ItemList
   },
   data() {
@@ -108,27 +81,17 @@ export default {
       player1Name: "",
       player2Name: "",
       placementMinWidth: "",
-      isDownload: false,
-      canvasText: ""
+      isDownload: false
     };
   },
   created() {
     this.db = firebase.firestore();
-    this.placementTitle = this.title;
     this.player1Name = this.players.name1;
     this.player2Name = this.players.name2;
     this.placementMinWidth = this.getPlacementMinWidth();
   },
   computed: {
-    ...mapState([
-      "userId",
-      "format",
-      "id",
-      "title",
-      "players",
-      "placementCards",
-      "oldNotation"
-    ]),
+    ...mapState(["format", "players", "placementCards"]),
     itemList() {
       return [
         [
@@ -156,13 +119,9 @@ export default {
     }
   },
   methods: {
-    ...mapMutations([
-      "deleteId",
-      "setTitle",
-      "deleteTitle",
-      "deletePlayers",
-      "deletePlacementCards"
-    ]),
+    changeIsDownload(value) {
+      this.isDownload = value;
+    },
     getPlacementMinWidth() {
       const positions = {
         top: [
@@ -214,111 +173,6 @@ export default {
       const itemWidth = format === 0 ? 14 : 24;
       const itemSpreadWidth = format === 0 ? 22 : 32;
       return isSpread ? itemSpreadWidth : itemWidth;
-    },
-    async imageDownload() {
-      const placement = document.querySelector("#placement");
-      const canvasElement = document.querySelector("#canvasImage");
-      const linkElement = document.querySelector("#canvasLink");
-
-      const canvas = await html2canvas(placement);
-      canvasElement.src = canvas.toDataURL();
-      linkElement.href = canvas.toDataURL("image/png");
-      linkElement.download = (this.placementTitle || "タイトルなし") + ".png";
-      linkElement.click();
-      this.isDownload = true;
-      this.canvasText =
-        "ダウンロードが失敗する場合は、下記を画像として保存できます。";
-    },
-    backAction() {
-      this.setTitle(this.placementTitle);
-      this.$router.push("/edit");
-    },
-    async saveAction() {
-      const listName = this.format === 0 ? "teiichiList" : "gameList";
-      const players = ["player1", "player2", "other"];
-      const positions = [
-        "leftTop",
-        "centerLeftTop",
-        "centerTop",
-        "centerRightTop",
-        "rightTop",
-        "leftMiddle",
-        "rightMiddle",
-        "leftBottom",
-        "rightBottom",
-        "remaining"
-      ];
-
-      let placement = {};
-      for (const player of players) {
-        placement[player] = {};
-        for (const position of positions) {
-          if (
-            (player === "other" && position !== "remaining") ||
-            (player !== "other" && position === "remaining")
-          ) {
-            continue;
-          }
-          placement[player][position] = {};
-          placement[player][position].isSpread = this.placementCards[player][
-            position
-          ].isSpread;
-          placement[player][position].items = this.convertPlacement(
-            this.placementCards[player][position].items
-          );
-        }
-      }
-
-      const param = {
-        date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-        title: this.placementTitle || "タイトルなし",
-        players: {
-          name1: this.player1Name,
-          name2: this.player2Name
-        },
-        placement
-      };
-
-      if (this.id) {
-        await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(listName)
-          .doc(this.id)
-          .set(param);
-        await this.db
-          .collection(listName)
-          .doc(this.id)
-          .set(param);
-      } else {
-        const ref = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(listName)
-          .add(param);
-        await this.db
-          .collection(listName)
-          .doc(ref.id)
-          .set(param);
-      }
-      this.deleteId();
-      this.deleteTitle();
-      this.deletePlayers();
-      this.deletePlacementCards();
-      this.$router.push("/list");
-    },
-    convertPlacement(placementCards) {
-      let array = [];
-      if (placementCards.length !== 0) {
-        for (const item of placementCards) {
-          let object = {
-            no: item.no,
-            isMarking: item.isMarking
-          };
-          array.push(object);
-        }
-      }
-      return array;
     }
   }
 };
@@ -389,26 +243,13 @@ $lightBlueDarken1: #039be5;
     color: red;
   }
   &__img {
-    &.isDownload {
-      padding: 8px;
-      border: 2px solid $teal;
-    }
+    padding: 8px;
+    border: 2px solid $teal;
 
     img {
       width: 100%;
       vertical-align: bottom;
     }
   }
-}
-</style>
-
-<style lang="scss">
-#preview .v-input__slot {
-  height: 28px !important;
-  min-height: 28px !important;
-}
-#preview .v-input__prepend-inner,
-#preview .v-input__append-inner {
-  margin-top: 3px !important;
 }
 </style>
