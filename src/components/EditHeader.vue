@@ -131,7 +131,7 @@ export default {
       const counterLeftTop = `#player${playerNumber}-counter-leftTop`;
       const counterCenterTop = `#player${playerNumber}-counter-centerTop`;
       const playerTab = `#player${playerNumber}Tab`;
-      const playerName = `#player${playerNumber}Name`;
+      const playerName = `.isPlayer${playerNumber} input`;
 
       const tour = this.$shepherd({
         defaultStepOptions: {
