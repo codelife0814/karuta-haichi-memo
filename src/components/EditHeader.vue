@@ -66,7 +66,7 @@ export default {
     this.isOldNotation = this.oldNotation || false;
   },
   computed: {
-    ...mapState(["format", "oldNotation"])
+    ...mapState(["format", "players", "oldNotation"])
   },
   methods: {
     ...mapMutations([
@@ -253,8 +253,8 @@ export default {
     previewAction() {
       this.setPlacementCards(this.cards);
       const players = {
-        name1: this.player1.name || "選手1",
-        name2: this.player2.name || "選手2"
+        name1: this.players.name1 || "選手1",
+        name2: this.players.name2 || "選手2"
       };
       this.setPlayers(players);
       this.$router.push("/preview");
