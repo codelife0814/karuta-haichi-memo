@@ -6,44 +6,26 @@
         :class="{ isGame: format === 1 }"
         :style="{ minWidth: placementMinWidth }"
       >
-        <!-- player2 -->
-        <div v-if="format === 1" class="o-playerWrap isPlayer2">
-          <div class="o-playerName isPlayer2">{{ player2Name }}</div>
+        <div v-for="player in playerList" :key="player.number" class="o-playerWrap">
+          <div
+            v-if="format === 1"
+            :class="['o-playerName', `isPlayer${player.number}`]"
+          >{{ player.name }}</div>
 
           <div
-            v-for="(row, rowIndex) in reverseItemList"
+            v-for="(row, rowIndex) in player.itemList"
             class="o-row"
             :key="rowIndex"
             :style="{ minWidth: placementMinWidth }"
           >
             <ItemList
               v-for="(item, itemIndex) in row"
-              player="player2"
+              :player="`player${player.number}`"
               :key="itemIndex"
               :class="item.className"
               :position="item.position"
             />
           </div>
-        </div>
-
-        <!-- player1 -->
-        <div class="o-playerWrap isPlayer1">
-          <div
-            v-for="(row, rowIndex) in itemList"
-            class="o-row"
-            :key="rowIndex"
-            :style="{ minWidth: placementMinWidth }"
-          >
-            <ItemList
-              v-for="(item, itemIndex) in row"
-              player="player1"
-              :key="itemIndex"
-              :class="item.className"
-              :position="item.position"
-            />
-          </div>
-
-          <div v-if="format === 1" class="o-playerName isPlayer1">{{ player1Name }}</div>
         </div>
       </div>
 
@@ -110,6 +92,22 @@ export default {
         item.slice().reverse()
       );
       return reverseElementList.slice().reverse();
+    },
+    playerList() {
+      const playerList1 = {
+        number: 1,
+        name: this.player1Name,
+        itemList: this.itemList
+      };
+      const playerList2 = {
+        number: 2,
+        name: this.player2Name,
+        itemList: this.itemList
+      };
+
+      let playerList = [playerList1];
+      if (this.format === 1) playerList.unshift(playerList2);
+      return playerList;
     }
   },
   methods: {
@@ -184,6 +182,9 @@ $lightBlueDarken1: #039be5;
 }
 
 .o-playerWrap {
+  display: flex;
+  flex-direction: column;
+
   & + .o-playerWrap {
     margin-top: 24px;
   }
@@ -217,6 +218,7 @@ $lightBlueDarken1: #039be5;
     text-align: center;
 
     &.isPlayer1 {
+      order: 1;
       margin-top: 8px;
       background-color: $redDarken1;
     }
