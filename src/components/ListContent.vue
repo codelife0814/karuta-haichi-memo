@@ -24,15 +24,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 import ListTabItem from "./../components/ListTabItem";
 
 export default {
   name: "ListContent",
   components: {
     ListTabItem
-  },
-  props: {
-    format: Number
   },
   data() {
     return {
@@ -43,16 +42,18 @@ export default {
     };
   },
   computed: {
+    ...mapState(["format"]),
     formatValue: {
       get() {
         return this.format;
       },
       set(value) {
-        this.$emit("change-format", value);
+        this.setFormat(value);
       }
     }
   },
   methods: {
+    ...mapMutations(["setFormat"]),
     onCopySuccess(value) {
       this.copySuccess = true;
       this.copyError = false;

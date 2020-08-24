@@ -65,14 +65,14 @@
 
 <script>
 import firebase from "firebase/app";
+import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
 
 export default {
   name: "ListHeader",
   props: {
-    drawer: Boolean,
-    format: Number
+    drawer: Boolean
   },
   data() {
     return {
@@ -90,9 +90,21 @@ export default {
       inputCode: ""
     };
   },
+  created() {
+    this.setFormat(0);
+  },
   computed: {
+    ...mapState(["format"]),
     db() {
       return firebase.firestore();
+    },
+    formatValue: {
+      get() {
+        return this.format;
+      },
+      set(value) {
+        this.setFormat(value);
+      }
     },
     drawerValue: {
       get() {
@@ -100,14 +112,6 @@ export default {
       },
       set(value) {
         this.$emit("change-drawer", value);
-      }
-    },
-    formatValue: {
-      get() {
-        return this.format;
-      },
-      set(value) {
-        this.$emit("change-format", value);
       }
     }
   },
