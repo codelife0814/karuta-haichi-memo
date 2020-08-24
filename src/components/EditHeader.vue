@@ -55,8 +55,7 @@ export default {
     cards: Object,
     playerTab: Number,
     player1Name: String,
-    player2Name: String,
-    isFixedScroll: Boolean
+    player2Name: String
   },
   data() {
     return {
@@ -82,7 +81,6 @@ export default {
       "deletePlacementCards"
     ]),
     backAction() {
-      if (this.isFixedScroll) this.$emit("scroll-event");
       this.deleteFormat();
       this.deleteId();
       this.deleteTitle();
@@ -255,7 +253,6 @@ export default {
       tour.start();
     },
     previewAction() {
-      if (this.isFixedScroll) this.$emit("scroll-event");
       this.setPlacementCards(this.cards);
       const players = {
         name1: this.player1Name || "選手1",

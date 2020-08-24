@@ -7,8 +7,6 @@
       :playerTab="playerTab"
       :player1Name="player1Name"
       :player2Name="player2Name"
-      :isFixedScroll="isFixedScroll"
-      @scroll-event="fixedScroll"
     />
 
     <v-content>
@@ -121,6 +119,9 @@ export default {
     } else {
       this.cards = this.placementCards;
     }
+  },
+  destroyed() {
+    this.fixedScroll();
   },
   computed: {
     ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
