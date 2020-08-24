@@ -2,12 +2,7 @@
   <div id="edit">
     <EditDialog />
 
-    <EditHeader
-      :cards="cards"
-      :playerTab="playerTab"
-      :player1Name="player1Name"
-      :player2Name="player2Name"
-    />
+    <EditHeader :cards="cards" :playerTab="playerTab" />
 
     <v-content>
       <v-container>
@@ -92,22 +87,12 @@ export default {
     return {
       cards: {},
       playerTab: 0,
-      player1Name: "",
-      player2Name: "",
-      tabItems: [],
-      bottomMenu: false,
       isFixedScroll: false,
       fixedScrollText: "スクロール固定"
+      // bottomMenu: false
     };
   },
   created() {
-    this.player1Name = this.players.name1 || "";
-    this.player2Name = this.players.name2 || "";
-    this.tabItems = [
-      { player: "player1", playerName: this.player1Name },
-      { player: "player2", playerName: this.player2Name }
-    ];
-
     if (
       JSON.stringify(this.initialCards) === JSON.stringify(this.placementCards)
     ) {
@@ -138,6 +123,28 @@ export default {
         tabsArray.push(object);
       }
       return tabsArray;
+    },
+    player1Name: {
+      get() {
+        return this.players.name1 || "";
+      },
+      set(value) {
+        this.setPlayers({ name1: value, name2: this.players.name2 });
+      }
+    },
+    player2Name: {
+      get() {
+        return this.players.name2 || "";
+      },
+      set(value) {
+        this.setPlayers({ name1: this.players.name1, name2: value });
+      }
+    },
+    tabItems() {
+      return [
+        { player: "player1", playerName: this.player1Name },
+        { player: "player2", playerName: this.player2Name }
+      ];
     },
     remainingRow() {
       return [{ name: "余り", position: "remaining" }];

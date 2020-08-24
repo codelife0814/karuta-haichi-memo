@@ -53,9 +53,7 @@ export default {
   name: "EditHeader",
   props: {
     cards: Object,
-    playerTab: Number,
-    player1Name: String,
-    player2Name: String
+    playerTab: Number
   },
   data() {
     return {
@@ -255,8 +253,8 @@ export default {
     previewAction() {
       this.setPlacementCards(this.cards);
       const players = {
-        name1: this.player1Name || "選手1",
-        name2: this.player2Name || "選手2"
+        name1: this.player1.name || "選手1",
+        name2: this.player2.name || "選手2"
       };
       this.setPlayers(players);
       this.$router.push("/preview");
