@@ -36,18 +36,7 @@
           />
         </div>
 
-        <v-btn
-          small
-          fixed
-          right
-          bottom
-          dark
-          color="teal"
-          class="o-fixedButton"
-          :class="{ isFixedScroll }"
-          id="fixedScrollButton"
-          @click="fixedScroll"
-        >{{ fixedScrollText }}</v-btn>
+        <FixedScrollButton />
 
         <!-- <v-btn fab fixed right bottom dark color="teal" @click.stop="bottomMenu = !bottomMenu">
           <v-icon dark>mdi-menu</v-icon>
@@ -74,6 +63,7 @@ import EditDialog from "./../components/EditDialog";
 import EditHeader from "./../components/EditHeader";
 import EditTabItem from "./../components/EditTabItem";
 import EditRow from "./../components/EditRow";
+import FixedScrollButton from "./../components/FixedScrollButton";
 
 export default {
   name: "Edit",
@@ -81,14 +71,13 @@ export default {
     EditDialog,
     EditHeader,
     EditTabItem,
-    EditRow
+    EditRow,
+    FixedScrollButton
   },
   data() {
     return {
       cards: {},
-      playerTab: 0,
-      isFixedScroll: false,
-      fixedScrollText: "スクロール固定"
+      playerTab: 0
       // bottomMenu: false
     };
   },
@@ -104,9 +93,6 @@ export default {
     } else {
       this.cards = this.placementCards;
     }
-  },
-  destroyed() {
-    this.fixedScroll();
   },
   computed: {
     ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
@@ -162,9 +148,6 @@ export default {
       "setPlacementCards",
       "deletePlacementCards"
     ]),
-    scrollOff(e) {
-      e.preventDefault();
-    },
     updateName(value, player) {
       this[player + "Name"] = value;
     },
@@ -174,32 +157,6 @@ export default {
     spreadCards(value, player, position) {
       this.cards[player][position].isSpread = !this.cards[player][position]
         .isSpread;
-    },
-    fixedScroll() {
-      const actions = {
-        fix: {
-          text: "スクロール固定",
-          isFixedScroll: false,
-          overflow: "",
-          eventLister: "removeEventListener"
-        },
-        clear: {
-          text: "固定解除",
-          isFixedScroll: true,
-          overflow: "hidden",
-          eventLister: "addEventListener"
-        }
-      };
-      const action = this.isFixedScroll ? actions.fix : actions.clear;
-      const { text, isFixedScroll, overflow, eventLister } = action;
-
-      this.fixedScrollText = text;
-      this.isFixedScroll = isFixedScroll;
-      document.querySelector("html").style.overflow = overflow;
-      document.querySelector("body").style.overflow = overflow;
-      document[eventLister]("touchmove", this.scrollOff, {
-        passive: false
-      });
     }
     // watch: {
     //   isFixedScroll(isFixed) {
