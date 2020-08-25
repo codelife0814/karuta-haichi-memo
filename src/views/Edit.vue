@@ -6,7 +6,7 @@
 
     <v-content>
       <v-container>
-        <v-tabs v-if="format === 1" color="white" fixed-tabs v-model="playerTab">
+        <v-tabs v-if="isGame" color="white" fixed-tabs v-model="playerTab">
           <v-tab
             v-for="(tab, index) in tabs"
             :key="index"
@@ -15,7 +15,7 @@
             style="text-transform: none"
           >{{ tab.playerName || tab.defaultName }}</v-tab>
         </v-tabs>
-        <div id="placement" :class="{ isGame: format === 1 }">
+        <div id="placement" :class="{ isGame }">
           <v-tabs-items v-model="playerTab" :touchless="true">
             <EditTabItem
               v-for="(item, index) in tabItems"
@@ -111,6 +111,9 @@ export default {
     },
     remainingRow() {
       return [{ name: "余り", position: "remaining" }];
+    },
+    isGame() {
+      return this.format === 1;
     }
   },
   methods: {

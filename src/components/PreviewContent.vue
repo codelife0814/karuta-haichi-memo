@@ -1,20 +1,13 @@
 <template>
   <v-content>
     <v-container class="o-placementWrap">
-      <div
-        id="placement"
-        :class="{ isGame: format === 1 }"
-        :style="{ minWidth: placementMinWidth }"
-      >
+      <div id="placement" :class="{ isGame }" :style="{ minWidth: placementMinWidth }">
         <div
           v-for="player in playerList"
           :key="player.number"
           :class="['o-playerWrap', `isPlayer${player.number}`]"
         >
-          <div
-            v-if="format === 1"
-            :class="['o-playerName', `isPlayer${player.number}`]"
-          >{{ player.name }}</div>
+          <div v-if="isGame" :class="['o-playerName', `isPlayer${player.number}`]">{{ player.name }}</div>
 
           <div
             v-for="(row, rowIndex) in player.itemList"
@@ -110,8 +103,14 @@ export default {
       };
 
       let playerList = [playerList1];
-      if (this.format === 1) playerList.unshift(playerList2);
+      if (this.isGame) playerList.unshift(playerList2);
       return playerList;
+    },
+    isTeiichi() {
+      return this.format === 0;
+    },
+    isGame() {
+      return this.format === 1;
     }
   },
   methods: {
@@ -128,8 +127,8 @@ export default {
         bottom: ["leftBottom", "rightBottom"]
       };
       const positionsValue = Object.values(positions);
-      const spaceWidth = this.format === 0 ? 14 : 24;
-      const players = this.format === 0 ? ["player1"] : ["player1", "player2"];
+      const spaceWidth = this.isTeiichi ? 14 : 24;
+      const players = this.isTeiichi ? ["player1"] : ["player1", "player2"];
 
       let cardsWidthArray = [];
       let cardsWidthObject = {};

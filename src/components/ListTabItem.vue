@@ -22,9 +22,7 @@
         <v-list-item :key="'list' + index">
           <v-list-item-content @click="editAction(item.id, listName)">
             <v-list-item-title>{{ item.title }}</v-list-item-title>
-            <v-list-item-subtitle
-              v-if="format === 1"
-            >{{ item.players.name1 }} -{{ item.players.name2 }}</v-list-item-subtitle>
+            <v-list-item-subtitle v-if="isGame">{{ item.players.name1 }} -{{ item.players.name2 }}</v-list-item-subtitle>
             <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
@@ -118,6 +116,9 @@ export default {
     },
     filteredList() {
       return this.sortList(this.filterList(this.formatName));
+    },
+    isGame() {
+      return this.format === 1;
     }
   },
   mixins: [Cards],

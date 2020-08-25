@@ -73,6 +73,9 @@ export default {
       set(value) {
         this.$emit("change-isDownload", value);
       }
+    },
+    isTeiichi() {
+      return this.format === 0;
     }
   },
   methods: {
@@ -100,7 +103,7 @@ export default {
       this.isDownloadValue = true;
     },
     async saveAction() {
-      const listName = this.format === 0 ? "teiichiList" : "gameList";
+      const listName = this.isTeiichi ? "teiichiList" : "gameList";
       const players = ["player1", "player2", "other"];
       const positions = [
         "leftTop",

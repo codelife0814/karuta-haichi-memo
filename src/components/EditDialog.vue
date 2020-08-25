@@ -24,7 +24,10 @@ export default {
     this.displayDialog();
   },
   computed: {
-    ...mapState(["format"])
+    ...mapState(["format"]),
+    isTeiichi() {
+      return this.format === 0;
+    }
   },
   methods: {
     screenAction() {
@@ -37,7 +40,7 @@ export default {
         window.orientation === -90 || window.orientation === 90
       );
       const hasNotSession = !window.sessionStorage.getItem(["orientation"]);
-      if (this.format === 0 && isSmartPhone && isPortrait && hasNotSession) {
+      if (this.isTeiichi && isSmartPhone && isPortrait && hasNotSession) {
         this.screenDialog = true;
       }
     }

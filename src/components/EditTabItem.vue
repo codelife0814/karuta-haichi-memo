@@ -1,7 +1,7 @@
 <template>
   <v-tab-item :class="['o-playerTabItem', className]">
     <v-text-field
-      v-if="format === 1"
+      v-if="isGame"
       :placeholder="placeholder"
       :color="textFieldColor"
       dense
@@ -73,6 +73,9 @@ export default {
           { name: "右下", position: "rightBottom" }
         ]
       ];
+    },
+    isGame() {
+      return this.format === 1;
     }
   }
 };
