@@ -1,7 +1,7 @@
 <template>
   <div :class="['o-column', className, { isSpread }]">
-    <ItemCount :player="player" :name="name" :position="position" @count-event="spreadItem" />
-    <ItemListDraggable :player="player" :position="position" @list-event="updateCards" />
+    <ItemCount :player="player" :name="name" :position="position" />
+    <ItemListDraggable :player="player" :position="position" />
   </div>
 </template>
 
@@ -43,14 +43,6 @@ export default {
           className = "isRemaining";
       }
       return className;
-    }
-  },
-  methods: {
-    spreadItem(value) {
-      this.$emit("count-event", value, this.player, this.position);
-    },
-    updateCards(value) {
-      this.$emit("list-event", value, this.player, this.position);
     }
   }
 };

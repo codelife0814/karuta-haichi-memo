@@ -52,7 +52,6 @@ import { mapMutations } from "vuex";
 export default {
   name: "EditHeader",
   props: {
-    cards: Object,
     playerTab: Number
   },
   data() {
@@ -66,7 +65,7 @@ export default {
     this.isOldNotation = this.oldNotation || false;
   },
   computed: {
-    ...mapState(["format", "players", "oldNotation"])
+    ...mapState(["format", "players", "placementCards", "oldNotation"])
   },
   methods: {
     ...mapMutations([
@@ -75,7 +74,6 @@ export default {
       "deleteTitle",
       "setPlayers",
       "deletePlayers",
-      "setPlacementCards",
       "deletePlacementCards"
     ]),
     backAction() {
@@ -101,7 +99,7 @@ export default {
 
       const pattern = new RegExp(patternText, "i");
 
-      const playerCards = Object.values(this.cards);
+      const playerCards = Object.values(this.placementCards);
 
       for (const playerCard of playerCards) {
         const cardGroups = Object.values(playerCard);
@@ -251,7 +249,6 @@ export default {
       tour.start();
     },
     previewAction() {
-      this.setPlacementCards(this.cards);
       const players = {
         name1: this.players.name1 || "選手1",
         name2: this.players.name2 || "選手2"

@@ -6,8 +6,6 @@
       :player="player"
       :name="item.name"
       :position="item.position"
-      @count-event="spreadCards"
-      @list-event="updateCards"
     />
   </div>
 </template>
@@ -23,14 +21,6 @@ export default {
   props: {
     row: Array,
     player: String
-  },
-  methods: {
-    spreadCards(value, player, position) {
-      this.$emit("count-event", value, player, position);
-    },
-    updateCards(value, player, position) {
-      this.$emit("list-event", value, player, position);
-    }
   }
 };
 </script>

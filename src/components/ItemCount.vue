@@ -7,6 +7,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   name: "ItemCount",
@@ -30,8 +31,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setPlacementCards"]),
     spreadItem() {
-      this.$emit("count-event");
+      let cards = JSON.parse(JSON.stringify(this.placementCards));
+      cards[this.player][this.position].isSpread = !this.placementCards[
+        this.player
+      ][this.position].isSpread;
+      this.setPlacementCards(cards);
     }
   }
 };

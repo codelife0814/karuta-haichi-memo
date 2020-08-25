@@ -2,7 +2,7 @@
   <div id="edit">
     <EditDialog />
 
-    <EditHeader :cards="cards" :playerTab="playerTab" />
+    <EditHeader :playerTab="playerTab" />
 
     <v-content>
       <v-container>
@@ -23,17 +23,10 @@
               :playerName="item.playerName"
               :key="index"
               @input-event="updateName"
-              @count-event="spreadCards"
-              @list-event="updateCards"
             />
           </v-tabs-items>
 
-          <EditRow
-            :row="remainingRow"
-            player="other"
-            @count-event="spreadCards"
-            @list-event="updateCards"
-          />
+          <EditRow :row="remainingRow" player="other" />
         </div>
 
         <FixedScrollButton />
@@ -57,8 +50,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import Cards from "./../mixins/cardList";
-import initialCards from "./../mixins/initialCards";
 import EditDialog from "./../components/EditDialog";
 import EditHeader from "./../components/EditHeader";
 import EditTabItem from "./../components/EditTabItem";
@@ -76,26 +67,12 @@ export default {
   },
   data() {
     return {
-      cards: {},
       playerTab: 0
       // bottomMenu: false
     };
   },
-  created() {
-    if (
-      JSON.stringify(this.initialCards) === JSON.stringify(this.placementCards)
-    ) {
-      let cardList = JSON.parse(JSON.stringify(this.cardList));
-      cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
-      this.cards = this.initialCards;
-      this.cards.other.remaining.items = cardList;
-      this.setPlacementCards(this.cards);
-    } else {
-      this.cards = this.placementCards;
-    }
-  },
   computed: {
-    ...mapState(["format", "id", "players", "placementCards", "oldNotation"]),
+    ...mapState(["format", "players"]),
     tabs() {
       const tabsLength = 2;
       let tabsArray = [];
@@ -136,27 +113,10 @@ export default {
       return [{ name: "余り", position: "remaining" }];
     }
   },
-  mixins: [Cards, initialCards],
   methods: {
-    ...mapMutations([
-      "setFormat",
-      "deleteFormat",
-      "deleteId",
-      "deleteTitle",
-      "setPlayers",
-      "deletePlayers",
-      "setPlacementCards",
-      "deletePlacementCards"
-    ]),
+    ...mapMutations(["setPlayers"]),
     updateName(value, player) {
       this[player + "Name"] = value;
-    },
-    updateCards(value, player, position) {
-      this.cards[player][position].items = value;
-    },
-    spreadCards(value, player, position) {
-      this.cards[player][position].isSpread = !this.cards[player][position]
-        .isSpread;
     }
     // watch: {
     //   isFixedScroll(isFixed) {
@@ -185,7 +145,6 @@ export default {
 <style scoped lang="scss">
 $redDarken1: #ef5350;
 $lightBlueDarken1: #039be5;
-$tealDarken4: #004d40;
 
 #placement {
   width: 100%;
@@ -195,14 +154,6 @@ $tealDarken4: #004d40;
   background-color: lightgray;
   line-height: 1.2;
   text-transform: none;
-}
-
-.o-fixedButton {
-  transition: background-color 0.25s;
-
-  &.isFixedScroll {
-    background-color: $tealDarken4 !important;
-  }
 }
 </style>
 

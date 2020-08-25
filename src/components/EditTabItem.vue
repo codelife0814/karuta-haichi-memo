@@ -16,14 +16,7 @@
       @input="$emit('input', $event)"
     ></v-text-field>
 
-    <EditRow
-      v-for="(row, rowIndex) in itemList"
-      :row="row"
-      :key="rowIndex"
-      :player="player"
-      @count-event="spreadCards"
-      @list-event="updateCards"
-    />
+    <EditRow v-for="(row, rowIndex) in itemList" :row="row" :key="rowIndex" :player="player" />
   </v-tab-item>
 </template>
 
@@ -80,14 +73,6 @@ export default {
           { name: "右下", position: "rightBottom" }
         ]
       ];
-    }
-  },
-  methods: {
-    spreadCards(value, player, position) {
-      this.$emit("count-event", value, player, position);
-    },
-    updateCards(value, player, position) {
-      this.$emit("list-event", value, player, position);
     }
   }
 };

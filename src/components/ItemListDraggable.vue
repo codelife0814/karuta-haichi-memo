@@ -8,20 +8,22 @@
     @end="drag = false"
   >
     <div
-      class="o-item"
-      :class="{
-        isActive: item.isActive,
-        isMarking: item.isMarking,
-      }"
-      v-for="item in items"
-      :key="item.id"
-      @click="marking(item)"
-    >{{ displayName(item) }}</div>
+      :class="['o-item', {
+        isActive: card.isActive,
+        isMarking: card.isMarking,
+      }]"
+      v-for="card in cards"
+      :key="card.id"
+      @click="marking(card)"
+    >{{ displayName(card) }}</div>
   </draggable>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { mapMutations } from "vuex";
+import Cards from "./../mixins/cardList";
+import initialCards from "./../mixins/initialCards";
 import draggable from "vuedraggable";
 
 export default {
@@ -33,26 +35,42 @@ export default {
     player: String,
     position: String
   },
+  mixins: [Cards, initialCards],
+  created() {
+    this.setCards();
+  },
   computed: {
     ...mapState(["placementCards", "oldNotation"]),
     cards: {
       get() {
-        return this.items;
+        return this.placementCards[this.player][this.position].items;
       },
       set(value) {
-        this.$emit("list-event", value);
+        let cards = JSON.parse(JSON.stringify(this.placementCards));
+        cards[this.player][this.position].items = value;
+        this.setPlacementCards(cards);
       }
-    },
-    items() {
-      return this.placementCards[this.player][this.position].items;
     }
   },
   methods: {
-    displayName(item) {
-      return this.oldNotation && item.nameOld ? item.nameOld : item.name;
+    ...mapMutations(["setPlacementCards"]),
+    setCards() {
+      if (
+        JSON.stringify(this.initialCards) ===
+        JSON.stringify(this.placementCards)
+      ) {
+        let cardList = JSON.parse(JSON.stringify(this.cardList));
+        cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
+        let cards = this.initialCards;
+        cards.other.remaining.items = cardList;
+        this.setPlacementCards(cards);
+      }
     },
-    marking(item) {
-      item.isMarking = !item.isMarking;
+    displayName(card) {
+      return this.oldNotation && card.nameOld ? card.nameOld : card.name;
+    },
+    marking(card) {
+      card.isMarking = !card.isMarking;
     }
   }
 };
