@@ -64,10 +64,10 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
+import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListHeader",
@@ -90,11 +90,9 @@ export default {
   created() {
     this.setFormat(0);
   },
+  mixins: [Cards, fireFunctions],
   computed: {
     ...mapState(["format", "isListDrawer"]),
-    db() {
-      return firebase.firestore();
-    },
     formatValue: {
       get() {
         return this.format;
@@ -112,7 +110,6 @@ export default {
       }
     }
   },
-  mixins: [Cards],
   methods: {
     ...mapMutations([
       "setFormat",
@@ -134,10 +131,7 @@ export default {
       const id = codeArray[0];
       const formatList = codeArray[1] === "0" ? "teiichiList" : "gameList";
       try {
-        const doc = await this.db
-          .collection(formatList)
-          .doc(id)
-          .get();
+        const doc = await this.fsAction("get", [formatList, id]);
         this.inputCode = "";
         this.setFormat(this.format);
         this.setTitle(doc.data().title + " のコピー");

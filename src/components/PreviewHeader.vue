@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import fireFunctions from "./../mixins/fireFunctions";
 import html2canvas from "html2canvas";
 import moment from "moment";
 
@@ -45,6 +45,7 @@ export default {
   created() {
     this.placementTitle = this.title;
   },
+  mixins: [fireFunctions],
   computed: {
     ...mapState([
       "userId",
@@ -55,9 +56,6 @@ export default {
       "placementCards",
       "isDownload"
     ]),
-    db() {
-      return firebase.firestore();
-    },
     player1Name() {
       return this.players.name1;
     },
@@ -150,26 +148,19 @@ export default {
       };
 
       if (this.id) {
-        await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(listName)
-          .doc(this.id)
-          .set(param);
-        await this.db
-          .collection(listName)
-          .doc(this.id)
-          .set(param);
+        await this.fsAction(
+          "set",
+          ["users", this.userId, listName, this.id],
+          param
+        );
+        await this.fsAction("set", [listName, this.id], param);
       } else {
-        const ref = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(listName)
-          .add(param);
-        await this.db
-          .collection(listName)
-          .doc(ref.id)
-          .set(param);
+        const ref = await this.fsAction(
+          "add",
+          ["users", this.userId, listName],
+          param
+        );
+        await this.fsAction("set", [listName, ref.id], param);
       }
       this.deleteId();
       this.deleteTitle();

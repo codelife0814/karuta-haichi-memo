@@ -67,11 +67,10 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Cards from "./../mixins/cardList";
+import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListTabItem",
@@ -93,11 +92,9 @@ export default {
     this.getAction("teiichiList");
     this.getAction("gameList");
   },
+  mixins: [Cards, fireFunctions],
   computed: {
     ...mapState(["userId"]),
-    db() {
-      return firebase.firestore();
-    },
     isTeiichi() {
       return this.formatName === "teiichi";
     },
@@ -121,7 +118,6 @@ export default {
       return this.format === 1;
     }
   },
-  mixins: [Cards],
   methods: {
     ...mapMutations([
       "setFormat",
@@ -158,11 +154,11 @@ export default {
     async getAction(formatList) {
       this.dataListGetflag = false;
       try {
-        const querySnapshot = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .get();
+        const querySnapshot = await this.fsAction("get", [
+          "users",
+          this.userId,
+          formatList
+        ]);
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,
@@ -181,12 +177,12 @@ export default {
     },
     async editAction(id, formatList) {
       try {
-        const doc = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .doc(id)
-          .get();
+        const doc = await this.fsAction("get", [
+          "users",
+          this.userId,
+          formatList,
+          id
+        ]);
         this.setFormat(this.format);
         this.setId(doc.id);
         this.setTitle(doc.data().title);
@@ -199,12 +195,12 @@ export default {
     },
     async copyAction(id, formatList) {
       try {
-        const doc = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .doc(id)
-          .get();
+        const doc = await this.fsAction("get", [
+          "users",
+          this.userId,
+          formatList,
+          id
+        ]);
         this.setFormat(this.format);
         this.setTitle(doc.data().title + " のコピー");
         this.setPlayers(doc.data().players);
@@ -216,16 +212,8 @@ export default {
     },
     async deleteAction(id, formatList) {
       try {
-        await this.db
-          .collection("users")
-          .doc(this.userId)
-          .collection(formatList)
-          .doc(id)
-          .delete();
-        await this.db
-          .collection(formatList)
-          .doc(id)
-          .delete();
+        await this.fsAction("delete", ["users", this.userId, formatList, id]);
+        await this.fsAction("delete", [formatList, id]);
         this[formatList] = [];
         this.getAction(formatList);
       } catch (err) {

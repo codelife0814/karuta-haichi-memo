@@ -44,21 +44,14 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import "firebase/app";
-import "firebase/firestore";
-import firebaseui from "firebaseui-ja";
+import fireFunctions from "./../mixins/fireFunctions";
 import "firebaseui-ja/dist/firebaseui.css";
-import { mapMutations } from "vuex";
 
 export default {
   name: "HomeContent",
-  mounted() {
-    this.initialization();
-  },
-  computed: {
-    featureList() {
-      return [
+  data() {
+    return {
+      featureList: [
         {
           title: "定位置／試合中の配置を記録",
           text: "ドラッグ&ドロップで手軽に配置を記録できます。"
@@ -76,44 +69,13 @@ export default {
           title: "その他の機能",
           text: "機能一覧よりご確認ください。"
         }
-      ];
-    }
+      ]
+    };
   },
-  methods: {
-    ...mapMutations(["setUserId"]),
-    initialization() {
-      const root = this;
-      const ui =
-        firebaseui.auth.AuthUI.getInstance() ||
-        new firebaseui.auth.AuthUI(firebase.auth());
-      const uiConfig = {
-        callbacks: {
-          signInSuccessWithAuthResult: authResult => {
-            root.setUserId(authResult.user.uid);
-            root.$router.push("/list");
-          },
-          uiShown: () => {
-            // The widget is rendered.
-            // Hide the loader.
-            document.getElementById("loader").style.display = "none";
-          }
-        },
-        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-        signInFlow: "popup",
-        signInOptions: [
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-          firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
-        ],
-        // 利用規約へリンク
-        tosUrl: "/terms",
-        // プライバシーポリシーリンク
-        privacyPolicyUrl: "/privacy"
-      };
-      ui.start("#firebaseui-auth-container", uiConfig);
-    }
-  }
+  mounted() {
+    this.fbAuth();
+  },
+  mixins: [fireFunctions]
 };
 </script>
 

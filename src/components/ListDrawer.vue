@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListDrawer",
@@ -76,11 +76,9 @@ export default {
   created() {
     this.getOldNotation();
   },
+  mixins: [fireFunctions],
   computed: {
     ...mapState(["userId", "isListDrawer"]),
-    db() {
-      return firebase.firestore();
-    },
     drawerValue: {
       get() {
         return this.isListDrawer;
@@ -98,21 +96,15 @@ export default {
       "deleteIsListDrawer"
     ]),
     signOut() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.deleteUserId();
-          this.deleteIsListDrawer();
-          this.$router.push("/");
-        });
+      this.fbSignOut().then(() => {
+        this.deleteUserId();
+        this.deleteIsListDrawer();
+        this.$router.push("/");
+      });
     },
     async getOldNotation() {
       try {
-        const doc = await this.db
-          .collection("users")
-          .doc(this.userId)
-          .get();
+        const doc = await this.fsAction("get", ["users", this.userId]);
         this.isOldNotation = doc.data() ? doc.data().oldNotation : false;
       } catch (err) {
         alert("データ取得に失敗しました");
@@ -123,11 +115,10 @@ export default {
     async drawerValue() {
       if (!this.drawerValue) {
         try {
-          await this.db
-            .collection("users")
-            .doc(this.userId)
-            .set({ oldNotation: this.isOldNotation });
           this.setOldNotation(this.isOldNotation);
+          await this.fsAction("set", ["users", this.userId], {
+            oldNotation: this.isOldNotation
+          });
         } catch (err) {
           alert("設定の保存に失敗しました");
         }
