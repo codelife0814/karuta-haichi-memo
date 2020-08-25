@@ -48,6 +48,7 @@ export default new Vuex.Store({
     id: "",
     title: "",
     players: Vue.util.extend({}, initialPlayers),
+    playerTab: 0,
     placementCards: Vue.util.extend({}, initialPlacementCards),
     oldNotation: false,
   },
@@ -81,6 +82,12 @@ export default new Vuex.Store({
     },
     deletePlayers(state) {
       state.players = Vue.util.extend({}, initialPlayers);
+    },
+    setPlayerTab(state, payload) {
+      state.playerTab = payload;
+    },
+    deletePlayerTab(state) {
+      state.playerTab = 0;
     },
     setPlacementCards(state, payload) {
       state.placementCards = payload;

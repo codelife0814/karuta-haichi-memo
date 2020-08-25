@@ -2,11 +2,11 @@
   <div id="edit">
     <EditDialog />
 
-    <EditHeader :playerTab="playerTab" />
+    <EditHeader />
 
     <v-content>
       <v-container>
-        <v-tabs v-if="isGame" color="white" fixed-tabs v-model="playerTab">
+        <v-tabs v-if="isGame" color="white" fixed-tabs v-model="playerTabValue">
           <v-tab
             v-for="(tab, index) in tabs"
             :key="index"
@@ -16,7 +16,7 @@
           >{{ tab.playerName || tab.defaultName }}</v-tab>
         </v-tabs>
         <div id="placement" :class="{ isGame }">
-          <v-tabs-items v-model="playerTab" :touchless="true">
+          <v-tabs-items v-model="playerTabValue" :touchless="true">
             <EditTabItem
               v-for="(item, index) in tabItems"
               :player="item.player"
@@ -67,12 +67,11 @@ export default {
   },
   data() {
     return {
-      playerTab: 0
       // bottomMenu: false
     };
   },
   computed: {
-    ...mapState(["format", "players"]),
+    ...mapState(["format", "players", "playerTab"]),
     tabs() {
       const tabsLength = 2;
       let tabsArray = [];
@@ -114,10 +113,18 @@ export default {
     },
     isGame() {
       return this.format === 1;
+    },
+    playerTabValue: {
+      get() {
+        return this.playerTab;
+      },
+      set(value) {
+        this.setPlayerTab(value);
+      }
     }
   },
   methods: {
-    ...mapMutations(["setPlayers"]),
+    ...mapMutations(["setPlayers", "setPlayerTab"]),
     updateName(value, player) {
       this[player + "Name"] = value;
     }

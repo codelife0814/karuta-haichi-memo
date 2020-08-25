@@ -51,9 +51,6 @@ import { mapMutations } from "vuex";
 
 export default {
   name: "EditHeader",
-  props: {
-    playerTab: Number
-  },
   data() {
     return {
       isOldNotation: false,
@@ -65,7 +62,13 @@ export default {
     this.isOldNotation = this.oldNotation || false;
   },
   computed: {
-    ...mapState(["format", "players", "placementCards", "oldNotation"])
+    ...mapState([
+      "format",
+      "players",
+      "playerTab",
+      "placementCards",
+      "oldNotation"
+    ])
   },
   methods: {
     ...mapMutations([
@@ -74,6 +77,7 @@ export default {
       "deleteTitle",
       "setPlayers",
       "deletePlayers",
+      "deletePlayerTab",
       "deletePlacementCards"
     ]),
     backAction() {
@@ -81,6 +85,7 @@ export default {
       this.deleteId();
       this.deleteTitle();
       this.deletePlayers();
+      this.deletePlayerTab();
       this.deletePlacementCards();
       this.$router.push("/list");
     },
