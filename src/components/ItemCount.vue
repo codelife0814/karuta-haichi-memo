@@ -1,7 +1,7 @@
 <template>
-  <span class="o-itemCount" :id="id" @click="spreadItem">
+  <span class="o-itemCount" :id="id" @click="spreadCard">
     {{ name }}
-    <span class="o-itemCount__number">{{ itemCount }}</span>
+    <span class="o-itemCount__number">{{ cardCount }}</span>
   </span>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     length() {
       return this.placementCards[this.player][this.position].items.length;
     },
-    itemCount: {
+    cardCount: {
       get() {
         return this.length === 100 ? "百" : this.length;
       }
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setPlacementCards"]),
-    spreadItem() {
+    spreadCard() {
       let cards = JSON.parse(JSON.stringify(this.placementCards));
       cards[this.player][this.position].isSpread = !this.placementCards[
         this.player

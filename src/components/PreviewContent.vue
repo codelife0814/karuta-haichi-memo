@@ -6,7 +6,11 @@
         :class="{ isGame: format === 1 }"
         :style="{ minWidth: placementMinWidth }"
       >
-        <div v-for="player in playerList" :key="player.number" class="o-playerWrap">
+        <div
+          v-for="player in playerList"
+          :key="player.number"
+          :class="['o-playerWrap', `isPlayer${player.number}`]"
+        >
           <div
             v-if="format === 1"
             :class="['o-playerName', `isPlayer${player.number}`]"
@@ -102,7 +106,7 @@ export default {
       const playerList2 = {
         number: 2,
         name: this.player2Name,
-        itemList: this.itemList
+        itemList: this.reverseItemList
       };
 
       let playerList = [playerList1];

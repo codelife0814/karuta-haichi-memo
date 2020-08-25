@@ -1,10 +1,10 @@
 <template>
   <div class="o-itemList" :class="{isSpread}">
     <div
-      :class="['o-item', {isMarking: item.isMarking}]"
-      v-for="item in items"
-      :key="item.id"
-    >{{ displayName(item) }}</div>
+      :class="['o-item', {isMarking: card.isMarking}]"
+      v-for="card in cards"
+      :key="card.id"
+    >{{ displayName(card) }}</div>
   </div>
 </template>
 
@@ -13,16 +13,13 @@ import { mapState } from "vuex";
 
 export default {
   name: "ItemList",
-  model: {
-    prop: "items"
-  },
   props: {
     player: String,
     position: String
   },
   computed: {
     ...mapState(["placementCards", "oldNotation"]),
-    items() {
+    cards() {
       return this.placementCards[this.player][this.position].items;
     },
     isSpread() {
@@ -30,8 +27,8 @@ export default {
     }
   },
   methods: {
-    displayName(item) {
-      return this.oldNotation && item.yomiOld ? item.yomiOld : item.yomi;
+    displayName(card) {
+      return this.oldNotation && card.yomiOld ? card.yomiOld : card.yomi;
     }
   }
 };
