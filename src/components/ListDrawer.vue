@@ -67,9 +67,6 @@ import { mapMutations } from "vuex";
 
 export default {
   name: "ListDrawer",
-  props: {
-    drawer: Boolean
-  },
   data() {
     return {
       signOutDialog: false,
@@ -80,27 +77,33 @@ export default {
     this.getOldNotation();
   },
   computed: {
-    ...mapState(["userId"]),
+    ...mapState(["userId", "listDrawer"]),
     db() {
       return firebase.firestore();
     },
     drawerValue: {
       get() {
-        return this.drawer;
+        return this.listDrawer;
       },
       set(value) {
-        this.$emit("change-drawer", value);
+        this.setListDrawer(value);
       }
     }
   },
   methods: {
-    ...mapMutations(["deleteUserId", "setOldNotation"]),
+    ...mapMutations([
+      "deleteUserId",
+      "setOldNotation",
+      "setListDrawer",
+      "deleteListDrawer"
+    ]),
     signOut() {
       firebase
         .auth()
         .signOut()
         .then(() => {
           this.deleteUserId();
+          this.deleteListDrawer();
           this.$router.push("/");
         });
     },

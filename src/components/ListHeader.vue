@@ -71,9 +71,6 @@ import Cards from "./../mixins/cardList";
 
 export default {
   name: "ListHeader",
-  props: {
-    drawer: Boolean
-  },
   data() {
     return {
       formatList: [
@@ -94,7 +91,7 @@ export default {
     this.setFormat(0);
   },
   computed: {
-    ...mapState(["format"]),
+    ...mapState(["format", "listDrawer"]),
     db() {
       return firebase.firestore();
     },
@@ -108,10 +105,10 @@ export default {
     },
     drawerValue: {
       get() {
-        return this.drawer;
+        return this.listDrawer;
       },
       set(value) {
-        this.$emit("change-drawer", value);
+        this.setListDrawer(value);
       }
     }
   },
@@ -121,7 +118,8 @@ export default {
       "setFormat",
       "setTitle",
       "setPlayers",
-      "setPlacementCards"
+      "setPlacementCards",
+      "setListDrawer"
     ]),
     createAction(format) {
       this.setFormat(format);

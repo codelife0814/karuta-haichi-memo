@@ -1,7 +1,7 @@
 <template>
   <div id="list">
-    <ListHeader :drawer="drawer" @change-drawer="changeDrawer" />
-    <ListDrawer :drawer="drawer" @change-drawer="changeDrawer" />
+    <ListHeader />
+    <ListDrawer />
     <ListContent />
   </div>
 </template>
@@ -17,19 +17,6 @@ export default {
     ListHeader,
     ListDrawer,
     ListContent
-  },
-  data() {
-    return {
-      drawer: null
-    };
-  },
-  methods: {
-    changeDrawer(value) {
-      this.drawer = value;
-    },
-    changeFormat(value) {
-      this.format = value;
-    }
   }
 };
 </script>
