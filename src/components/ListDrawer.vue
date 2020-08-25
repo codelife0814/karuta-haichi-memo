@@ -120,8 +120,8 @@ export default {
     }
   },
   watch: {
-    async drawer() {
-      if (!this.drawer) {
+    async drawerValue() {
+      if (!this.drawerValue) {
         try {
           await this.db
             .collection("users")
