@@ -37,9 +37,6 @@ import moment from "moment";
 
 export default {
   name: "PreviewHeader",
-  props: {
-    isDownload: Boolean
-  },
   data() {
     return {
       placementTitle: ""
@@ -55,7 +52,8 @@ export default {
       "id",
       "players",
       "title",
-      "placementCards"
+      "placementCards",
+      "isDownload"
     ]),
     db() {
       return firebase.firestore();
@@ -71,7 +69,7 @@ export default {
         return this.isDownload;
       },
       set(value) {
-        this.$emit("change-isDownload", value);
+        this.setIsDownload(value);
       }
     },
     isTeiichi() {
@@ -84,10 +82,13 @@ export default {
       "setTitle",
       "deleteTitle",
       "deletePlayers",
-      "deletePlacementCards"
+      "deletePlacementCards",
+      "setIsDownload",
+      "deleteIsDownload"
     ]),
     backAction() {
       this.setTitle(this.placementTitle);
+      this.deleteIsDownload();
       this.$router.push("/edit");
     },
     async imageDownload() {
@@ -174,6 +175,7 @@ export default {
       this.deleteTitle();
       this.deletePlayers();
       this.deletePlacementCards();
+      this.deleteIsDownload();
       this.$router.push("/list");
     },
     convertPlacement(placementCards) {

@@ -1,7 +1,7 @@
 <template>
   <div id="preview">
-    <PreviewHeader :isDownload="isDownload" @change-isDownload="changeIsDownload" />
-    <PreviewContent :isDownload="isDownload" />
+    <PreviewHeader />
+    <PreviewContent />
   </div>
 </template>
 
@@ -13,16 +13,6 @@ export default {
   components: {
     PreviewHeader,
     PreviewContent
-  },
-  data() {
-    return {
-      isDownload: false
-    };
-  },
-  methods: {
-    changeIsDownload(value) {
-      this.isDownload = value;
-    }
   }
 };
 </script>

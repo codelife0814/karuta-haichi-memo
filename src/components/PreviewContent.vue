@@ -46,9 +46,6 @@ export default {
   components: {
     ItemList
   },
-  props: {
-    isDownload: Boolean
-  },
   data() {
     return {
       placementMinWidth: ""
@@ -58,7 +55,7 @@ export default {
     this.placementMinWidth = this.getPlacementMinWidth();
   },
   computed: {
-    ...mapState(["format", "players", "placementCards"]),
+    ...mapState(["format", "players", "placementCards", "isDownload"]),
     player1Name() {
       return this.players.name1;
     },
