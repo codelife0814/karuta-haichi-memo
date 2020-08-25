@@ -77,16 +77,16 @@ export default {
     this.getOldNotation();
   },
   computed: {
-    ...mapState(["userId", "listDrawer"]),
+    ...mapState(["userId", "isListDrawer"]),
     db() {
       return firebase.firestore();
     },
     drawerValue: {
       get() {
-        return this.listDrawer;
+        return this.isListDrawer;
       },
       set(value) {
-        this.setListDrawer(value);
+        this.setIsListDrawer(value);
       }
     }
   },
@@ -94,8 +94,8 @@ export default {
     ...mapMutations([
       "deleteUserId",
       "setOldNotation",
-      "setListDrawer",
-      "deleteListDrawer"
+      "setIsListDrawer",
+      "deleteIsListDrawer"
     ]),
     signOut() {
       firebase
@@ -103,7 +103,7 @@ export default {
         .signOut()
         .then(() => {
           this.deleteUserId();
-          this.deleteListDrawer();
+          this.deleteIsListDrawer();
           this.$router.push("/");
         });
     },

@@ -51,7 +51,7 @@ export default new Vuex.Store({
     playerTab: 0,
     placementCards: Vue.util.extend({}, initialPlacementCards),
     oldNotation: false,
-    listDrawer: false
+    isListDrawer: false
   },
   mutations: {
     setUserId(state, payload) {
@@ -99,11 +99,11 @@ export default new Vuex.Store({
     setOldNotation(state, payload) {
       state.oldNotation = payload;
     },
-    setListDrawer(state, payload) {
-      state.listDrawer = payload;
+    setIsListDrawer(state, payload) {
+      state.isListDrawer = payload;
     },
-    deleteListDrawer(state) {
-      state.listDrawer = false;
+    deleteIsListDrawer(state) {
+      state.isListDrawer = false;
     }
   },
   actions: {},

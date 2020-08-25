@@ -91,7 +91,7 @@ export default {
     this.setFormat(0);
   },
   computed: {
-    ...mapState(["format", "listDrawer"]),
+    ...mapState(["format", "isListDrawer"]),
     db() {
       return firebase.firestore();
     },
@@ -105,10 +105,10 @@ export default {
     },
     drawerValue: {
       get() {
-        return this.listDrawer;
+        return this.isListDrawer;
       },
       set(value) {
-        this.setListDrawer(value);
+        this.setIsListDrawer(value);
       }
     }
   },
@@ -119,7 +119,7 @@ export default {
       "setTitle",
       "setPlayers",
       "setPlacementCards",
-      "setListDrawer"
+      "setIsListDrawer"
     ]),
     createAction(format) {
       this.setFormat(format);
