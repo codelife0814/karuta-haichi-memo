@@ -22,7 +22,7 @@ export default {
     };
   },
   destroyed() {
-    this.fixedScroll();
+    if (this.isFixedScroll) this.fixedScroll();
   },
   methods: {
     fixedScroll() {
