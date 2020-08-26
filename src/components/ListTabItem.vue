@@ -69,14 +69,14 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import Cards from "./../mixins/cardList";
+import initialCards from "./../mixins/initialCards";
 import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListTabItem",
   props: {
     format: Number,
-    formatName: String
+    formatName: String,
   },
   data() {
     return {
@@ -85,14 +85,14 @@ export default {
       keyword: "",
       teiichiKeyword: "",
       gameKeyword: "",
-      dataListGetflag: false
+      dataListGetflag: false,
     };
   },
   created() {
     this.getAction("teiichiList");
     this.getAction("gameList");
   },
-  mixins: [Cards, fireFunctions],
+  mixins: [initialCards, fireFunctions],
   computed: {
     ...mapState(["userId"]),
     isTeiichi() {
@@ -116,7 +116,7 @@ export default {
     },
     isGame() {
       return this.format === 1;
-    }
+    },
   },
   methods: {
     ...mapMutations([
@@ -124,7 +124,7 @@ export default {
       "setId",
       "setTitle",
       "setPlayers",
-      "setPlacementCards"
+      "setPlacementCards",
     ]),
     filterList(formatName) {
       const list = this[formatName + "List"];
@@ -157,15 +157,15 @@ export default {
         const querySnapshot = await this.fsAction("get", [
           "users",
           this.userId,
-          formatList
+          formatList,
         ]);
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           const data = {
             id: doc.id,
             date: doc.data().date,
             title: doc.data().title,
             players: doc.data().players,
-            placement: doc.data().placement
+            placement: doc.data().placement,
           };
           this[formatList].push(data);
         });
@@ -181,13 +181,13 @@ export default {
           "users",
           this.userId,
           formatList,
-          id
+          id,
         ]);
         this.setFormat(this.format);
         this.setId(doc.id);
         this.setTitle(doc.data().title);
         this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertPlacement(doc.data().placement));
+        this.setPlacementCards(this.convertCards(doc.data().placement));
         this.$router.push("/edit");
       } catch (err) {
         alert("編集データ取得に失敗しました");
@@ -199,12 +199,12 @@ export default {
           "users",
           this.userId,
           formatList,
-          id
+          id,
         ]);
         this.setFormat(this.format);
         this.setTitle(doc.data().title + " のコピー");
         this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertPlacement(doc.data().placement));
+        this.setPlacementCards(this.convertCards(doc.data().placement));
         this.$router.push("/edit");
       } catch (err) {
         alert("複製データ取得に失敗しました");
@@ -220,69 +220,12 @@ export default {
         alert("削除に失敗しました");
       }
     },
-    convertPlacement(placement) {
-      // placementをthis.cardListの内容に変換
-      const players = ["player1", "player2", "other"];
-      const positions = [
-        "leftTop",
-        "centerLeftTop",
-        "centerTop",
-        "centerRightTop",
-        "rightTop",
-        "leftMiddle",
-        "rightMiddle",
-        "leftBottom",
-        "rightBottom",
-        "remaining"
-      ];
-
-      let placementCards = {};
-      for (const player of players) {
-        placementCards[player] = {};
-        for (const position of positions) {
-          if (
-            (player === "other" && position !== "remaining") ||
-            (player !== "other" && position === "remaining")
-          ) {
-            continue;
-          }
-          // 既存データにプロパティが存在しない場合の対応
-          if (!placement[player][position]) {
-            placement[player][position] = {};
-          }
-          placementCards[player][position] = {};
-          placementCards[player][position].isSpread =
-            placement[player][position].isSpread ||
-            position === "centerLeftTop" ||
-            position === "centerTop" ||
-            position === "centerRightTop";
-          placementCards[player][position].items = this.matchCards(
-            placement[player][position].items || []
-          );
-        }
-      }
-      return placementCards;
-    },
-    matchCards(items) {
-      const array = [];
-      for (const item of items) {
-        for (const card of this.cardList) {
-          if (item.no === card.no) {
-            let object = JSON.parse(JSON.stringify(card));
-            object.isMarking = item.isMarking;
-            array.push(object);
-            break;
-          }
-        }
-      }
-      return array;
-    },
     onCopySuccess(e) {
       this.$emit("copy-success-event", e);
     },
     onCopyError() {
       this.$emit("copy-error-event");
-    }
-  }
+    },
+  },
 };
 </script>

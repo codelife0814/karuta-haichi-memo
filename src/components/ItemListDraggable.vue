@@ -22,20 +22,20 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import Cards from "./../mixins/cardList";
+import cardList from "./../mixins/cardList";
 import initialCards from "./../mixins/initialCards";
 import draggable from "vuedraggable";
 
 export default {
   name: "ItemDraggableList",
   components: {
-    draggable
+    draggable,
   },
   props: {
     player: String,
-    position: String
+    position: String,
   },
-  mixins: [Cards, initialCards],
+  mixins: [cardList, initialCards],
   created() {
     this.setCards();
   },
@@ -49,19 +49,19 @@ export default {
         let cards = JSON.parse(JSON.stringify(this.placementCards));
         cards[this.player][this.position].items = value;
         this.setPlacementCards(cards);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations(["setPlacementCards"]),
     setCards() {
       if (
-        JSON.stringify(this.initialCards) ===
+        JSON.stringify(this.convertCards()) ===
         JSON.stringify(this.placementCards)
       ) {
         let cardList = JSON.parse(JSON.stringify(this.cardList));
         cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
-        let cards = this.initialCards;
+        let cards = this.convertCards();
         cards.other.remaining.items = cardList;
         this.setPlacementCards(cards);
       }
@@ -71,8 +71,8 @@ export default {
     },
     marking(card) {
       card.isMarking = !card.isMarking;
-    }
-  }
+    },
+  },
 };
 </script>
 

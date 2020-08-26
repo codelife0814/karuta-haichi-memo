@@ -66,7 +66,7 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import Cards from "./../mixins/cardList";
+import initialCards from "./../mixins/initialCards";
 import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
@@ -76,21 +76,21 @@ export default {
       formatList: [
         {
           name: "定位置",
-          icon: "mdi-view-grid-plus-outline"
+          icon: "mdi-view-grid-plus-outline",
         },
         {
           name: "試合",
-          icon: "mdi-account-multiple-plus"
-        }
+          icon: "mdi-account-multiple-plus",
+        },
       ],
       inputCodeDialog: false,
-      inputCode: ""
+      inputCode: "",
     };
   },
   created() {
     this.setFormat(0);
   },
-  mixins: [Cards, fireFunctions],
+  mixins: [initialCards, fireFunctions],
   computed: {
     ...mapState(["format", "isListDrawer"]),
     formatValue: {
@@ -99,7 +99,7 @@ export default {
       },
       set(value) {
         this.setFormat(value);
-      }
+      },
     },
     drawerValue: {
       get() {
@@ -107,8 +107,8 @@ export default {
       },
       set(value) {
         this.setIsListDrawer(value);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations([
@@ -116,7 +116,7 @@ export default {
       "setTitle",
       "setPlayers",
       "setPlacementCards",
-      "setIsListDrawer"
+      "setIsListDrawer",
     ]),
     createAction(format) {
       this.setFormat(format);
@@ -136,69 +136,12 @@ export default {
         this.setFormat(this.format);
         this.setTitle(doc.data().title + " のコピー");
         this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertPlacement(doc.data().placement));
+        this.setPlacementCards(this.convertCards(doc.data().placement));
         this.$router.push("/edit");
       } catch (err) {
         alert("一致するデータがありません");
       }
     },
-    convertPlacement(placement) {
-      // placementをthis.cardListの内容に変換
-      const players = ["player1", "player2", "other"];
-      const positions = [
-        "leftTop",
-        "centerLeftTop",
-        "centerTop",
-        "centerRightTop",
-        "rightTop",
-        "leftMiddle",
-        "rightMiddle",
-        "leftBottom",
-        "rightBottom",
-        "remaining"
-      ];
-
-      let placementCards = {};
-      for (const player of players) {
-        placementCards[player] = {};
-        for (const position of positions) {
-          if (
-            (player === "other" && position !== "remaining") ||
-            (player !== "other" && position === "remaining")
-          ) {
-            continue;
-          }
-          // 既存データにプロパティが存在しない場合の対応
-          if (!placement[player][position]) {
-            placement[player][position] = {};
-          }
-          placementCards[player][position] = {};
-          placementCards[player][position].isSpread =
-            placement[player][position].isSpread ||
-            position === "centerLeftTop" ||
-            position === "centerTop" ||
-            position === "centerRightTop";
-          placementCards[player][position].items = this.matchCards(
-            placement[player][position].items || []
-          );
-        }
-      }
-      return placementCards;
-    },
-    matchCards(items) {
-      const array = [];
-      for (const item of items) {
-        for (const card of this.cardList) {
-          if (item.no === card.no) {
-            let object = JSON.parse(JSON.stringify(card));
-            object.isMarking = item.isMarking;
-            array.push(object);
-            break;
-          }
-        }
-      }
-      return array;
-    }
-  }
+  },
 };
 </script>
