@@ -3,10 +3,10 @@ import cardList from "./../mixins/cardList";
 export default {
   mixins: [cardList],
   computed: {
-    players() {
+    playerArray() {
       return ["player1", "player2", "other"];
     },
-    positions() {
+    positionArray() {
       return [
         "leftTop",
         "centerLeftTop",
@@ -23,20 +23,20 @@ export default {
   },
   methods: {
     convertCards(placement = null) {
-      return this.players.reduce((object, player) => {
+      return this.playerArray.reduce((object, player) => {
         object[player] = {}
-        this.positions.filter(position => {
+        this.positionArray.filter(position => {
           if (this.isCreate(player, position)) {
             object[player][position] = {};
             object[player][position].isSpread = this.isTop(position);
-            const items = placement ? this.matchCards(placement[player][position].items) : []
+            const items = placement ? this.convertCardsItems(placement[player][position].items) : []
             object[player][position].items = items;
           }
         })
         return object;
       }, {});
     },
-    matchCards(items) {
+    convertCardsItems(items) {
       return items.flatMap((item) =>
         this.cardList
           .filter((card) => item.no === card.no)
@@ -45,6 +45,28 @@ export default {
             return card;
           })
       );
+    },
+    convertPlacementCards(placementCards) {
+      return this.playerArray.reduce((object, player) => {
+        object[player] = {}
+        this.positionArray.filter(position => {
+          if (this.isCreate(player, position)) {
+            object[player][position] = {};
+            object[player][position].isSpread = placementCards[player][position].isSpread;
+            object[player][position].items = this.convertPlacementCardsItems(placementCards[player][position].items);
+          }
+        })
+        return object;
+      }, {});
+    },
+    convertPlacementCardsItems(placementCards) {
+      if (placementCards.length === 0) return [];
+      return placementCards.map((item) => {
+        return {
+          no: item.no,
+          isMarking: item.isMarking,
+        };
+      });
     },
     isCreate(player, position) {
       return (

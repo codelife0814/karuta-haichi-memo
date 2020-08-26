@@ -31,6 +31,7 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import initialCards from "./../mixins/initialCards";
 import fireFunctions from "./../mixins/fireFunctions";
 import html2canvas from "html2canvas";
 import moment from "moment";
@@ -39,13 +40,13 @@ export default {
   name: "PreviewHeader",
   data() {
     return {
-      placementTitle: ""
+      placementTitle: "",
     };
   },
   created() {
     this.placementTitle = this.title;
   },
-  mixins: [fireFunctions],
+  mixins: [initialCards, fireFunctions],
   computed: {
     ...mapState([
       "userId",
@@ -54,7 +55,7 @@ export default {
       "players",
       "title",
       "placementCards",
-      "isDownload"
+      "isDownload",
     ]),
     player1Name() {
       return this.players.name1;
@@ -68,11 +69,11 @@ export default {
       },
       set(value) {
         this.setIsDownload(value);
-      }
+      },
     },
     isTeiichi() {
       return this.format === 0;
-    }
+    },
   },
   methods: {
     ...mapMutations([
@@ -82,7 +83,7 @@ export default {
       "deletePlayers",
       "deletePlacementCards",
       "setIsDownload",
-      "deleteIsDownload"
+      "deleteIsDownload",
     ]),
     backAction() {
       this.setTitle(this.placementTitle);
@@ -103,48 +104,14 @@ export default {
     },
     async saveAction() {
       const listName = this.isTeiichi ? "teiichiList" : "gameList";
-      const players = ["player1", "player2", "other"];
-      const positions = [
-        "leftTop",
-        "centerLeftTop",
-        "centerTop",
-        "centerRightTop",
-        "rightTop",
-        "leftMiddle",
-        "rightMiddle",
-        "leftBottom",
-        "rightBottom",
-        "remaining"
-      ];
-
-      let placement = {};
-      for (const player of players) {
-        placement[player] = {};
-        for (const position of positions) {
-          if (
-            (player === "other" && position !== "remaining") ||
-            (player !== "other" && position === "remaining")
-          ) {
-            continue;
-          }
-          placement[player][position] = {};
-          placement[player][position].isSpread = this.placementCards[player][
-            position
-          ].isSpread;
-          placement[player][position].items = this.convertPlacement(
-            this.placementCards[player][position].items
-          );
-        }
-      }
-
       const param = {
         date: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
         title: this.placementTitle || "タイトルなし",
         players: {
           name1: this.player1Name,
-          name2: this.player2Name
+          name2: this.player2Name,
         },
-        placement
+        placement: this.convertPlacementCards(this.placementCards),
       };
 
       if (this.id) {
@@ -169,20 +136,7 @@ export default {
       this.deleteIsDownload();
       this.$router.push("/list");
     },
-    convertPlacement(placementCards) {
-      let array = [];
-      if (placementCards.length !== 0) {
-        for (const item of placementCards) {
-          let object = {
-            no: item.no,
-            isMarking: item.isMarking
-          };
-          array.push(object);
-        }
-      }
-      return array;
-    }
-  }
+  },
 };
 </script>
 
