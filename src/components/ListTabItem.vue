@@ -129,19 +129,16 @@ export default {
     filterList(formatName) {
       const list = this[formatName + "List"];
       const keyword = this.keyword;
-
-      let filtered = [];
-      for (let item of list) {
+      let filtered = list.filter((item) => {
         if (
           item.date.indexOf(keyword) !== -1 ||
           item.title.indexOf(keyword) !== -1 ||
           (formatName == "game" &&
             item.players.name1.indexOf(keyword) !== -1) ||
           (formatName == "game" && item.players.name2.indexOf(keyword) !== -1)
-        ) {
-          filtered.push(item);
-        }
-      }
+        )
+          return item;
+      });
       // clearした際のnull問題を解消
       if (keyword === null) filtered = list;
       return filtered;
