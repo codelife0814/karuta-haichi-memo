@@ -131,12 +131,12 @@ export default {
       const id = codeArray[0];
       const formatList = codeArray[1] === "0" ? "teiichiList" : "gameList";
       try {
-        const doc = await this.fsAction("get", [formatList, id]);
+        const doc = await this.mx_fsAction("get", [formatList, id]);
         this.inputCode = "";
         this.setFormat(this.format);
         this.setTitle(doc.data().title + " のコピー");
         this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertCards(doc.data().placement));
+        this.setPlacementCards(this.mx_convertCards(doc.data().placement));
         this.$router.push("/edit");
       } catch (err) {
         alert("一致するデータがありません");

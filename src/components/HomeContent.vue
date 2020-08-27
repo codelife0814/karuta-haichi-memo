@@ -54,28 +54,28 @@ export default {
       featureList: [
         {
           title: "定位置／試合中の配置を記録",
-          text: "ドラッグ&ドロップで手軽に配置を記録できます。"
+          text: "ドラッグ&ドロップで手軽に配置を記録できます。",
         },
         {
           title: "配置の画像保存",
-          text: "作成した配置を端末に画像保存できます。"
+          text: "作成した配置を端末に画像保存できます。",
         },
         {
           title: "配置コードを使った複製",
           text:
-            "他のユーザーが作成した配置を<br>配置コードで簡単に複製できます。"
+            "他のユーザーが作成した配置を<br>配置コードで簡単に複製できます。",
         },
         {
           title: "その他の機能",
-          text: "機能一覧よりご確認ください。"
-        }
-      ]
+          text: "機能一覧よりご確認ください。",
+        },
+      ],
     };
   },
   mounted() {
-    this.fbAuth();
+    this.mx_fbAuth();
   },
-  mixins: [fireFunctions]
+  mixins: [fireFunctions],
 };
 </script>
 

@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       signOutDialog: false,
-      isOldNotation: false
+      isOldNotation: false,
     };
   },
   created() {
@@ -85,18 +85,18 @@ export default {
       },
       set(value) {
         this.setIsListDrawer(value);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations([
       "deleteUserId",
       "setOldNotation",
       "setIsListDrawer",
-      "deleteIsListDrawer"
+      "deleteIsListDrawer",
     ]),
     signOut() {
-      this.fbSignOut().then(() => {
+      this.mx_fbSignOut().then(() => {
         this.deleteUserId();
         this.deleteIsListDrawer();
         this.$router.push("/");
@@ -104,27 +104,27 @@ export default {
     },
     async getOldNotation() {
       try {
-        const doc = await this.fsAction("get", ["users", this.userId]);
+        const doc = await this.mx_fsAction("get", ["users", this.userId]);
         this.isOldNotation = doc.data() ? doc.data().oldNotation : false;
       } catch (err) {
         alert("データ取得に失敗しました");
       }
-    }
+    },
   },
   watch: {
     async drawerValue() {
       if (!this.drawerValue) {
         try {
           this.setOldNotation(this.isOldNotation);
-          await this.fsAction("set", ["users", this.userId], {
-            oldNotation: this.isOldNotation
+          await this.mx_fsAction("set", ["users", this.userId], {
+            oldNotation: this.isOldNotation,
           });
         } catch (err) {
           alert("設定の保存に失敗しました");
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -1,12 +1,12 @@
-import cardList from "./../mixins/cardList";
+import mx_cardList from "./../mixins/cardList";
 
 export default {
-  mixins: [cardList],
+  mixins: [mx_cardList],
   computed: {
-    playerArray() {
+    mx_player() {
       return ["player1", "player2", "other"];
     },
-    positionArray() {
+    mx_position() {
       return [
         "leftTop",
         "centerLeftTop",
@@ -22,23 +22,23 @@ export default {
     }
   },
   methods: {
-    convertCards(placement = null) {
-      return this.playerArray.reduce((object, player) => {
+    mx_convertCards(placement = null) {
+      return this.mx_player.reduce((object, player) => {
         object[player] = {}
-        this.positionArray.filter(position => {
-          if (this.isCreate(player, position)) {
+        this.mx_position.filter(position => {
+          if (this.mx_isCreate(player, position)) {
             object[player][position] = {};
-            object[player][position].isSpread = this.isTop(position);
-            const items = placement ? this.convertCardsItems(placement[player][position].items) : []
+            object[player][position].isSpread = this.mx_isTop(position);
+            const items = placement ? this.mx_convertCardsItems(placement[player][position].items) : []
             object[player][position].items = items;
           }
         })
         return object;
       }, {});
     },
-    convertCardsItems(items) {
+    mx_convertCardsItems(items) {
       return items.flatMap((item) =>
-        this.cardList
+        this.mx_cardList
           .filter((card) => item.no === card.no)
           .map((card) => {
             card.isMarking = item.isMarking;
@@ -46,20 +46,20 @@ export default {
           })
       );
     },
-    convertPlacementCards(placementCards) {
-      return this.playerArray.reduce((object, player) => {
+    mx_convertPlacementCards(placementCards) {
+      return this.mx_player.reduce((object, player) => {
         object[player] = {}
-        this.positionArray.filter(position => {
-          if (this.isCreate(player, position)) {
+        this.mx_position.filter(position => {
+          if (this.mx_isCreate(player, position)) {
             object[player][position] = {};
             object[player][position].isSpread = placementCards[player][position].isSpread;
-            object[player][position].items = this.convertPlacementCardsItems(placementCards[player][position].items);
+            object[player][position].items = this.mx_convertPlacementCardsItems(placementCards[player][position].items);
           }
         })
         return object;
       }, {});
     },
-    convertPlacementCardsItems(placementCards) {
+    mx_convertPlacementCardsItems(placementCards) {
       if (placementCards.length === 0) return [];
       return placementCards.map((item) => {
         return {
@@ -68,13 +68,13 @@ export default {
         };
       });
     },
-    isCreate(player, position) {
+    mx_isCreate(player, position) {
       return (
         (player !== "other" && position !== "remaining") ||
         (player === "other" && position === "remaining")
       );
     },
-    isTop(position) {
+    mx_isTop(position) {
       return (
         position === "centerLeftTop" ||
         position === "centerTop" ||

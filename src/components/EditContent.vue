@@ -113,12 +113,12 @@ export default {
     },
     setCards() {
       if (
-        JSON.stringify(this.convertCards()) ===
+        JSON.stringify(this.mx_convertCards()) ===
         JSON.stringify(this.placementCards)
       ) {
-        let cardList = JSON.parse(JSON.stringify(this.cardList));
+        let cardList = JSON.parse(JSON.stringify(this.mx_cardList));
         cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
-        let cards = this.convertCards();
+        let cards = this.mx_convertCards();
         cards.other.remaining.items = cardList;
         this.setPlacementCards(cards);
       }

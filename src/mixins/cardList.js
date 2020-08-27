@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      cardList: [
+      mx_cardList: [
         {
           id: 1,
           no: 87,

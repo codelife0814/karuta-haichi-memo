@@ -4,13 +4,13 @@ import { mapMutations } from "vuex";
 
 export default {
   computed: {
-    db() {
+    mx_db() {
       return firebase.firestore();
     }
   },
   methods: {
     ...mapMutations(["setUserId"]),
-    fbAuth() {
+    mx_fbAuth() {
       const root = this;
       const ui =
         firebaseui.auth.AuthUI.getInstance() ||
@@ -42,12 +42,12 @@ export default {
       };
       ui.start("#firebaseui-auth-container", uiConfig);
     },
-    fbSignOut() {
+    mx_fbSignOut() {
       return firebase.auth().signOut();
     },
-    fsAction(action, name, data = null) {
+    mx_fsAction(action, name, data = null) {
       const [collection, doc, subCollection = null, subDoc = null] = name;
-      const dbDoc = this.db.collection(collection).doc(doc);
+      const dbDoc = this.mx_db.collection(collection).doc(doc);
       if (subDoc) {
         const dbSubDoc = dbDoc.collection(subCollection).doc(subDoc);
         return data ? dbSubDoc[action](data) : dbSubDoc[action]();

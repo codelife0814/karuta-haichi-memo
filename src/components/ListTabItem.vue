@@ -150,7 +150,7 @@ export default {
     async getAction(formatList) {
       this.dataListGetflag = false;
       try {
-        const querySnapshot = await this.fsAction("get", [
+        const querySnapshot = await this.mx_fsAction("get", [
           "users",
           this.userId,
           formatList,
@@ -173,7 +173,7 @@ export default {
     },
     async editAction(id, formatList) {
       try {
-        const doc = await this.fsAction("get", [
+        const doc = await this.mx_fsAction("get", [
           "users",
           this.userId,
           formatList,
@@ -183,7 +183,7 @@ export default {
         this.setId(doc.id);
         this.setTitle(doc.data().title);
         this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertCards(doc.data().placement));
+        this.setPlacementCards(this.mx_convertCards(doc.data().placement));
         this.$router.push("/edit");
       } catch (err) {
         alert("編集データ取得に失敗しました");
@@ -191,7 +191,7 @@ export default {
     },
     async copyAction(id, formatList) {
       try {
-        const doc = await this.fsAction("get", [
+        const doc = await this.mx_fsAction("get", [
           "users",
           this.userId,
           formatList,
@@ -200,7 +200,7 @@ export default {
         this.setFormat(this.format);
         this.setTitle(doc.data().title + " のコピー");
         this.setPlayers(doc.data().players);
-        this.setPlacementCards(this.convertCards(doc.data().placement));
+        this.setPlacementCards(this.mx_convertCards(doc.data().placement));
         this.$router.push("/edit");
       } catch (err) {
         alert("複製データ取得に失敗しました");
@@ -208,8 +208,13 @@ export default {
     },
     async deleteAction(id, formatList) {
       try {
-        await this.fsAction("delete", ["users", this.userId, formatList, id]);
-        await this.fsAction("delete", [formatList, id]);
+        await this.mx_fsAction("delete", [
+          "users",
+          this.userId,
+          formatList,
+          id,
+        ]);
+        await this.mx_fsAction("delete", [formatList, id]);
         this[formatList] = [];
         this.getAction(formatList);
       } catch (err) {

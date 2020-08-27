@@ -111,23 +111,23 @@ export default {
           name1: this.player1Name,
           name2: this.player2Name,
         },
-        placement: this.convertPlacementCards(this.placementCards),
+        placement: this.mx_convertPlacementCards(this.placementCards),
       };
 
       if (this.id) {
-        await this.fsAction(
+        await this.mx_fsAction(
           "set",
           ["users", this.userId, listName, this.id],
           param
         );
-        await this.fsAction("set", [listName, this.id], param);
+        await this.mx_fsAction("set", [listName, this.id], param);
       } else {
-        const ref = await this.fsAction(
+        const ref = await this.mx_fsAction(
           "add",
           ["users", this.userId, listName],
           param
         );
-        await this.fsAction("set", [listName, ref.id], param);
+        await this.mx_fsAction("set", [listName, ref.id], param);
       }
       this.deleteId();
       this.deleteTitle();
