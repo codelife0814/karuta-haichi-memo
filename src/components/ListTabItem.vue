@@ -89,8 +89,7 @@ export default {
     };
   },
   created() {
-    this.getAction("teiichiList");
-    this.getAction("gameList");
+    this.getAction(`${this.formatName}List`);
   },
   mixins: [initialCards, fireFunctions],
   computed: {
