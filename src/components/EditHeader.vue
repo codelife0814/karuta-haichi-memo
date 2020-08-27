@@ -55,7 +55,7 @@ export default {
     return {
       isOldNotation: false,
       backDialog: false,
-      searchText: ""
+      searchText: "",
     };
   },
   created() {
@@ -67,8 +67,8 @@ export default {
       "players",
       "playerTab",
       "placementCards",
-      "oldNotation"
-    ])
+      "oldNotation",
+    ]),
   },
   methods: {
     ...mapMutations([
@@ -78,7 +78,7 @@ export default {
       "setPlayers",
       "deletePlayers",
       "deletePlayerTab",
-      "deletePlacementCards"
+      "deletePlacementCards",
     ]),
     backAction() {
       this.deleteFormat();
@@ -100,32 +100,54 @@ export default {
         .split(/[\x20\u3000]/)
         .filter(Boolean);
       // 各要素の先頭に＾を付け、| で区切って文字列化
-      const patternText = array.map(item => "^" + item).join("|");
-
+      const patternText = array.map((item) => "^" + item).join("|");
       const pattern = new RegExp(patternText, "i");
 
       const playerCards = Object.values(this.placementCards);
-
       for (const playerCard of playerCards) {
         const cardGroups = Object.values(playerCard);
         for (const cardGroup of cardGroups) {
           for (const card of cardGroup.items) {
-            card.isActive =
-              ((this.isOldNotation &&
-                card.nameOld &&
-                card.nameOld.match(pattern)) ||
-                (this.isOldNotation &&
-                  !card.nameOld &&
-                  card.name.match(pattern)) ||
-                (!this.isOldNotation && card.name.match(pattern)) ||
-                card.yomi.match(pattern) ||
-                card.yomiRoman1.match(pattern) ||
-                (card.yomiRoman2 && card.yomiRoman2.match(pattern)) ||
-                card.kimariji.match(pattern)) &&
-              text !== "";
+            card.isActive = this.isActive(card, text, pattern);
           }
         }
       }
+    },
+    isActive(card, text, pattern) {
+      const matchArray = [
+        {
+          name: "old",
+          condition:
+            this.isOldNotation && card.nameOld && card.nameOld.match(pattern),
+        },
+        {
+          name: "normalNoOld",
+          condition:
+            this.isOldNotation && !card.nameOld && card.name.match(pattern),
+        },
+        {
+          name: "normal",
+          condition: !this.isOldNotation && card.name.match(pattern),
+        },
+        {
+          name: "yomi",
+          condition: card.yomi.match(pattern),
+        },
+        {
+          name: "yomiRoman1",
+          condition: card.yomiRoman1.match(pattern),
+        },
+        {
+          name: "yomiRoman2",
+          condition: card.yomiRoman2 && card.yomiRoman2.match(pattern),
+        },
+        {
+          name: "kimariji",
+          condition: card.kimariji.match(pattern),
+        },
+      ];
+      const notNullText = text !== "";
+      return matchArray.some((match) => match.condition) && notNullText;
     },
     helpAction() {
       const playerNumber = this.playerTab === 0 ? "1" : "2";
@@ -137,11 +159,11 @@ export default {
       const tour = this.$shepherd({
         defaultStepOptions: {
           cancelIcon: {
-            enabled: true
+            enabled: true,
           },
-          classes: "o-tourStep"
+          classes: "o-tourStep",
         },
-        useModalOverlay: true
+        useModalOverlay: true,
       });
 
       const stepList = [
@@ -154,7 +176,7 @@ export default {
           text:
             "決まり字を移動させたい段の端に<br>くっつけるようにドラッグします。",
           buttonsText: "次へ",
-          action: tour.next
+          action: tour.next,
         },
         {
           playerTab: null,
@@ -165,7 +187,7 @@ export default {
           text:
             "各段の個数表示箇所をタップすると、表示間隔を変更できます。<br>通常、決まり字同士の間は詰まって表示されますが、タップすると色が濃くなり、札間隔を広げることができます。<br>もう一度、タップすることで元に戻ります。<br>浮札（浮左、浮中、浮右）のみデフォルトで間隔が広がるように設定されています。",
           buttonsText: "次へ",
-          action: tour.next
+          action: tour.next,
         },
         {
           playerTab: 0,
@@ -176,7 +198,7 @@ export default {
           text:
             "決まり字をタップすると、<br>色付け（文字が赤色に変化）できます。",
           buttonsText: "次へ",
-          action: tour.next
+          action: tour.next,
         },
         {
           playerTab: null,
@@ -187,7 +209,7 @@ export default {
           text:
             "選手名のタブを切り替えると、入力する選手を切り替えることができます。",
           buttonsText: "次へ",
-          action: tour.next
+          action: tour.next,
         },
         {
           playerTab: null,
@@ -197,7 +219,7 @@ export default {
           title: "選手名入力",
           text: "選手名を入力できます。",
           buttonsText: "次へ",
-          action: tour.next
+          action: tour.next,
         },
         {
           playerTab: null,
@@ -208,7 +230,7 @@ export default {
           text:
             "決まり字を入力すると、決まり字が黄色く表示されます。<br>検索方法は3通りあり、「ひらがな」「ローマ字（訓令式・ヘボン式）」「数字」が使用できます。<br>検索ワードの間に全角・半角スペースを挟むことで、一度に複数検索できます。",
           buttonsText: "次へ",
-          action: tour.next
+          action: tour.next,
         },
         {
           playerTab: null,
@@ -219,8 +241,8 @@ export default {
           text:
             "タップすると、スクロールが固定されます。<br>もう一度タップすると元に戻ります。<br>決まり字を動かす時にスクロールを防止できます。",
           buttonsText: "終了",
-          action: tour.complete
-        }
+          action: tour.complete,
+        },
       ];
 
       for (const step of stepList) {
@@ -232,7 +254,7 @@ export default {
           title,
           text,
           buttonsText,
-          action
+          action,
         } = step;
 
         if (playerTab !== null && this.playerTab !== playerTab) continue;
@@ -245,9 +267,9 @@ export default {
           buttons: [
             {
               text: buttonsText,
-              action
-            }
-          ]
+              action,
+            },
+          ],
         });
       }
 
@@ -256,12 +278,12 @@ export default {
     previewAction() {
       const players = {
         name1: this.players.name1 || "選手1",
-        name2: this.players.name2 || "選手2"
+        name2: this.players.name2 || "選手2",
       };
       this.setPlayers(players);
       this.$router.push("/preview");
-    }
-  }
+    },
+  },
 };
 </script>
 
