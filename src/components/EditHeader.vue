@@ -32,9 +32,7 @@
       prepend-inner-icon="mdi-magnify"
       clearable
       maxlength="20"
-      v-model="searchText"
-      @input="search(searchText)"
-      @click:clear="searchReset"
+      v-model="searchTextValue"
     ></v-text-field>
 
     <v-btn class="ma-2" text icon small dark depressed @click="helpAction()">
@@ -55,11 +53,11 @@ export default {
     return {
       isOldNotation: false,
       backDialog: false,
-      searchText: "",
     };
   },
   created() {
     this.isOldNotation = this.oldNotation || false;
+    this.searchTextValue = this.searchText || "";
   },
   computed: {
     ...mapState([
@@ -68,7 +66,16 @@ export default {
       "playerTab",
       "placementCards",
       "oldNotation",
+      "searchText",
     ]),
+    searchTextValue: {
+      get() {
+        return this.searchText;
+      },
+      set(value) {
+        this.setSearchText(value);
+      },
+    },
   },
   methods: {
     ...mapMutations([
@@ -79,6 +86,8 @@ export default {
       "deletePlayers",
       "deletePlayerTab",
       "deletePlacementCards",
+      "setSearchText",
+      "deleteSearchText",
     ]),
     backAction() {
       this.deleteFormat();
@@ -87,13 +96,11 @@ export default {
       this.deletePlayers();
       this.deletePlayerTab();
       this.deletePlacementCards();
+      this.deleteSearchText();
       this.$router.push("/list");
     },
-    searchReset() {
-      this.searchText = "";
-      this.search("");
-    },
     search(text) {
+      if (text === null) text = "";
       // 空白で区切って配列化
       const array = text
         .trim()
@@ -282,6 +289,11 @@ export default {
       };
       this.setPlayers(players);
       this.$router.push("/preview");
+    },
+  },
+  watch: {
+    searchTextValue(value) {
+      this.search(value);
     },
   },
 };

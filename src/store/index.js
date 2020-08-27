@@ -52,7 +52,8 @@ export default new Vuex.Store({
     placementCards: Vue.util.extend({}, initialPlacementCards),
     oldNotation: false,
     isListDrawer: false,
-    isDownload: false
+    isDownload: false,
+    searchText: ""
   },
   mutations: {
     setUserId(state, payload) {
@@ -111,6 +112,12 @@ export default new Vuex.Store({
     },
     deleteIsDownload(state) {
       state.isDownload = false;
+    },
+    setSearchText(state, payload) {
+      state.searchText = payload;
+    },
+    deleteSearchText(state) {
+      state.searchText = "";
     }
   },
   actions: {},
