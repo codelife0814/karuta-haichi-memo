@@ -1,7 +1,4 @@
-import mx_cardList from "./../mixins/cardList";
-
 export default {
-  mixins: [mx_cardList],
   computed: {
     mx_player() {
       return ["player1", "player2", "other"];

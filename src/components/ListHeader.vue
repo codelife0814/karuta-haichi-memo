@@ -66,8 +66,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import initialCards from "./../mixins/initialCards";
-import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListHeader",
@@ -90,7 +88,6 @@ export default {
   created() {
     this.setFormat(0);
   },
-  mixins: [initialCards, fireFunctions],
   computed: {
     ...mapState(["format", "isListDrawer"]),
     formatValue: {

@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import fireFunctions from "./../mixins/fireFunctions";
 import "firebaseui-ja/dist/firebaseui.css";
 
 export default {
@@ -75,7 +74,6 @@ export default {
   mounted() {
     this.mx_fbAuth();
   },
-  mixins: [fireFunctions],
 };
 </script>
 

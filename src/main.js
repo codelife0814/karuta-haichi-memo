@@ -8,9 +8,15 @@ import firebase from "firebase/app";
 import "firebase/app";
 import "firebase/analytics";
 import "firebase/firestore";
+import cardList from "./mixins/cardList";
+import fireFunctions from "./mixins/fireFunctions";
+import initialCards from "./mixins/initialCards";
 import VueClipboard from "vue-clipboard2";
-Vue.use(VueClipboard);
 import VueShepherd from "vue-shepherd";
+Vue.mixin(cardList);
+Vue.mixin(fireFunctions);
+Vue.mixin(initialCards);
+Vue.use(VueClipboard);
 Vue.use(VueShepherd);
 
 Vue.config.productionTip = false;

@@ -31,8 +31,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import initialCards from "./../mixins/initialCards";
-import fireFunctions from "./../mixins/fireFunctions";
 import html2canvas from "html2canvas";
 import moment from "moment";
 
@@ -46,7 +44,6 @@ export default {
   created() {
     this.placementTitle = this.title;
   },
-  mixins: [initialCards, fireFunctions],
   computed: {
     ...mapState([
       "userId",

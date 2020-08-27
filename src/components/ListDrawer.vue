@@ -63,7 +63,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListDrawer",
@@ -76,7 +75,6 @@ export default {
   created() {
     this.getOldNotation();
   },
-  mixins: [fireFunctions],
   computed: {
     ...mapState(["userId", "isListDrawer"]),
     drawerValue: {

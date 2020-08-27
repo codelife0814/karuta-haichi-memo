@@ -69,8 +69,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import initialCards from "./../mixins/initialCards";
-import fireFunctions from "./../mixins/fireFunctions";
 
 export default {
   name: "ListTabItem",
@@ -91,7 +89,6 @@ export default {
   created() {
     this.getAction(`${this.formatName}List`);
   },
-  mixins: [initialCards, fireFunctions],
   computed: {
     ...mapState(["userId"]),
     isTeiichi() {

@@ -36,8 +36,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import cardList from "./../mixins/cardList";
-import initialCards from "./../mixins/initialCards";
 import EditTabItem from "./../components/EditTabItem";
 import EditRow from "./../components/EditRow";
 import FixedScrollButton from "./../components/FixedScrollButton";
@@ -52,7 +50,6 @@ export default {
   created() {
     this.setCards();
   },
-  mixins: [cardList, initialCards],
   computed: {
     ...mapState(["format", "players", "playerTab", "placementCards"]),
     isGame() {
