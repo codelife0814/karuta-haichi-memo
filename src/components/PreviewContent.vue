@@ -44,11 +44,11 @@ import ItemList from "./../components/ItemList";
 export default {
   name: "PreviewContent",
   components: {
-    ItemList
+    ItemList,
   },
   data() {
     return {
-      placementMinWidth: ""
+      placementMinWidth: "",
     };
   },
   created() {
@@ -69,20 +69,20 @@ export default {
           { className: "isFloat", position: "centerLeftTop" },
           { className: "isFloat", position: "centerTop" },
           { className: "isFloat", position: "centerRightTop" },
-          { className: "isLeft", position: "rightTop" }
+          { className: "isLeft", position: "rightTop" },
         ],
         [
           { className: "isRight", position: "leftMiddle" },
-          { className: "isLeft", position: "rightMiddle" }
+          { className: "isLeft", position: "rightMiddle" },
         ],
         [
           { className: "isRight", position: "leftBottom" },
-          { className: "isLeft", position: "rightBottom" }
-        ]
+          { className: "isLeft", position: "rightBottom" },
+        ],
       ];
     },
     reverseItemList() {
-      const reverseElementList = this.itemList.map(item =>
+      const reverseElementList = this.itemList.map((item) =>
         item.slice().reverse()
       );
       return reverseElementList.slice().reverse();
@@ -91,12 +91,12 @@ export default {
       const playerList1 = {
         number: 1,
         name: this.player1Name,
-        itemList: this.itemList
+        itemList: this.itemList,
       };
       const playerList2 = {
         number: 2,
         name: this.player2Name,
-        itemList: this.reverseItemList
+        itemList: this.reverseItemList,
       };
 
       let playerList = [playerList1];
@@ -108,7 +108,7 @@ export default {
     },
     isGame() {
       return this.format === 1;
-    }
+    },
   },
   methods: {
     getPlacementMinWidth() {
@@ -118,43 +118,33 @@ export default {
           "centerLeftTop",
           "centerTop",
           "centerRightTop",
-          "rightTop"
+          "rightTop",
         ],
         middle: ["leftMiddle", "rightMiddle"],
-        bottom: ["leftBottom", "rightBottom"]
+        bottom: ["leftBottom", "rightBottom"],
       };
       const positionsValue = Object.values(positions);
       const spaceWidth = this.isTeiichi ? 14 : 24;
       const players = this.isTeiichi ? ["player1"] : ["player1", "player2"];
 
-      let cardsWidthArray = [];
-      let cardsWidthObject = {};
-      for (const player of players) {
-        cardsWidthObject[player] = [];
-        positionsValue.forEach((position, key) => {
-          cardsWidthObject[player][key] = this.getCardsWidth(
-            player,
-            position,
-            spaceWidth
-          );
+      const cardsWidthArray = players.flatMap((player) => {
+        return positionsValue.map((position) => {
+          return this.getCardsWidth(player, position, spaceWidth);
         });
-      }
-      cardsWidthArray = Object.values(cardsWidthObject).flat();
-
+      });
       const maxWidth = Math.max.apply(null, cardsWidthArray);
       const placementMinWidth = maxWidth + spaceWidth + "px";
       return placementMinWidth;
     },
     getCardsWidth(player, positions, spaceWidth) {
-      let cardsWidth = 0;
-      for (const position of positions) {
-        cardsWidth +=
+      let cardsWidth = positions.reduce((width, position) => {
+        return (width +=
           this.placementCards[player][position].items.length *
           this.displayItemWidth(
             this.placementCards[player][position].isSpread,
             this.format
-          );
-      }
+          ));
+      }, 0);
       cardsWidth += spaceWidth * (positions.length - 1);
       return cardsWidth;
     },
@@ -162,8 +152,8 @@ export default {
       const itemWidth = format === 0 ? 14 : 24;
       const itemSpreadWidth = format === 0 ? 22 : 32;
       return isSpread ? itemSpreadWidth : itemWidth;
-    }
-  }
+    },
+  },
 };
 </script>
 
