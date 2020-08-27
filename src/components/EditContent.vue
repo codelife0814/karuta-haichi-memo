@@ -36,6 +36,8 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import cardList from "./../mixins/cardList";
+import initialCards from "./../mixins/initialCards";
 import EditTabItem from "./../components/EditTabItem";
 import EditRow from "./../components/EditRow";
 import FixedScrollButton from "./../components/FixedScrollButton";
@@ -45,10 +47,14 @@ export default {
   components: {
     EditTabItem,
     EditRow,
-    FixedScrollButton
+    FixedScrollButton,
   },
+  created() {
+    this.setCards();
+  },
+  mixins: [cardList, initialCards],
   computed: {
-    ...mapState(["format", "players", "playerTab"]),
+    ...mapState(["format", "players", "playerTab", "placementCards"]),
     isGame() {
       return this.format === 1;
     },
@@ -58,7 +64,7 @@ export default {
       },
       set(value) {
         this.setPlayers({ name1: value, name2: this.players.name2 });
-      }
+      },
     },
     player2Name: {
       get() {
@@ -66,7 +72,7 @@ export default {
       },
       set(value) {
         this.setPlayers({ name1: this.players.name1, name2: value });
-      }
+      },
     },
     playerTabValue: {
       get() {
@@ -74,7 +80,7 @@ export default {
       },
       set(value) {
         this.setPlayerTab(value);
-      }
+      },
     },
     remainingRow() {
       return [{ name: "余り", position: "remaining" }];
@@ -82,7 +88,7 @@ export default {
     tabItems() {
       return [
         { player: "player1", playerName: this.player1Name },
-        { player: "player2", playerName: this.player2Name }
+        { player: "player2", playerName: this.player2Name },
       ];
     },
     tabs() {
@@ -93,19 +99,31 @@ export default {
           id: `player${i}Tab`,
           className: `isPlayer${i}`,
           playerName: this[`player${i}Name`],
-          defaultName: `選手${i}`
+          defaultName: `選手${i}`,
         };
         tabsArray.push(object);
       }
       return tabsArray;
-    }
+    },
   },
   methods: {
-    ...mapMutations(["setPlayers", "setPlayerTab"]),
+    ...mapMutations(["setPlayers", "setPlayerTab", "setPlacementCards"]),
     updateName(value, player) {
       this[player + "Name"] = value;
-    }
-  }
+    },
+    setCards() {
+      if (
+        JSON.stringify(this.convertCards()) ===
+        JSON.stringify(this.placementCards)
+      ) {
+        let cardList = JSON.parse(JSON.stringify(this.cardList));
+        cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
+        let cards = this.convertCards();
+        cards.other.remaining.items = cardList;
+        this.setPlacementCards(cards);
+      }
+    },
+  },
 };
 </script>
 

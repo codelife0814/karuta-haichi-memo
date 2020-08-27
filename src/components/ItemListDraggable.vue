@@ -22,8 +22,6 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import cardList from "./../mixins/cardList";
-import initialCards from "./../mixins/initialCards";
 import draggable from "vuedraggable";
 
 export default {
@@ -34,10 +32,6 @@ export default {
   props: {
     player: String,
     position: String,
-  },
-  mixins: [cardList, initialCards],
-  created() {
-    this.setCards();
   },
   computed: {
     ...mapState(["placementCards", "oldNotation"]),
@@ -54,18 +48,6 @@ export default {
   },
   methods: {
     ...mapMutations(["setPlacementCards"]),
-    setCards() {
-      if (
-        JSON.stringify(this.convertCards()) ===
-        JSON.stringify(this.placementCards)
-      ) {
-        let cardList = JSON.parse(JSON.stringify(this.cardList));
-        cardList.sort((a, b) => (a.no > b.no ? 1 : -1));
-        let cards = this.convertCards();
-        cards.other.remaining.items = cardList;
-        this.setPlacementCards(cards);
-      }
-    },
     displayName(card) {
       return this.oldNotation && card.nameOld ? card.nameOld : card.name;
     },
